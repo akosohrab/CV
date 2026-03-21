@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sohrab AHMADIAN | Academic CV</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #27ae60;
+            --delete: #e74c3c;
+            --move: #3498db;
+            --edit: #f39c12;
+            --text: #1a1a1a;
+            --bg: #f4f7f6;
+        }
+
+        * { box-sizing: border-box; }
+        body { font-family: "Times New Roman", "Hiragino Mincho ProN", "MS Mincho", serif; line-height: 1.4; color: var(--text); background-color: var(--bg); margin: 0; padding: 0; }
+
+        /* Toolbar */
+        .toolbar { background: var(--primary); color: white; padding: 12px 0; position: sticky; top: 0; z-index: 1000; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .btn { border: none; padding: 8px 15px; font-size: 14px; font-weight: bold; cursor: pointer; border-radius: 4px; transition: 0.3s; margin: 0 5px; color: white; }
+        .btn-print { background: var(--accent); }
+
+        /* CV Paper */
+        .cv-paper { max-width: 900px; margin: 30px auto; background: white; padding: 40px 50px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        h1 { text-align: center; font-size: 24px; text-decoration: underline; margin-bottom: 20px; }
+        h2 { font-size: 17px; border-bottom: 1.5px solid var(--primary); margin-top: 25px; padding-bottom: 3px; font-weight: bold; color: var(--primary); background-color: #f8f9fa; padding-left: 8px; }
+
+        /* Profile Header */
+        .profile-header { display: flex; justify-content: space-between; margin-bottom: 20px; border: 1px solid #eee; padding: 15px; }
+        .info-table { flex: 1; border-collapse: collapse; }
+        .info-table td { padding: 2px 0; font-size: 13px; border: none !important; vertical-align: top; }
+        .photo-area { width: 120px; height: 160px; border: 1px solid #000; background: #f0f0f0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .photo-area img { width: 100%; height: auto; }
+
+        /* Entries */
+        .entry-container { position: relative; margin-bottom: 6px; padding: 5px 8px; border-bottom: 1px solid #f0f0f0; transition: 0.2s; }
+        .entry-container:hover { background-color: #fcfcfc; }
+        .entry-content { margin-right: 140px; }
+        .entry-title { font-weight: bold; font-size: 13px; display: block; color: #000; }
+        .entry-meta { font-size: 12px; color: #444; display: block; }
+        
+        /* Controls */
+        .controls { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; gap: 3px; }
+        .ctrl-btn { padding: 3px 5px; font-size: 9px; border: none; border-radius: 2px; cursor: pointer; color: white; opacity: 0.2; transition: 0.2s; }
+        .entry-container:hover .ctrl-btn { opacity: 1; }
+        .btn-up, .btn-down { background: var(--move); }
+        .btn-edit { background: var(--edit); }
+        .btn-del { background: var(--delete); }
+
+        /* Admin Panel */
+        .admin-panel { max-width: 900px; margin: 20px auto 100px; background: white; padding: 25px; border-radius: 8px; border: 2px dashed var(--primary); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        input, select, textarea { padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%; font-size: 13px; }
+
+        @media print {
+            .toolbar, .controls, .admin-panel { display: none !important; }
+            body { background: white; }
+            .cv-paper { box-shadow: none; margin: 0; width: 100%; max-width: 100%; padding: 0; }
+            h2 { background-color: #f2f2f2 !important; -webkit-print-color-adjust: exact; margin-top: 15px; }
+            .entry-container { border-bottom: none; margin-bottom: 2px; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="toolbar">
+    <button class="btn btn-print" onclick="window.print()">[Print CV] PDFとして保存</button>
+</div>
+
+<div class="cv-paper">
+    <h1>研 究 者 履 歴 書 ・ 全 業 績 目 録</h1>
+    <p style="text-align: right; font-size: 10px; margin: 0;">2026年3月21日現在</p>
+
+    <div class="profile-header">
+        <table class="info-table">
+            <tr><td width="80">氏名</td><td style="font-size: 20px; font-weight: bold;">Sohrab AHMADIAN</td></tr>
+            <tr><td>生年月日</td><td>1986年9月3日 [cite: 220, 347]</td></tr>
+            <tr><td>所属</td><td>東京外国語大学 JSPS外国人特別研究員 [cite: 347]</td></tr>
+            <tr><td>現住所</td><td>〒305-0018 茨城県つくば市金田74-1 市営住宅2A-202 [cite: 224, 225, 270]</td></tr>
+            <tr><td>連絡先</td><td>080-6639-5580 / ako.sohrab@gmail.com [cite: 226, 227, 270]</td></tr>
+        </table>
+        <div class="photo-area">
+            <img src="https://researchmap.jp/sohrab.ahmadian/avatar.jpg" alt="Photo">
+        </div>
+    </div>
+
+    <h2>1. 学位・学歴</h2>
+    <div id="sec-edu"></div>
+
+    <h2>2. 職歴・研究歴</h2>
+    <div id="sec-work"></div>
+
+    <h2>3. 研究課題・受託研究等</h2>
+    <div id="sec-projects"></div>
+
+    <h2>4. 研究業績：論文</h2>
+    <div id="sec-papers"></div>
+
+    <h2>5. 研究業績：書籍</h2>
+    <div id="sec-books"></div>
+
+    <h2>6. 講演・口頭発表等</h2>
+    <div id="sec-talks"></div>
+
+    <h2>7. 受賞歴・所属学会</h2>
+    <div id="sec-awards"></div>
+
+    <h2>8. 言語能力・スキル</h2>
+    <div style="font-size: 12px; border: 1px solid #eee; padding: 10px; margin-top: 15px;">
+        <strong>Languages:</strong> English (Advanced), Japanese (Business), Persian (Native), Kurdish (Native), Tajiki (Native), Arabic (Intermediate), Azeri Turkish (Basic) <br>
+        <strong>IT & Research:</strong> Qualitative methods, SPSS, R, Microsoft Office, Adobe Photoshop, Corel Video Studio, WordPress [cite: 251, 252, 258, 259, 260, 263, 340, 341, 342, 343, 344]
+    </div>
+
+    <p style="text-align: right; margin-top: 30px; font-weight: bold; font-size: 12px;">以上</p>
+</div>
+
+<div class="admin-panel">
+    <h3>新規項目追加・管理</h3>
+    <div class="form-grid">
+        <select id="in-section">
+            <option value="sec-edu">1. 学歴</option>
+            <option value="sec-work">2. 職歴</option>
+            <option value="sec-projects">3. 研究課題</option>
+            <option value="sec-papers">4. 論文</option>
+            <option value="sec-books">5. 書籍</option>
+            <option value="sec-talks">6. 講演</option>
+            <option value="sec-awards">7. 受賞・学会</option>
+        </select>
+        <input type="text" id="in-date" placeholder="日付/期間（例: 2026.04）">
+        <input type="text" id="in-title" placeholder="タイトル" style="grid-column: span 2;">
+        <textarea id="in-desc" placeholder="詳細情報" style="grid-column: span 2;" rows="2"></textarea>
+    </div>
+    <button class="btn" style="background: var(--primary); margin-top:15px; width:100%; color:black;" onclick="addItem()">リストに追加</button>
+</div>
+
+<script>
+    const cvData = {
+        "sec-edu": [
+            { date: "2018.04-2024.03", title: "筑波大学 大学院人文社会科学研究科", desc: "国際日本研究専攻 (博士後期課程）" },
+            { date: "2013.09-2015.09", title: "テヘラン大学 大学院世界研究科", desc: "日本研究専攻 (修士課程) " }
+        ],
+        "sec-work": [
+            { date: "2025.04-現在", title: "東京外国語大学 JSPS外国人特別研究員", desc: "日本学術振興会 外国人特別研究員 (PD) 採用 " },
+            { date: "2026.03", title: "University of Birmingham (IRIS)", desc: "Visiting Research Fellow [cite: 234, 276]" },
+            { date: "2024.04-2025.03", title: "東京外国語大学 非常勤講師", desc: "アジアの言語1，クルド語入門担当 [cite: 234, 276]" }
+        ],
+        "sec-projects": [
+            { date: "2025-2027", title: "特別研究員奨励費 (25KF0029)", desc: "共存のダイナミクス―地域住民、地方自治体と在日クルド、アフガン移民コミュニティー " },
+            { date: "2024-2027", title: "Everyday Forms of Ethnicity and Religiosity in Kurdistan", desc: "ILCAA Joint Research Project, TUFS [cite: 198, 199, 200, 201, 279]" }
+        ],
+        "sec-papers": [
+            { date: "2025.03.20", title: "在日クルド人の歴史的背景と現状： 多文化共生の視点から", desc: "イスラーム信頼学ニュースレター (5), pp.20-21 [cite: 10, 11, 12, 46, 48, 281, 351, 352]" },
+            { date: "2024.06.04", title: "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media", desc: "Palgrave Macmillan Studies on Human Rights in Asia, pp.257-280 [cite: 13, 14, 49, 50, 282, 353, 354, 355, 356, 357, 385, 386, 387, 388, 389]" },
+            { date: "2022.01.01", title: "Kurdish Diaspora in Japan: Caught in a Limbo Between Immigration Policies and Politics", desc: "NEPCAP POLICY BRIEF, 2022(1) [cite: 24, 25, 26, 60, 61, 62, 286, 390, 391]" }
+        ],
+        "sec-books": [
+            { date: "2025.11", title: "変容する移民コミュニティ 【第2版】", desc: "明石書店, ISBN: 9784750360089 [cite: 176, 179, 180, 294]" },
+            { date: "2014.04", title: "詩集：エーテラーフ [自白]", desc: "Nashr-e Nimazh, Tehran [cite: 185, 186, 187, 296]" }
+        ],
+        "sec-talks": [
+            { date: "2026.02.06", title: "The 'Zero Plan' and Migration Governance in Japan", desc: "Kurdish Worlds Across Time and Space, ILCAA [cite: 80, 81, 82, 127, 128, 129, 130, 298, 299, 395, 396]" },
+            { date: "2024.11.02", title: "在日クルド人とホスト社会の受容", desc: "「イスラームの知の変換」シンポジウム [cite: 86, 87, 88, 134, 135, 136, 137, 302, 397, 398, 399, 400, 401, 402, 403, 404]" }
+        ],
+        "sec-awards": [
+            { date: "2021.10", title: "2021年度挑戦的研究奨励賞", desc: "筑波大学・日本科学技術振興機構 (JST) [cite: 192, 245, 318]" },
+            { date: "2024-", title: "International Migration Research Network (IMISCOE)", desc: "学会員 [cite: 237, 324]" }
+        ]
+    };
+
+    function renderEntry(item) {
+        return `
+            <div class="entry-content">
+                <span class="entry-title">${item.title}</span>
+                <span class="entry-meta">${item.desc} ${item.date ? '(' + item.date + ')' : ''}</span>
+            </div>
+            <div class="controls">
+                <button class="ctrl-btn btn-up" onclick="move(this,'up')">▲</button>
+                <button class="ctrl-btn btn-down" onclick="move(this,'down')">▼</button>
+                <button class="ctrl-btn btn-edit" onclick="edit(this)">編集</button>
+                <button class="ctrl-btn btn-del" onclick="del(this)">削除</button>
+            </div>`;
+    }
+
+    window.onload = () => {
+        for (const [id, items] of Object.entries(cvData)) {
+            const container = document.getElementById(id);
+            if (container) items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'entry-container';
+                div.innerHTML = renderEntry(item);
+                container.appendChild(div);
+            });
+        }
+    };
+
+    function addItem() {
+        const id = document.getElementById('in-section').value;
+        const item = { date: document.getElementById('in-date').value, title: document.getElementById('in-title').value, desc: document.getElementById('in-desc').value };
+        if (!item.title) return alert("タイトル必須");
+        const div = document.createElement('div');
+        div.className = 'entry-container';
+        div.innerHTML = renderEntry(item);
+        document.getElementById(id).prepend(div);
+    }
+
+    function del(btn) { if(confirm("削除しますか？")) btn.closest('.entry-container').remove(); }
+    function move(btn, dir) {
+        const e = btn.closest('.entry-container');
+        if(dir==='up' && e.previousElementSibling) e.parentNode.insertBefore(e, e.previousElementSibling);
+        else if(dir==='down' && e.nextElementSibling) e.parentNode.insertBefore(e.nextElementSibling, e);
+    }
+    function edit(btn) {
+        const e = btn.closest('.entry-container');
+        const t = e.querySelector('.entry-title'), m = e.querySelector('.entry-meta');
+        const nt = prompt("タイトル:", t.innerText), nm = prompt("詳細:", m.innerText);
+        if(nt!==null) t.innerText = nt; if(nm!==null) m.innerText = nm;
+    }
+</script>
+
+</body>
+</html>
