@@ -7,25 +7,23 @@
     <style>
         :root { --primary: #2c3e50; --accent: #27ae60; --delete: #e74c3c; --move: #3498db; --edit: #f39c12; --text: #1a1a1a; --bg: #f4f7f6; }
         * { box-sizing: border-box; }
-        body { font-family: "Times New Roman", "Hiragino Mincho ProN", serif; line-height: 1.4; color: var(--text); background-color: var(--bg); margin: 0; padding: 0; }
+        body { font-family: "Times New Roman", "Hiragino Mincho ProN", serif; line-height: 1.5; color: var(--text); background-color: var(--bg); margin: 0; padding: 0; }
         .toolbar { background: var(--primary); color: white; padding: 12px 0; position: sticky; top: 0; z-index: 1000; text-align: center; display: flex; justify-content: center; gap: 10px; }
         .btn { border: none; padding: 8px 15px; font-size: 14px; font-weight: bold; cursor: pointer; border-radius: 4px; color: white; transition: 0.3s; }
-        .cv-paper { max-width: 900px; margin: 20px auto; background: white; padding: 40px 50px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
-        h1 { text-align: center; font-size: 24px; text-decoration: underline; margin-bottom: 20px; }
-        h2 { font-size: 17px; border-bottom: 2.2px solid var(--primary); margin-top: 25px; background-color: #f8f9fa; padding: 5px 8px; font-weight: bold; color: var(--primary); }
-        .profile-header { display: flex; justify-content: space-between; margin-bottom: 20px; border: 1px solid #eee; padding: 15px; }
-        .info-table td { padding: 2px 0; font-size: 13px; vertical-align: top; border: none !important; }
-        .photo-area { width: 125px; height: 165px; border: 1px solid #000; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #eee; }
+        .cv-paper { max-width: 950px; margin: 20px auto; background: white; padding: 50px 70px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        h1 { text-align: center; font-size: 26px; text-decoration: underline; margin-bottom: 25px; }
+        h2 { font-size: 18px; border-bottom: 2.5px solid var(--primary); margin-top: 35px; background-color: #f8f9fa; padding: 6px 10px; font-weight: bold; color: var(--primary); }
+        .profile-header { display: flex; justify-content: space-between; margin-bottom: 25px; border: 1px solid #eee; padding: 20px; gap: 20px; }
+        .info-table td { padding: 3px 0; font-size: 14px; vertical-align: top; border: none !important; }
+        .photo-area { width: 135px; height: 180px; border: 1px solid #000; overflow: hidden; background: #eee; display: flex; align-items: center; justify-content: center; }
         .photo-area img { width: 100%; height: auto; }
-        .entry-container { position: relative; margin-bottom: 8px; padding: 6px 10px; border-bottom: 1px solid #f0f0f0; }
-        .entry-title { font-weight: bold; font-size: 14px; display: block; color: #000; }
-        .entry-meta { font-size: 12px; color: #444; display: block; }
-        .admin-controls { display: none; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); gap: 3px; }
-        .ctrl-btn { padding: 3px 6px; font-size: 9px; border: none; border-radius: 2px; cursor: pointer; color: white; opacity: 0.7; }
-        .admin-panel { display: none; max-width: 900px; margin: 20px auto 100px; background: white; padding: 25px; border: 2px dashed var(--primary); border-radius: 8px; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        input, select, textarea { padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%; font-size: 13px; }
-        @media print { .toolbar, .admin-controls, .admin-panel { display: none !important; } .cv-paper { box-shadow: none; margin: 0; width: 100%; padding: 0; } h2 { -webkit-print-color-adjust: exact; } }
+        .entry-container { position: relative; margin-bottom: 12px; padding: 8px 12px; border-bottom: 1px solid #f0f0f0; }
+        .entry-title { font-weight: bold; font-size: 14px; display: block; color: #000; margin-bottom: 3px; }
+        .entry-meta { font-size: 13px; color: #444; display: block; line-height: 1.6; }
+        .admin-controls { display: none; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); gap: 4px; }
+        .ctrl-btn { padding: 4px 8px; font-size: 10px; border: none; border-radius: 2px; cursor: pointer; color: white; opacity: 0.8; }
+        .admin-panel { display: none; max-width: 950px; margin: 20px auto 100px; background: white; padding: 30px; border: 2px dashed var(--primary); border-radius: 8px; }
+        @media print { .toolbar, .admin-controls, .admin-panel { display: none !important; } .cv-paper { box-shadow: none; margin: 0; width: 100%; padding: 0; } h2 { -webkit-print-color-adjust: exact; } .entry-container { page-break-inside: avoid; } }
     </style>
 </head>
 <body>
@@ -37,11 +35,11 @@
 
 <div class="cv-paper">
     <h1>研 究 者 履 歴 書 ・ 全 業 績 目 録</h1>
-    <p style="text-align: right; font-size: 10px; margin: 0;">最終更新: 2026年3月21日</p>
+    <p style="text-align: right; font-size: 11px; margin: 0;">最終更新: 2026年3月21日</p>
 
     <div class="profile-header">
-        <table class="info-table" style="width:100%;">
-            <tr><td width="90">氏名</td><td style="font-size: 20px; font-weight: bold;">Sohrab AHMADIAN (アフマディヤーン ソホラブ)</td></tr>
+        <table class="info-table" style="flex:1;">
+            <tr><td width="90">氏名</td><td style="font-size: 22px; font-weight: bold;">Sohrab AHMADIAN (アフマディヤーン ソホラブ)</td></tr>
             <tr><td>所属</td><td>東京外国語大学 大学院総合国際学研究院 JSPS外国人特別研究員</td></tr>
             <tr><td>現住所</td><td>〒305-0018 茨城県つくば市金田74-1 市営住宅2A-202</td></tr>
             <tr><td>連絡先</td><td>080-6639-5580 / ako.sohrab@gmail.com</td></tr>
@@ -58,100 +56,132 @@
     <h2>3. 研究課題・受託研究等</h2>
     <div id="sec-projects"></div>
 
-    <h2>4. 研究業績：論文 (全12件)</h2>
+    <h2>4. 研究業績：論文</h2>
     <div id="sec-papers"></div>
 
-    <h2>5. 研究業績：書籍</h2>
+    <h2>5. 研究業績：書籍・出版物</h2>
     <div id="sec-books"></div>
 
-    <h2>6. 講演・口頭発表等 (全16件)</h2>
+    <h2>6. 講演・口頭発表等</h2>
     <div id="sec-talks"></div>
 
-    <h2>7. 受賞・所属学会</h2>
+    <h2>7. 教育・社会貢献・受賞歴</h2>
     <div id="sec-misc"></div>
 
-    <p style="text-align: right; margin-top: 40px; font-weight: bold;">以上</p>
+    <h2>8. 所属学協会</h2>
+    <div id="sec-societies" style="padding:10px; font-size:13px; line-height:1.8;"></div>
+
+    <p style="text-align: right; margin-top: 50px; font-weight: bold; font-size: 13px;">以上</p>
 </div>
 
 <div id="admin-panel" class="admin-panel">
-    <h3>新規項目追加</h3>
-    <div class="form-grid">
+    <h3>管理者モード: 項目追加</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
         <select id="in-section">
-            <option value="sec-edu">学歴・学位</option>
-            <option value="sec-work">職歴</option>
-            <option value="sec-projects">研究課題</option>
             <option value="sec-papers">論文</option>
-            <option value="sec-books">書籍</option>
-            <option value="sec-talks">講演・発表</option>
-            <option value="sec-misc">受賞・学会</option>
+            <option value="sec-talks">発表</option>
+            <option value="sec-work">職歴</option>
         </select>
-        <input type="text" id="in-date" placeholder="日付（例: 2026.04）">
-        <input type="text" id="in-title" placeholder="タイトル" style="grid-column: span 2;">
-        <textarea id="in-desc" placeholder="詳細（所属、誌名、DOI等）" style="grid-column: span 2;" rows="2"></textarea>
+        <input type="text" id="in-date" placeholder="日付 (YYYY.MM)">
+        <input type="text" id="in-title" placeholder="メインタイトル" style="grid-column: span 2;">
+        <textarea id="in-desc" placeholder="詳細情報..." style="grid-column: span 2;" rows="2"></textarea>
     </div>
-    <button class="btn" style="background:var(--primary); width:100%; margin-top:10px;" onclick="addItem()">追加</button>
+    <button class="btn" style="background:var(--primary); width:100%; margin-top:15px;" onclick="addItem()">追加</button>
 </div>
 
 <script>
     const cvData = {
         "sec-edu": [
-            { date: "2018.04-2024.03", title: "筑波大学 大学院人文社会科学研究科", desc: "国際日本研究専攻 (博士後期課程）/ 博士（国際日本研究）" },
-            { date: "2013.09-2015.09", title: "テヘラン大学 大学院世界研究科", desc: "日本研究専攻（修士課程）" },
-            { date: "2008.09-2012.07", title: "テヘラン大学 外国語・外国文学部", desc: "日本語日本文学専攻 (学部）" }
+            { date: "2018.04 - 2024.03", title: "博士（国際日本研究） 筑波大学", desc: "大学院人文社会科学研究科 国際日本研究専攻 (博士後期課程）" },
+            { date: "2017.04 - 2018.03", title: "筑波大学 大学院人文社会科学研究科", desc: "国際日本研究専攻 (研究生）" },
+            { date: "2013.09 - 2015.09", title: "修士 テヘラン大学", desc: "大学院世界研究科 日本研究専攻" },
+            { date: "2008.09 - 2012.07", title: "学士 テヘラン大学", desc: "外国語・外国文学部 日本語日本文学専攻" }
         ],
         "sec-work": [
-            { date: "2025.04-現在", title: "東京外国語大学 JSPS外国人特別研究員", desc: "日本学術振興会 (PD) 採用" },
-            { date: "2026.03", title: "University of Birmingham", desc: "Visiting Research Fellow (IRIS)" },
-            { date: "2024.05-2025.03", title: "千葉大学 グローバル関係融合研究センター", desc: "特任研究員" },
-            { date: "2024.04-2025.03", title: "東京外国語大学 非常勤講師", desc: "アジアの言語1，クルド語入門担当" }
+            { date: "2025.04 - 現在", title: "JSPS外国人特別研究員", desc: "東京外国語大学 大学院総合国際学研究院" },
+            { date: "2026.03", title: "Visiting Research Fellow", desc: "University of Birmingham, IRIS, School of Social Policy and Society" },
+            { date: "2024.05 - 2025.03", title: "特任研究員", desc: "千葉大学 グローバル関係融合研究センター" },
+            { date: "2024.04 - 2025.03", title: "非常勤講師", desc: "東京外国語大学 (ｱｼﾞｱの言語1，クルド語入門)" },
+            { date: "2023.05 - 2025.03", title: "非常勤研究員", desc: "東京外国語大学 大学院総合国際学研究院" },
+            { date: "2023.10 - 2024.01", title: "非常勤講師", desc: "株式会社 Kimiya (ソラニ・クルド語)" },
+            { date: "2022.08 - 2023.05", title: "講師", desc: "Learnlight Uk Limited (日本語教育)" },
+            { date: "2021.07 - 2022.03", title: "研究員", desc: "筑波大学 人文社会科学研究科" },
+            { date: "2021.04 - 2021.12", title: "ティーチング・アシスタント", desc: "筑波大学 (表象メディア論)" }
         ],
         "sec-projects": [
-            { date: "2025-2027", title: "特別研究員奨励費 (25KF0029)", desc: "共存のダイナミクス―地域住民、地方自治体と在日クルド、アフガン移民コミュニティー" },
-            { date: "2024-2027", title: "ILCAA Joint Research Project, TUFS", desc: "Everyday Forms of Ethnicity and Religiosity in Kurdistan" }
+            { date: "2025.04 - 2027.03", title: "共存のダイナミクス―地域住民、地方自治体と在日クルド、アフガン移民コミュニティー", desc: "科学研究費助成事業 特別研究員奨励費 (25KF0029)" },
+            { date: "2024.04 - 2027.03", title: "Everyday Forms of Ethnicity and Religiosity in Kurdistan", desc: "ILCAA Joint Research Project, Tokyo University of Foreign Studies" }
         ],
         "sec-papers": [
-            { date: "2025.03", title: "在日クルド人の歴史的背景と現状： 多文化共生の視点から", desc: "イスラーム信頼学ニュースレター (5), pp.20-21. [査読有り]" },
-            { date: "2024.06", title: "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media", desc: "Palgrave Macmillan Studies on Human Rights in Asia. DOI: 10.1007/978-981-97-2867-1_10" },
-            { date: "2022.01", title: "Kurdish Diaspora in Japan: Caught in a Limbo Between Immigration Policies and Politics", desc: "NEPCAP POLICY BRIEF, 2022(1). [査読有り]" },
-            { date: "2015.09", title: "安倍政権における平和主義の進路― 憲法9条改正∕解釈問題を中心に", desc: "テヘラン大学（修士論文）" }
+            { date: "2025.03.20", title: "AHMADIAN, Sohrab. \"Zainichi Kurudo-jin no rekishiteki haikei to genjō: Tabunka kyōsei no shiten kara.\"", desc: "Islamic Trust Studies Newsletter, No 5" },
+            { date: "2025.03.20", title: "アフマディヤーン ソホラブ、小野 亮介「在日クルド人の歴史的背景と現状： 多文化共生の視点から」", desc: "『イスラーム信頼学ニュースレター』(5)、20-21頁 [査読有り]" },
+            { date: "2024.06.04", title: "AHMADIAN, Sohrab. \"Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media.\"", desc: "Palgrave Macmillan Studies on Human Rights in Asia, pp. 257-280" },
+            { date: "2024.03.25", title: "アフマディヤーン ソホラブ『在日クルド人のディアスポラ体験に関する質的研究』", desc: "筑波大学 博士学位論文 [査読有り]" },
+            { date: "2023.12", title: "AHMADIAN, Sohrab. \"Jāmeʿeh va Nezām-e Ejtemāʿi-ye Jāpān.\"", desc: "In Jāmeʿeh va Farhang-e Jāpān, pp. 66-88 [Peer-reviewed]" },
+            { date: "2022.01.01", title: "AHMADIAN, Sohrab. \"Kurdish Diaspora in Japan: Caught in a Limbo Between Immigration Policies and Politics.\"", desc: "NEPCAP POLICY BRIEF, 2022(1)" },
+            { date: "2019.09", title: "アフマディヤーン ソホラブ「Āyā 'Made in Jāpān' Hanūz Edāmeh Dārad?」", desc: "研究報告" },
+            { date: "2019.06", title: "AHMADIAN, Sohrab. \"Mamuriyat Doshvar Abe baraye Ab Kardan-e Yakh-e Diplomasi.\"", desc: "研究報告" },
+            { date: "2019.06", title: "プールロスタミ ナーヒード、アフマディヤーン ソホラブ「統合的知識：工学、人文学、産業間の連携に必要な条件（日本の経験）」", desc: "シンポジウム報告" },
+            { date: "2018.11", title: "AHMADIAN, Sohrab. \"Tahrim-hā-ye Īrān va Entekābhā-ye Jāpān dar Sāyeh-ye Sīāsathā-ye Āmrīkā.\"", desc: "IPSC" },
+            { date: "2015.09.21", title: "AHMADIAN, Sohrab. \"Ravand-e Ṣolḥ-gerāʾī dar Dowlat-e Abe bā Tamarkoz bar Masʾale-ye Bāznegari va Tafsīr-e Aṣl-e 9 Qānūn-e Asāsī-ye Japan.\"", desc: "Master's Thesis, University of Tehran" },
+            { date: "2012.07.21", title: "アフマディヤーン ソホラブ「日本の俳句とイランの四行詩における「無常観」― 松尾芭蕉とウマル・ハイヤームを中心に」", desc: "学部卒業論文" }
         ],
         "sec-books": [
-            { date: "2025.11", title: "変容する移民コミュニティ 【第2版】", desc: "明石書店. 分担執筆:「クルド人――来日と定住をめぐる現状と課題」" },
-            { date: "2014.04", title: "Poetry collection：Eʻterāf [Confession]", desc: "Nashr-e Nīmāzh, Tehran. ISBN: 9786007185247" }
+            { date: "2025.11", title: "アフマディヤーン ソホラブ、大茂矢由佳「クルド人――来日と定住をめぐる現状と課題」", desc: "『変容する移民コミュニティ【第2版】：時間・空間・階層』明石書店" },
+            { date: "2020.07", title: "アフマディヤーン ソホラブ「第一章：クルド人――ふるさとからの声」", desc: "『変容する移民コミュニティ：時間・空間・階層』明石書店" },
+            { date: "2014.04", title: "AHMADIAN, Sohrab. \"Eʻterāf.\"", desc: "Poetry collection, Nashr-e Nīmāzh, Tehran" }
         ],
         "sec-talks": [
-            { date: "2026.02.06", title: "The 'Zero Plan' and Migration Governance in Japan", desc: "Kurdish Worlds Across Time and Space, ILCAA" },
-            { date: "2025.12.06", title: "Negotiating Difference and Belonging", desc: "16th Iraq-Japan Joint Academic Conference" },
-            { date: "2024.11.02", title: "在日クルド人とホスト社会の受容", desc: "「イスラームの知の変換」シンポジウム" },
-            { date: "2024.07.03", title: "Refugee and asylum seeker protection in East Asia", desc: "21st IMISCOE Conference (Lisbon)" }
+            { date: "2026.02.06", title: "AHMADIAN, Sohrab. \"The 'Zero Plan' and Migration Governance in Japan: A Case Study of Kurdish Asylum Seekers.\"", desc: "Kurdish Worlds Across Time and Space, ILCAA" },
+            { date: "2025.12.06", title: "AHMADIAN, Sohrab. \"Negotiating Difference and Belonging: Social Dynamics of Kurdish-Japanese Interaction.\"", desc: "The 16th Iraq-Japan Joint Academic Conference" },
+            { date: "2024.11.02", title: "アフマディヤーン ソホラブ「在日クルド人とホスト社会の受容」", desc: "「イスラームの知の変換」シンポジウム" },
+            { date: "2024.10.11", title: "AHMADIAN, Sohrab. \"The Transformation of Religiosity in Twentieth-Century Ouramanat.\"", desc: "2024年度第2回研究会" },
+            { date: "2024.07.03", title: "AHMADIAN, Sohrab. \"Refugee and asylum seeker protection in East Asia.\"", desc: "21st IMISCOE Annual Conference (Lisbon)" },
+            { date: "2024.05.23", title: "AHMADIAN, Sohrab. \"An Anatomy of Islamic Awakening in Iranian Ouramanat.\"", desc: "Kurdish Studies Conference (Sheffield)" },
+            { date: "2024.05.12", title: "アフマディヤーン ソホラブ「在日クルド人ディアスポラにおける政治意識と団体活動」", desc: "日本中東学会 第40回年次大会" },
+            { date: "2024.03.11", title: "アフマディヤーン ソホラブ「日本におけるクルド人コミュニティのディアスポラ体験と活動」", desc: "研究成果報告, 千葉大学" },
+            { date: "2023.12.03", title: "AHMADIAN, Sohrab. \"Human security of refugees and asylum seekers in Japan.\"", desc: "人間の安全保障学会2023年度年次大会" },
+            { date: "2023.12.02", title: "AHMADIAN, Sohrab. \"Human Security of Refugees and Asylum Seekers.\"", desc: "ワークショップ「日本における移民の人間の安全保障」" },
+            { date: "2023.11.29", title: "AHMADIAN, Sohrab. \"Asl-e Noh va Sīāsat-e Bāznegari-ye Qānūn-e Asāsī-ye Jāpān.\"", desc: "第38回日本学セッション, テヘラン大学" },
+            { date: "2023.04.09", title: "AHMADIAN, Sohrab. \"Kurds in Japan: Diasporic Experience and Politics.\"", desc: "上智大学比較文化研究所ワークショップ" },
+            { date: "2022.11.28", title: "AHMADIAN, Sohrab. \"Jāvāmeʿ-e Mohājer va Dīāsuporāʾī dar Jāpān: Chālesh-hā va Mavāneʿ.\"", desc: "月例日本学セミナー (オンライン)" },
+            { date: "2019.12.05", title: "AHMADIAN, Sohrab. \"Identity Formation and Community Activism among Kurdish Diaspora.\"", desc: "英国と日本における新旧の移民と多様性シンポジウム" },
+            { date: "2019.09.15", title: "AHMADIAN, Sohrab. \"Identity Formation and Political Mobilization among Kurdish Diaspora in Japan.\"", desc: "第3回ヨーロッパ日本研究協会（EAJS）日本会議" },
+            { date: "2018.07.13", title: "アフマディヤーン ソホラブ「クルド人ディアスポラとはなにか」", desc: "東京入国管理局 (品川)" }
         ],
         "sec-misc": [
-            { date: "2021.10", title: "2021年度挑戦的研究奨励賞", desc: "筑波大学・JST" },
-            { date: "", title: "International Migration Research Network (IMISCOE)", desc: "会員" },
-            { date: "", title: "日本中東学会 (JAMES)", desc: "会員" }
+            { date: "2021.10", title: "2021年度挑戦的研究奨励賞", desc: "筑波大学・日本科学技術振興機構（JST）" },
+            { date: "2026.01.31", title: "講師「イラン社会の変化と若者たちの声」", desc: "府中市生涯学習センター 定期講座" },
+            { date: "2010.11", title: "第13回日本語スピーチコンテスト 秀賞", desc: "在イラン日本大使館" }
         ]
     };
 
+    const societies = [
+        "International Migration Research Network (IMISCOE)",
+        "日本中東学会 (JAMES)",
+        "日本人間安全保障学会 (JAHSS)",
+        "United Nations Network on Migration",
+        "The NODE UK|Japan Network for Migration Studies"
+    ];
+
     function adminLogin() {
-        const pass = prompt("Password:");
-        if (pass === "sohrab2026") {
+        if (prompt("Password:") === "sohrab2026") {
             document.getElementById('admin-panel').style.display = 'block';
             document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'flex');
             document.getElementById('login-btn').style.display = 'none';
-        } else { alert("Wrong Password"); }
+        }
     }
 
     function renderEntry(item) {
         return `
-            <div style="margin-right:140px;">
+            <div style="margin-right:150px;">
                 <span class="entry-title">${item.title}</span>
                 <span class="entry-meta">${item.desc} ${item.date ? '(' + item.date + ')' : ''}</span>
             </div>
             <div class="admin-controls">
                 <button class="ctrl-btn" style="background:var(--move)" onclick="move(this,'up')">▲</button>
-                <button class="ctrl-btn" style="background:var(--move)" onclick="move(this,'down')">▼</button>
-                <button class="ctrl-btn" style="background:var(--edit)" onclick="edit(this)">編集</button>
-                <button class="ctrl-btn" style="background:var(--delete)" onclick="del(this)">削除</button>
+                <button class="ctrl-btn" style="background:var(--edit)" onclick="edit(this)">Ed</button>
+                <button class="ctrl-btn" style="background:var(--delete)" onclick="del(this)">Del</button>
             </div>`;
     }
 
@@ -165,28 +195,29 @@
                 container.appendChild(div);
             });
         }
+        document.getElementById('sec-societies').innerHTML = societies.join(" / ");
     };
 
     function addItem() {
-        const id = document.getElementById('in-section').value;
-        const item = { date: document.getElementById('in-date').value, title: document.getElementById('in-title').value, desc: document.getElementById('in-desc').value };
+        const sid = document.getElementById('in-section').value;
+        const entry = { date: document.getElementById('in-date').value, title: document.getElementById('in-title').value, desc: document.getElementById('in-desc').value };
+        if(!entry.title) return;
         const div = document.createElement('div');
         div.className = 'entry-container';
-        div.innerHTML = renderEntry(item);
+        div.innerHTML = renderEntry(entry);
         div.querySelector('.admin-controls').style.display = 'flex';
-        document.getElementById(id).prepend(div);
+        document.getElementById(sid).prepend(div);
     }
     function del(btn) { if(confirm("Delete?")) btn.closest('.entry-container').remove(); }
     function move(btn, dir) {
         const e = btn.closest('.entry-container');
         if(dir==='up' && e.previousElementSibling) e.parentNode.insertBefore(e, e.previousElementSibling);
-        else if(dir==='down' && e.nextElementSibling) e.parentNode.insertBefore(e.nextElementSibling, e);
     }
     function edit(btn) {
         const e = btn.closest('.entry-container');
-        const t = e.querySelector('.entry-title'), m = e.querySelector('.entry-meta');
-        const nt = prompt("Title:", t.innerText), nm = prompt("Details:", m.innerText);
-        if(nt!==null) t.innerText = nt; if(nd!==null) m.innerText = nm;
+        const t = e.querySelector('.entry-title'), d = e.querySelector('.entry-meta');
+        const nt = prompt("Title:", t.innerText), nd = prompt("Meta:", d.innerText);
+        if(nt) t.innerText = nt; if(nd) d.innerText = nd;
     }
 </script>
 
