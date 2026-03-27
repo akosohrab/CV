@@ -2,116 +2,186 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CV Data Editor Dashboard</title>
+    <title>Sohrab's CV Manager</title>
     <style>
-        body { font-family: sans-serif; padding: 40px; background: #f4f7f6; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        textarea { width: 100%; height: 400px; font-family: monospace; font-size: 13px; margin-top: 10px; border: 1px solid #ccc; padding: 10px; }
-        .controls { margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
-        input[type="password"] { padding: 8px; width: 300px; }
-        button { padding: 10px 20px; cursor: pointer; background: #1a2a3a; color: white; border: none; border-radius: 4px; }
-        button:hover { background: #27ae60; }
-        #status { margin-top: 10px; font-weight: bold; }
+        :root { --primary: #1a2a3a; --bg: #f4f7f9; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; }
+        .setup-bar { background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #ddd; display: flex; gap: 10px; margin-bottom: 20px; }
+        input[type="password"] { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-load { background: var(--primary); color: white; }
+        .btn-save { background: #27ae60; color: white; width: 100%; padding: 20px; font-size: 18px; margin-top: 30px; }
+        .section-box { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 25px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 12px 20px; font-weight: bold; color: var(--primary); border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+        .entry-row { display: flex; gap: 10px; padding: 15px; border-bottom: 1px dotted #eee; background: #fff; }
+        .entry-row input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+        .date-input { width: 150px; background: #fffde7; }
+        .title-input { flex: 2; font-weight: bold; }
+        .desc-input { flex: 3; color: #555; }
+        .delete-btn { color: #e74c3c; background: none; border: none; cursor: pointer; font-weight: bold; }
+        .add-btn { background: #3498db; color: white; font-size: 12px; padding: 5px 10px; }
+        #status { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; display: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .lang-toggle { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tab { padding: 10px 30px; cursor: pointer; border-radius: 5px; background: #ddd; }
+        .tab.active { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Academic CV Editor Dashboard</h2>
-    
-    <div class="controls">
-        <input type="password" id="token" placeholder="Enter GitHub Personal Access Token">
-        <button onclick="fetchFile()">Load Current CV Data</button>
+    <div class="header">
+        <h1>Academic CV Manager</h1>
+        <div class="lang-toggle">
+            <div id="tab-en" class="tab active" onclick="switchTab('en')">English</div>
+            <div id="tab-jp" class="tab" onclick="switchTab('jp')">日本語</div>
+        </div>
+    </div>
+
+    <div class="setup-bar">
+        <input type="password" id="token" placeholder="Paste GitHub Token here (ghp_...)">
+        <button class="btn btn-load" onclick="fetchFile()">1. Load Records</button>
     </div>
 
     <div id="editor-ui" style="display:none;">
-        <p><strong>Edit CV Data (JSON Format):</strong></p>
-        <textarea id="json-editor"></textarea>
-        <br><br>
-        <button onclick="saveFile()">Save Changes & Deploy Live</button>
-        <div id="status"></div>
+        <div id="form-container">
+            </div>
+        <button class="btn btn-save" onclick="saveFile()">2. Push Changes Live</button>
     </div>
 </div>
 
+<div id="status"></div>
+
 <script>
-    const OWNER = "akosohrab"; // Change this
-    const REPO = "CV";        // Change this
+    const OWNER = "akosohrab";
+    const REPO = "CV";
     const FILE_PATH = "index.html";
     let fileSha = "";
     let fullFileContent = "";
+    let cvData = { en: {}, jp: {} };
+    let currentLang = 'en';
+
+    const sectionNames = {
+        en: ["Education", "Work", "Projects", "Papers", "Books", "Talks", "Awards"],
+        jp: ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "書籍・出版物", "講演・口頭発表", "受賞・社会貢献"],
+        keys: ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-books", "sec-talks", "sec-misc"]
+    };
 
     async function fetchFile() {
         const token = document.getElementById('token').value;
-        const status = document.getElementById('status');
-        
-        if (!token) return alert("Please enter your token");
+        if (!token) return alert("Token required!");
 
-        const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
-        
+        notify("Connecting to GitHub...", "#3498db");
         try {
-            const response = await fetch(url, {
+            const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
                 headers: { 'Authorization': `token ${token}` }
             });
             const data = await response.json();
             fileSha = data.sha;
             
-            // Decode Base64 content from GitHub
-            fullFileContent = atob(data.content.replace(/\s/g, ''));
+            const binString = atob(data.content.replace(/\s/g, ''));
+            const bytes = Uint8Array.from(binString, m => m.charCodeAt(0));
+            fullFileContent = new TextDecoder().decode(bytes);
             
-            // Extract the Data Dashboards using a Regex
-            const regex = /\/\/ --- DATA DASHBOARD ---([\s\S]*?)\/\/ --- END DATA DASHBOARD ---/;
-            const match = fullFileContent.match(regex);
+            cvData.en = JSON.parse(fullFileContent.match(/const cvDataEn = ([\s\S]*?);/)[1]);
+            cvData.jp = JSON.parse(fullFileContent.match(/const cvDataJp = ([\s\S]*?);/)[1]);
             
-            if (match) {
-                document.getElementById('json-editor').value = match[1].trim();
-                document.getElementById('editor-ui').style.display = 'block';
-                status.innerText = "Data loaded successfully.";
-            } else {
-                alert("Could not find the Data Dashboard markers in index.html");
-            }
+            renderForm();
+            document.getElementById('editor-ui').style.display = 'block';
+            notify("Data Loaded Successfully!", "#27ae60");
         } catch (e) {
-            alert("Error: " + e.message);
+            notify("Error loading data: " + e.message, "#e74c3c");
         }
+    }
+
+    function renderForm() {
+        const container = document.getElementById('form-container');
+        container.innerHTML = '';
+        const currentData = cvData[currentLang];
+
+        sectionNames.keys.forEach((key, index) => {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'section-box';
+            
+            let entriesHtml = currentData[key].map((item, i) => `
+                <div class="entry-row">
+                    <input class="date-input" value="${item.date}" onchange="updateItem('${key}', ${i}, 'date', this.value)">
+                    <input class="title-input" value="${item.title}" onchange="updateItem('${key}', ${i}, 'title', this.value)">
+                    <input class="desc-input" value="${item.desc}" onchange="updateItem('${key}', ${i}, 'desc', this.value)">
+                    <button class="delete-btn" onclick="removeItem('${key}', ${i})">✕</button>
+                </div>
+            `).join('');
+
+            sectionDiv.innerHTML = `
+                <div class="section-header">
+                    <span>${sectionNames[currentLang][index]}</span>
+                    <button class="btn add-btn" onclick="addItem('${key}')">+ Add New</button>
+                </div>
+                ${entriesHtml}
+            `;
+            container.appendChild(sectionDiv);
+        });
+    }
+
+    function updateItem(key, index, field, value) {
+        cvData[currentLang][key][index][field] = value;
+    }
+
+    function addItem(key) {
+        cvData[currentLang][key].unshift({ date: "YYYY.MM", title: "New Title", desc: "Description" });
+        renderForm();
+    }
+
+    function removeItem(key, index) {
+        if(confirm("Delete this entry?")) {
+            cvData[currentLang][key].splice(index, 1);
+            renderForm();
+        }
+    }
+
+    function switchTab(lang) {
+        currentLang = lang;
+        document.getElementById('tab-en').className = 'tab' + (lang === 'en' ? ' active' : '');
+        document.getElementById('tab-jp').className = 'tab' + (lang === 'jp' ? ' active' : '');
+        renderForm();
     }
 
     async function saveFile() {
         const token = document.getElementById('token').value;
-        const newJsonData = document.getElementById('json-editor').value;
-        const status = document.getElementById('status');
+        notify("Saving to GitHub... (Action will trigger)", "#f39c12");
 
-        // Re-assemble the full file content
-        const regex = /\/\/ --- DATA DASHBOARD ---([\s\S]*?)\/\/ --- END DATA DASHBOARD ---/;
-        const updatedFileContent = fullFileContent.replace(regex, `// --- DATA DASHBOARD ---\n${newJsonData}\n    // --- END DATA DASHBOARD ---`);
-
-        const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
-        
-        status.innerText = "Saving to GitHub...";
+        let updatedContent = fullFileContent.replace(/const cvDataEn = [\s\S]*?;/, `const cvDataEn = ${JSON.stringify(cvData.en, null, 4)};`);
+        updatedContent = updatedContent.replace(/const cvDataJp = [\s\S]*?;/, `const cvDataJp = ${JSON.stringify(cvData.jp, null, 4)};`);
 
         try {
-            const response = await fetch(url, {
+            const bytes = new TextEncoder().encode(updatedContent);
+            const binString = Array.from(bytes, (byte) => String.fromCharCode(byte)).join("");
+            const base64Content = btoa(binString);
+
+            const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
                 method: 'PUT',
-                headers: { 
-                    'Authorization': `token ${token}`,
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: "Update CV via Dashboard",
-                    content: btoa(unescape(encodeURIComponent(updatedFileContent))),
+                    message: "CV Update via Visual Dashboard",
+                    content: base64Content,
                     sha: fileSha
                 })
             });
 
-            if (response.ok) {
-                status.innerText = "Success! GitHub Action triggered. Update live in 1 minute.";
-                status.style.color = "green";
-            } else {
-                const err = await response.json();
-                status.innerText = "Error: " + err.message;
-                status.style.color = "red";
-            }
+            if (response.ok) notify("LIVE! Check your website in 60 seconds.", "#27ae60");
         } catch (e) {
-            status.innerText = "Failed: " + e.message;
+            notify("Save Error!", "#e74c3c");
         }
+    }
+
+    function notify(msg, color) {
+        const s = document.getElementById('status');
+        s.innerText = msg;
+        s.style.background = color;
+        s.style.color = "white";
+        s.style.display = "block";
+        setTimeout(() => s.style.display = "none", 5000);
     }
 </script>
 </body>
