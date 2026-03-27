@@ -33,14 +33,12 @@
 <div class="toolbar">
     <button class="btn" id="btn-en" onclick="switchLang('en')">English</button>
     <button class="btn" id="btn-jp" onclick="switchLang('jp')">日本語</button>
-    <button class="btn print-btn" onclick="window.print()">Print to PDF</button>
+    <button class="btn print-btn" onclick="window.print()">Print PDF</button>
 </div>
 
 <div class="cv-paper" id="cv-content"></div>
 
 <script>
-    // --- DATA DASHBOARD ---
-    // Update your content directly in these objects for instant synchronization.
     const cvDataEn = {
         "sec-edu": [
             { date: "2018.04 - 2024.03", title: "Ph.D. in International and Advanced Japan Studies", desc: "Graduate School of Humanities and Social Sciences, University of Tsukuba" },
@@ -65,35 +63,35 @@
             { date: "2024.04 - 2027.03", title: "Everyday Forms of Ethnicity and Religiosity in Kurdistan", desc: "ILCAA Joint Research Project, Tokyo University of Foreign Studies" }
         ],
         "sec-papers": [
-            { date: "2025.03.20", title: "Historical Background and Current Situation of Kurds in Japan: From the Perspective of Multicultural Coexistence", desc: "Islamic Trust Studies Newsletter, No. 5, pp. 20-21 [Peer-reviewed]" },
+            { date: "2025.03.20", title: "在日クルド人の歴史的背景と現状： 多文化共生の視点から", desc: "『イスラーム信頼学ニュースレター』(5), pp. 20-21 [Peer-reviewed]" },
             { date: "2024.06.04", title: "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media", desc: "Palgrave Macmillan Studies on Human Rights in Asia. DOI: 10.1007/978-981-97-2867-1_10" },
-            { date: "2024.03.25", title: "Qualitative Study on the Diaspora Experience of Kurds in Japan", desc: "Ph.D. Dissertation, University of Tsukuba [Peer-reviewed]" },
-            { date: "2023.12", title: "Jāmeʿeh va Nezām-e Ejtemāʿi-ye Jāpān", desc: "Society and Culture of Japan (Tehran), pp. 66-88 [Peer-reviewed]" },
+            { date: "2024.03.25", title: "在日クルド人のディアスポラ体験に関する質的研究", desc: "Ph.D. Dissertation, University of Tsukuba [Peer-reviewed]" },
+            { date: "2023.12", title: "Jāmeʿeh va Nezām-e Ejtemāʿi-ye Jāpān", desc: "In Jāmeʿeh va Farhang-e Jāpān (Tehran), pp. 66-88 [Peer-reviewed]" },
             { date: "2022.01.01", title: "Kurdish Diaspora in Japan: Caught in a Limbo Between Immigration Policies and Politics", desc: "NEPCAP POLICY BRIEF, 2022(1)" },
-            { date: "2019.06", title: "Integrative Knowledge: Conditions for Collaboration Between Engineering, Humanities, and Industry", desc: "Symposium Paper (Vol. 1)" },
-            { date: "2018.11", title: "Iran Sanctions and Japan's Elections in the Shadow of US Policies", desc: "International Peace Studies Center (IPSC)" },
-            { date: "2015.09.21", title: "The Course of Pacifism in the Abe Administration", desc: "Master's Thesis, University of Tehran" }
+            { date: "2019.06", title: "プールロスタミ ナーヒード、アフマディヤーン ソホラブ「統合的知識：工学、人文学、産業間の連携に必要な条件（日本の経験）」", desc: "Symposium Paper (Vol. 1)" },
+            { date: "2018.11", title: "Tahrim-hā-ye Īrān va Entekābhā-ye Jāpān dar Sāyeh-ye Sīāsathā-ye Āmrīkā", desc: "International Peace Studies Center (IPSC)" },
+            { date: "2015.09.21", title: "Ravand-e Ṣolḥ-gerāʾī dar Dowlat-e Abe bā Tamarkoz bar Masʾale-ye Bāznegari va Tafsīr-e Aṣl-e 9 Qānūn-e Asāsī-ye Japan", desc: "Master's Thesis, University of Tehran" }
         ],
         "sec-books": [
-            { date: "2025.11", title: "Kurds in Japan: Current Situation and Issues of Arrival and Settlement", desc: "Henyō suru imin komyuniti [dai 2 han], Akashi Shoten. ISBN: 9784750360089" },
-            { date: "2020.07", title: "Chapter 1: Kurds - Voices from Homeland", desc: "Transforming Migrant Communities, Akashi Shoten. ISBN: 9784750350325" },
-            { date: "2014.04", title: "Confession (Eʻterāf)", desc: "Poetry Collection, Nashr-e Nīmāzh (Tehran). ISBN: 9786007185247" }
+            { date: "2025.11", title: "アフマディヤーン ソホラブ、大茂矢由佳「クルド人――来日と定住をめぐる現状と課題」", desc: "Henyō suru imin komyuniti [dai 2 han], Akashi Shoten. ISBN: 9784750360089" },
+            { date: "2020.07", title: "アフマディヤーン ソホラブ「第一章：クルド人――ふるさとからの声」", desc: "Transforming Migrant Communities, Akashi Shoten. ISBN: 9784750350325" },
+            { date: "2014.04", title: "Eʻterāf (Confession)", desc: "Poetry Collection, Nashr-e Nīmāzh (Tehran). ISBN: 9786007185247" }
         ],
         "sec-talks": [
             { date: "2026.02.06", title: "The 'Zero Plan' and Migration Governance in Japan: A Case Study of Kurdish Asylum Seekers", desc: "Kurdish Worlds Conference, ILCAA" },
             { date: "2025.12.06", title: "Negotiating Difference and Belonging: Social Dynamics of Kurdish-Japanese Interaction", desc: "16th Iraq-Japan Joint Academic Conference" },
-            { date: "2024.11.02", title: "Reception of Kurds in Japan and Host Society", desc: "Conversion of Islamic Knowledge Symposium" },
+            { date: "2024.11.02", title: "在日クルド人とホスト社会の受容", desc: "Conversion of Islamic Knowledge Symposium" },
             { date: "2024.10.11", title: "The Transformation of Religiosity in Twentieth-Century Ouramanat", desc: "2024 ILCAA Research Meeting" },
-            { date: "2024.07.03", title: "Protection of Refugees and Asylum Seekers in East Asia", desc: "21st IMISCOE Annual Conference (Lisbon)" },
+            { date: "2024.07.03", title: "東アジアにおける難民と庇護申請者の保護：国家、市民社会、移民の相互作用", desc: "21st IMISCOE Annual Conference (Lisbon)" },
             { date: "2024.05.23", title: "Analysis of Islamic Awakening in Ouramanat, Iran: Case of Naser Sobhani", desc: "Kurdish Studies Conference (Sheffield)" },
             { date: "2024.05.12", title: "Political Consciousness and Organizations in the Kurdish Diaspora in Japan", desc: "40th Annual Meeting of JAMES" },
             { date: "2024.03.11", title: "Kurdish Community in Japan: Diaspora Experience and Activities", desc: "Research Report, Chiba University" },
-            { date: "2023.12.03", title: "Human Security of Refugees and Asylum Seekers in Japan", desc: "Annual Conference of JAHSS (Kobe University)" }
+            { date: "2023.12.03", title: "Human security of refugees and asylum seekers in Japan", desc: "Annual Conference of JAHSS (Kobe University)" }
         ],
         "sec-misc": [
-            { date: "2025.04", title: "Grant-in-Aid for JSPS Fellows", desc: "Japan Society for the Promotion of Science (JSPS)" },
             { date: "2021.10", title: "Pioneering Research Award", desc: "University of Tsukuba & JST (SPRING Program)" },
             { date: "2026.01.31", title: "Lecturer: Changes in Iranian Society and the Voices of Youth", desc: "Fuchu City Lifelong Learning Center" },
+            { date: "2025.04", title: "Grant-in-Aid for JSPS Fellows", desc: "Japan Society for the Promotion of Science (JSPS)" },
             { date: "2010.11", title: "13th Japanese Speech Contest Excellence Award", desc: "Embassy of Japan in Iran" }
         ],
         "societies": [
@@ -106,7 +104,7 @@
         ],
         "skills": {
             "languages": "English: Advanced (Proficient) / Japanese: Business (Proficient) / Persian: Native / Kurdish: Native / Tajiki: Native / Arabic: Intermediate / Azeri Turkish: Basic",
-            "technical": "Methodology: Qualitative Research, Data Analysis, Cross-cultural Communication / Software: SPSS, R, MS Office / Creative: Adobe Photoshop, Corel Video Studio / Web: WordPress / OS: Windows & macOS"
+            "technical": "Methodology: Qualitative Research, Data Analysis, Cross-cultural Communication / Software: SPSS, R, MS Office (Word, Excel, PowerPoint, Publisher) / Creative: Adobe Photoshop, Corel Video Studio / Web: WordPress Management / OS: Windows & macOS"
         }
     };
 
@@ -135,10 +133,17 @@
         ],
         "sec-papers": [
             { date: "2025.03.20", title: "在日クルド人の歴史的背景と現状： 多文化共生の視点から", desc: "『イスラーム信頼学ニュースレター』(5), pp. 20-21 [査読有り]" },
+            { date: "2025.03.20", title: "Zainichi Kurudo-jin no rekishiteki haikei to genjō: Tabunka kyōsei no shiten kara", desc: "Islamic Trust Studies Newsletter, No. 5" },
             { date: "2024.06.04", title: "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media", desc: "Palgrave Macmillan Studies on Human Rights in Asia. DOI: 10.1007/978-981-97-2867-1_10" },
             { date: "2024.03.25", title: "在日クルド人のディアスポラ体験に関する質的研究", desc: "筑波大学 博士学位論文 [査読有り]" },
             { date: "2023.12", title: "Jāmeʿeh va Nezām-e Ejtemāʿi-ye Jāpān (日本の社会と社会制度)", desc: "In Jāmeʿeh va Farhang-e Jāpān (テヘラン), pp. 66-88 [査読有り]" },
-            { date: "2022.01.01", title: "Kurdish Diaspora in Japan: Caught in a Limbo Between Immigration Policies and Politics", desc: "NEPCAP POLICY BRIEF, 2022(1)" }
+            { date: "2022.01.01", title: "Kurdish Diaspora in Japan: Caught in a Limbo Between Immigration Policies and Politics", desc: "NEPCAP POLICY BRIEF, 2022(1)" },
+            { date: "2019.09", title: "Āyā 'Made in Jāpān' Hanūz Edāmeh Dārad? (「メイド・イン・ジャパン」は今も続いているのか？)", desc: "研究報告" },
+            { date: "2019.06", title: "Mamuriyat Doshvar Abe baraye Ab Kardan-e Yakh-e Diplomasi", desc: "研究報告" },
+            { date: "2019.06", title: "統合的知識：工学、人文学、産業間の連携に必要な条件（日本の経験）", desc: "シンポジウム報告 (Vol. 1)" },
+            { date: "2018.11", title: "Tahrim-hā-ye Īrān va Entekābhā-ye Jāpān dar Sāyeh-ye Sīāsathā-ye Āmrīkā", desc: "IPSC 研究報告" },
+            { date: "2015.09.21", title: "安倍政権における平和主義の進路― 憲法9条改正／解釈問題を中心に", desc: "テヘラン大学 修士学位論文" },
+            { date: "2012.07.21", title: "日本の俳句とイランの四行詩における「無常観」― 松尾芭蕉とウマル・ハイヤームを中心に", desc: "テヘラン大学 卒業論文" }
         ],
         "sec-books": [
             { date: "2025.11", title: "変容する移民コミュニティ【第2版】：時間・空間・階層", desc: "明石書店 (分担執筆:「クルド人――来日と定住をめぐる現状と課題」) ISBN: 9784750360089" },
@@ -154,12 +159,17 @@
             { date: "2024.05.23", title: "イランのウラマナートにおけるイスラム覚醒の分析：ナセル・ソブハニの事例", desc: "クルド研究国際学会 (シェフィールド大学)" },
             { date: "2024.05.12", title: "在日クルド人ディアスポラにおける政治意識と団体活動", desc: "日本中東学会 第40回年次大会 (東京大学)" },
             { date: "2024.03.11", title: "日本におけるクルド人コミュニティのディアスポラ体験と活動", desc: "研究成果報告, 千葉大学" },
-            { date: "2023.12.03", title: "日本における難民と庇護申請者の人間の安全保障", desc: "人間の安全保障学会2023年度年次大会 (神戸大学)" }
+            { date: "2023.12.03", title: "日本における難民と庇護申請者の人間の安全保障", desc: "人間の安全保障学会2023年度年次大会 (神戸大学)" },
+            { date: "2023.12.02", title: "日本における難民・亡命希望者の人間の安全保障", desc: "ワークショップ「日本における移民の人間の安全保障」 (立命館大学)" },
+            { date: "2023.11.29", title: "Asl-e Noh va Sīāsat-e Bāznegari-ye Qānūn-e Asāsī-ye Jāpān", desc: "第38回日本学セッション, テヘラン大学" },
+            { date: "2018.07.13", title: "クルド人ディアスポラとはなにか", desc: "東京入国管理局（品川）" }
         ],
         "sec-misc": [
             { date: "2025.04", title: "JSPS 特別研究員奨励費 採択", desc: "日本学術振興会" },
             { date: "2021.10", title: "2021年度挑戦的研究奨励賞", desc: "筑波大学・日本科学技術振興機構（JST）" },
-            { date: "2026.01.31", title: "講師「イラン社会の変化と若者たちの声」", desc: "府中市生涯学習センター 定期講座" }
+            { date: "2026.01.31", title: "講師「イラン社会の変化と若者たちの声」", desc: "府中市生涯学習センター 定期講座" },
+            { date: "2019.04", title: "文部科学省奨学金 – スーパーグローバル大学創成支援事業", desc: "筑波大学・文部科学省" },
+            { date: "2010.11", title: "第13回日本語スピーチコンテスト 秀賞", desc: "在イラン日本大使館" }
         ],
         "societies": [
             "International Migration Research Network (IMISCOE)",
@@ -170,8 +180,8 @@
             "The NODE UK|Japan Network for Migration Studies"
         ],
         "skills": {
-            "languages": "英語: 上級 / 日本語: ビジネス / ペルシア語: 母語 / クルド語: 母語",
-            "technical": "研究手法: 質的研究、データ分析 / 統計ソフト: SPSS, R / Office: MS Office, Photoshop, Corel Video Studio"
+            "languages": "英語: 上級 (Proficient) / 日本語: ビジネス (Proficient) / ペルシア語: 母語 / クルド語: 母語 / タジク語: 母語 / アラビア語: 中級 / アゼリ・トルコ語: 初級",
+            "technical": "研究手法: 質的研究、データ分析、クロスカルチュラル・コミュニケーション / 統計ソフト: SPSS, R / Office: Word, Excel, PowerPoint, Publisher / クリエイティブ: Adobe Photoshop, Corel Video Studio / Web: WordPress / OS: Windows & macOS"
         }
     };
 
