@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CV Data Editor Dashboard</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #f4f7f6; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        textarea { width: 100%; height: 400px; font-family: monospace; font-size: 13px; margin-top: 10px; border: 1px solid #ccc; padding: 10px; }
+        .controls { margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
+        input[type="password"] { padding: 8px; width: 300px; }
+        button { padding: 10px 20px; cursor: pointer; background: #1a2a3a; color: white; border: none; border-radius: 4px; }
+        button:hover { background: #27ae60; }
+        #status { margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Academic CV Editor Dashboard</h2>
+    
+    <div class="controls">
+        <input type="password" id="token" placeholder="Enter GitHub Personal Access Token">
+        <button onclick="fetchFile()">Load Current CV Data</button>
+    </div>
+
+    <div id="editor-ui" style="display:none;">
+        <p><strong>Edit CV Data (JSON Format):</strong></p>
+        <textarea id="json-editor"></textarea>
+        <br><br>
+        <button onclick="saveFile()">Save Changes & Deploy Live</button>
+        <div id="status"></div>
+    </div>
+</div>
+
+<script>
+    const OWNER = "YOUR_GITHUB_USERNAME"; // Change this
+    const REPO = "YOUR_REPO_NAME";        // Change this
+    const FILE_PATH = "index.html";
+    let fileSha = "";
+    let fullFileContent = "";
+
+    async function fetchFile() {
+        const token = document.getElementById('token').value;
+        const status = document.getElementById('status');
+        
+        if (!token) return alert("Please enter your token");
+
+        const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
+        
+        try {
+            const response = await fetch(url, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            const data = await response.json();
+            fileSha = data.sha;
+            
+            // Decode Base64 content from GitHub
+            fullFileContent = atob(data.content.replace(/\s/g, ''));
+            
+            // Extract the Data Dashboards using a Regex
+            const regex = /\/\/ --- DATA DASHBOARD ---([\s\S]*?)\/\/ --- END DATA DASHBOARD ---/;
+            const match = fullFileContent.match(regex);
+            
+            if (match) {
+                document.getElementById('json-editor').value = match[1].trim();
+                document.getElementById('editor-ui').style.display = 'block';
+                status.innerText = "Data loaded successfully.";
+            } else {
+                alert("Could not find the Data Dashboard markers in index.html");
+            }
+        } catch (e) {
+            alert("Error: " + e.message);
+        }
+    }
+
+    async function saveFile() {
+        const token = document.getElementById('token').value;
+        const newJsonData = document.getElementById('json-editor').value;
+        const status = document.getElementById('status');
+
+        // Re-assemble the full file content
+        const regex = /\/\/ --- DATA DASHBOARD ---([\s\S]*?)\/\/ --- END DATA DASHBOARD ---/;
+        const updatedFileContent = fullFileContent.replace(regex, `// --- DATA DASHBOARD ---\n${newJsonData}\n    // --- END DATA DASHBOARD ---`);
+
+        const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
+        
+        status.innerText = "Saving to GitHub...";
+
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: { 
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: "Update CV via Dashboard",
+                    content: btoa(unescape(encodeURIComponent(updatedFileContent))),
+                    sha: fileSha
+                })
+            });
+
+            if (response.ok) {
+                status.innerText = "Success! GitHub Action triggered. Update live in 1 minute.";
+                status.style.color = "green";
+            } else {
+                const err = await response.json();
+                status.innerText = "Error: " + err.message;
+                status.style.color = "red";
+            }
+        } catch (e) {
+            status.innerText = "Failed: " + e.message;
+        }
+    }
+</script>
+</body>
+</html>
