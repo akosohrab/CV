@@ -12,32 +12,20 @@
         :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #fdfdfd; }
         * { box-sizing: border-box; }
         body { font-family: "Times New Roman", "Hiragino Mincho ProN", serif; margin: 0; background: var(--bg); color: #222; }
-        
-        .toolbar { background: var(--primary); padding: 12px; position: sticky; top: 0; display: flex; justify-content: center; gap: 15px; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .toolbar { background: var(--primary); padding: 12px; position: sticky; top: 0; display: flex; justify-content: center; gap: 15px; z-index: 1000; }
         .btn { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.3s; font-size: 13px; text-transform: uppercase; }
-        .btn:hover { background: rgba(255,255,255,0.2); }
         .btn.active { background: var(--accent); border-color: var(--accent); }
-        .print-btn { background: #fff; color: var(--primary); border: none; margin-left: 10px; }
-
         .cv-paper { max-width: 850px; margin: 30px auto; background: white; padding: 60px 80px; box-shadow: 0 0 30px rgba(0,0,0,0.05); min-height: 100vh; }
         header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
-        .header-text h1 { margin: 0; font-size: 26px; color: var(--primary); font-family: "Times New Roman", serif; }
+        .header-text h1 { margin: 0; font-size: 28px; color: var(--primary); }
         .header-text .katakana { display: block; font-size: 16px; margin-top: 5px; color: #444; }
-        .header-text p { margin: 4px 0; font-size: 15px; }
-
         .photo { width: 130px; height: 170px; border: 1px solid #ccc; overflow: hidden; }
         .photo img { width: 100%; height: auto; }
-
         h2 { border-bottom: 2px solid var(--primary); color: var(--primary); text-transform: uppercase; margin-top: 35px; font-size: 17px; padding-bottom: 3px; letter-spacing: 1px; }
         .entry { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 15px; line-height: 1.5; }
-        .entry-date { font-size: 13px; color: #666; font-family: Arial, sans-serif; }
-        .entry-title { font-weight: bold; display: block; font-size: 15px; color: #000; }
-        .entry-desc { font-size: 14px; color: #333; }
-
-        footer { margin-top: 50px; text-align: center; font-size: 11px; color: #bbb; border-top: 1px solid #eee; padding-top: 20px; text-transform: uppercase; }
-
-        @media print { .toolbar { display: none; } .cv-paper { box-shadow: none; padding: 0; margin: 0; max-width: 100%; } }
-        @media (max-width: 768px) { .cv-paper { padding: 30px; } header { flex-direction: column-reverse; align-items: center; text-align: center; } .entry { grid-template-columns: 1fr; } }
+        .entry-date { font-size: 13px; color: #666; }
+        .entry-title { font-weight: bold; font-size: 15px; }
+        @media print { .toolbar { display: none; } .cv-paper { box-shadow: none; padding: 0; margin: 0; width: 100%; } }
     </style>
 </head>
 <body>
@@ -45,47 +33,28 @@
 <div class="toolbar">
     <button class="btn" id="btn-en" onclick="switchLang('en')">English</button>
     <button class="btn" id="btn-jp" onclick="switchLang('jp')">日本語</button>
-    <button class="btn print-btn" onclick="window.print()">Print PDF</button>
+    <button class="btn" style="background:white; color:black;" onclick="window.print()">Print PDF</button>
 </div>
 
-<div class="cv-paper" id="cv-content">
-    <p style="text-align:center; padding:50px;">Loading Academic CV...</p>
-</div>
+<div class="cv-paper" id="cv-content"></div>
 
 <script>
     function switchLang(lang) {
         document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-        const activeBtn = document.getElementById('btn-' + lang);
-        if(activeBtn) activeBtn.classList.add('active');
+        document.getElementById('btn-' + lang).classList.add('active');
 
-        // Check variables
-        let data = (lang === 'en') ? window.cvDataEn : window.cvDataJp;
+        // Verify data variables are loaded
+        const data = (lang === 'en') ? window.cvDataEn : window.cvDataJp;
 
         if (!data) {
-            document.getElementById('cv-content').innerHTML = `
-                <div style="color:red; text-align:center; padding:50px;">
-                    <h3>Data Not Loaded</h3>
-                    <p>Verify that <b>data.js</b> and <b>data-jp.js</b> exist and define <b>cvDataEn</b> and <b>cvDataJp</b>.</p>
-                </div>`;
+            document.getElementById('cv-content').innerHTML = `<p style="color:red; text-align:center; padding:50px;">Error: Data for <b>${lang}</b> could not be loaded. Please refresh the page (Ctrl + F5).</p>`;
             return;
         }
 
-        // Header and Section Labels
+        // Header Configuration
         const config = {
-            en: {
-                name: "Sohrab AHMADIAN, Ph.D.",
-                katakana: "",
-                title: "JSPS Postdoctoral Research Fellow",
-                uni: "Tokyo University of Foreign Studies (TUFS)",
-                labels: ["Education", "Appointments", "Grants", "Publications", "Books", "Presentations", "Awards", "Memberships", "Languages", "Technical"]
-            },
-            jp: {
-                name: "Sohrab AHMADIAN, Ph.D.",
-                katakana: "アフマディヤーン ソホラブ",
-                title: "JSPS 外国人特別研究員 (PD)",
-                uni: "東京外国語大学 大学院総合国際学研究院",
-                labels: ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "書籍・出版物", "講演・口頭発表", "受賞・社会貢献", "所属学協会", "言語能力", "スキル・IT"]
-            }
+            en: { name: "Sohrab AHMADIAN, Ph.D.", katakana: "", title: "JSPS Postdoctoral Research Fellow", uni: "Tokyo University of Foreign Studies (TUFS)", labels: ["Education", "Appointments", "Grants", "Publications", "Books", "Presentations", "Awards", "Memberships", "Languages", "Technical"] },
+            jp: { name: "Sohrab AHMADIAN, Ph.D.", katakana: "アフマディヤーン ソホラブ", title: "JSPS 外国人特別研究員 (PD)", uni: "東京外国語大学 大学院総合国際学研究院", labels: ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "書籍・出版物", "講演・口頭発表", "受賞・社会貢献", "所属学協会", "言語能力", "スキル・IT"] }
         };
 
         const t = config[lang];
@@ -98,56 +67,39 @@
                     ${t.katakana ? `<span class="katakana">${t.katakana}</span>` : ''}
                     <p><strong>${t.title}</strong></p>
                     <p>${t.uni}</p>
-                    <p style="font-size:14px; margin-top:10px; color:#555;">
-                        Email: ako.sohrab@gmail.com | ahmadian@tufs.ac.jp<br>
-                        Web: researchmap.jp/sohrab.ahmadian
-                    </p>
+                    <p style="font-size:14px; margin-top:10px; color:#555;">Email: ako.sohrab@gmail.com / ahmadian@tufs.ac.jp</p>
                 </div>
-                <div class="photo"><img src="https://researchmap.jp/sohrab.ahmadian/avatar.jpg" alt="Profile Photo"></div>
+                <div class="photo"><img src="https://researchmap.jp/sohrab.ahmadian/avatar.jpg"></div>
             </header>
         `;
 
         sections.forEach((id, i) => {
-            if(data[id] && data[id].length > 0) {
+            if(data[id]) {
                 html += `<h2>${t.labels[i]}</h2>`;
                 data[id].forEach(item => {
-                    html += `
-                        <div class="entry">
-                            <div class="entry-date">${item.date}</div>
-                            <div>
-                                <span class="entry-title">${item.title}</span>
-                                <span class="entry-desc">${item.desc}</span>
-                            </div>
-                        </div>`;
+                    html += `<div class="entry"><div class="entry-date">${item.date}</div><div><span class="entry-title">${item.title}</span><span style="font-size:14px;">${item.desc}</span></div></div>`;
                 });
             }
         });
 
-        // Memberships
         if(data.societies) {
             html += `<h2>${t.labels[7]}</h2><ul style="font-size:14px; line-height:1.8; padding-left:20px;">`;
             data.societies.forEach(s => html += `<li>${s}</li>`);
             html += `</ul>`;
         }
 
-        // Skills
         if(data.skills) {
-            html += `
-                <h2>Skills</h2>
-                <div style="display:grid; grid-template-columns:150px 1fr; gap:10px; font-size:14px; margin-top:10px;">
-                    <div style="font-weight:bold">${t.labels[8]}</div><div>${data.skills.languages}</div>
-                    <div style="font-weight:bold">${t.labels[9]}</div><div>${data.skills.technical}</div>
-                </div>`;
+            html += `<h2>Skills</h2><div style="display:grid; grid-template-columns:150px 1fr; gap:10px; font-size:14px; border-top:1px solid #eee; padding-top:20px;">
+                <div style="font-weight:bold">${t.labels[8]}</div><div>${data.skills.languages}</div>
+                <div style="font-weight:bold">${t.labels[9]}</div><div>${data.skills.technical}</div>
+            </div>`;
         }
 
-        html += `<footer>Academic Curriculum Vitae | Sohrab Ahmadian | 2026</footer>`;
         document.getElementById('cv-content').innerHTML = html;
     }
 
-    // Default to ENGLISH on load
-    window.onload = () => {
-        setTimeout(() => switchLang('en'), 100);
-    };
+    // Default to English on load
+    window.onload = () => setTimeout(() => switchLang('en'), 200);
 </script>
 </body>
 </html>
