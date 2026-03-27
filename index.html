@@ -4,14 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sohrab AHMADIAN, Ph.D. | Academic CV</title>
-    
-    <script src="data.js"></script>
-    <script src="data-jp.js"></script>
-
     <style>
         :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #fdfdfd; }
         * { box-sizing: border-box; }
-        body { font-family: "Times New Roman", "Hiragino Mincho ProN", serif; margin: 0; background: var(--bg); color: #222; }
+        body { font-family: "Times New Roman", "Hiragino Mincho ProN", serif; margin: 0; background: var(--bg); color: #222; line-height: 1.5; }
         .toolbar { background: var(--primary); padding: 12px; position: sticky; top: 0; display: flex; justify-content: center; gap: 15px; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .btn { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.3s; font-size: 13px; text-transform: uppercase; }
         .btn.active { background: var(--accent); border-color: var(--accent); }
@@ -19,15 +15,17 @@
         .cv-paper { max-width: 850px; margin: 30px auto; background: white; padding: 60px 80px; box-shadow: 0 0 30px rgba(0,0,0,0.05); min-height: 100vh; }
         header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
         .header-text h1 { margin: 0; font-size: 28px; color: var(--primary); }
-        .header-text .katakana { display: block; font-size: 16px; margin-top: 5px; color: #444; }
+        .header-text .katakana { display: block; font-size: 16px; margin-top: 5px; color: #444; font-weight: normal; }
         .photo { width: 130px; height: 170px; border: 1px solid #ccc; overflow: hidden; }
         .photo img { width: 100%; height: auto; }
         h2 { border-bottom: 2px solid var(--primary); color: var(--primary); text-transform: uppercase; margin-top: 35px; font-size: 17px; padding-bottom: 3px; letter-spacing: 1px; }
-        .entry { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 15px; line-height: 1.5; }
+        .entry { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 15px; }
         .entry-date { font-size: 13px; color: #666; font-family: Arial, sans-serif; }
         .entry-title { font-weight: bold; font-size: 15px; }
-        .error-box { background: #fff1f0; border: 1px solid #ffa39e; padding: 20px; border-radius: 4px; margin-top: 50px; text-align: left; }
+        .entry-desc { font-size: 14px; color: #333; display: block; }
+        footer { margin-top: 50px; text-align: center; font-size: 11px; color: #bbb; border-top: 1px solid #eee; padding-top: 20px; text-transform: uppercase; }
         @media print { .toolbar { display: none; } .cv-paper { box-shadow: none; padding: 0; margin: 0; width: 100%; } }
+        @media (max-width: 768px) { .cv-paper { padding: 30px; } header { flex-direction: column-reverse; align-items: center; text-align: center; } .entry { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -35,41 +33,120 @@
 <div class="toolbar">
     <button class="btn" id="btn-en" onclick="switchLang('en')">English</button>
     <button class="btn" id="btn-jp" onclick="switchLang('jp')">日本語</button>
-    <button class="btn print-btn" onclick="window.print()">Print PDF</button>
+    <button class="btn print-btn" onclick="window.print()">Print to PDF</button>
 </div>
 
-<div class="cv-paper" id="cv-content">
-    <p style="text-align:center; padding:50px;">Detecting data files...</p>
-</div>
+<div class="cv-paper" id="cv-content"></div>
 
 <script>
-    function checkDiagnostics() {
-        let issues = [];
-        if (typeof window.cvDataEn === 'undefined') issues.push("Variable 'cvDataEn' missing in data.js");
-        if (typeof window.cvDataJp === 'undefined') issues.push("Variable 'cvDataJp' missing in data-jp.js");
-        return issues;
-    }
+    const cvDataEn = {
+        "sec-edu": [
+            { date: "2018.04 - 2024.03", title: "Ph.D. in International and Advanced Japan Studies", desc: "Graduate School of Humanities and Social Sciences, University of Tsukuba" },
+            { date: "2017.04 - 2018.03", title: "Research Student", desc: "Graduate School of Humanities and Social Sciences, University of Tsukuba" },
+            { date: "2013.09 - 2015.09", title: "M.A. in Japan Studies", desc: "Graduate School of World Studies, University of Tehran" },
+            { date: "2008.09 - 2012.07", title: "B.A. in Japanese Language and Literature", desc: "Faculty of Foreign Languages and Literatures, University of Tehran" }
+        ],
+        "sec-work": [
+            { date: "2025.04 - Present", title: "JSPS Postdoctoral Research Fellow", desc: "Tokyo University of Foreign Studies (TUFS)" },
+            { date: "2026.03", title: "Visiting Research Fellow", desc: "IRIS, School of Social Policy and Society, University of Birmingham" },
+            { date: "2024.05 - 2025.03", title: "Project Researcher", desc: "Center for Global Relations Integration Studies, Chiba University" },
+            { date: "2024.04 - 2025.03", title: "Part-time Lecturer (Kurdish Language)", desc: "Tokyo University of Foreign Studies" },
+            { date: "2023.05 - 2025.03", title: "Part-time Researcher", desc: "Institute of Global Studies, Tokyo University of Foreign Studies" },
+            { date: "2021.07 - 2022.03", title: "Researcher", desc: "Faculty of Humanities and Social Sciences, University of Tsukuba" },
+            { date: "2021.04 - 2021.12", title: "Teaching Assistant (Media and Representation)", desc: "University of Tsukuba" }
+        ],
+        "sec-projects": [
+            { date: "2025.04 - 2027.03", title: "Dynamics of Coexistence: Kurdish and Afghan Immigrant Communities and Local Society in Japan", desc: "Grant-in-Aid for JSPS Fellows (25KF0029)" },
+            { date: "2024.04 - 2027.03", title: "Everyday Forms of Ethnicity and Religiosity in Kurdistan", desc: "Joint Research Project, ILCAA, Tokyo University of Foreign Studies" }
+        ],
+        "sec-papers": [
+            { date: "2025.03.20", title: "Historical Background and Current Situation of Kurds in Japan: From the Perspective of Multicultural Coexistence", desc: "Islamic Trust Studies Newsletter, No. 5, pp. 20-21 [Peer-reviewed]" },
+            { date: "2024.06.04", title: "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media", desc: "Palgrave Macmillan Studies on Human Rights in Asia. DOI: 10.1007/978-981-97-2867-1_10" },
+            { date: "2024.03.25", title: "Qualitative Study on the Diaspora Experience of Kurds in Japan", desc: "Ph.D. Dissertation, University of Tsukuba [Peer-reviewed]" },
+            { date: "2023.12", title: "Japanese Society and Social System", desc: "In: Society and Culture of Japan (Tehran), pp. 66-88 [Peer-reviewed]" },
+            { date: "2022.01.01", title: "Kurdish Diaspora in Japan: Caught in a Limbo Between Immigration Policies and Politics", desc: "NEPCAP POLICY BRIEF, 2022(1)" }
+        ],
+        "sec-books": [
+            { date: "2025.11", title: "Transforming Immigrant Communities (2nd Ed): Time, Space, and Stratification", desc: "Akashi Shoten. (Chapter: Kurds in Japan). ISBN: 9784750360089" },
+            { date: "2020.07", title: "Transforming Immigrant Communities: Time, Space, and Stratification", desc: "Akashi Shoten. (Chapter 1: Kurds - Voices from Homeland). ISBN: 9784750350325" },
+            { date: "2014.04", title: "Confession (Eʻterāf)", desc: "Poetry Collection, Nashr-e Nīmāzh (Tehran). ISBN: 9786007185247" }
+        ],
+        "sec-talks": [
+            { date: "2026.02.06", title: "The 'Zero Plan' and Migration Governance in Japan: A Case Study of Kurdish Asylum Seekers", desc: "Kurdish Worlds Conference, ILCAA, TUFS" },
+            { date: "2025.12.06", title: "Negotiating Difference and Belonging: Social Dynamics of Kurdish-Japanese Interaction", desc: "16th Japan-Iraq Joint Academic Conference" },
+            { date: "2024.11.02", title: "Reception of Kurds in Japan and Host Society", desc: "Symposium on Transformation of Islamic Knowledge" },
+            { date: "2024.07.03", title: "Protection of Refugees and Asylum Seekers in East Asia", desc: "21st IMISCOE Annual Conference (Lisbon)" },
+            { date: "2024.05.12", title: "Political Consciousness and Organizations in the Kurdish Diaspora in Japan", desc: "40th Annual Conference of JAMES (University of Tokyo)" }
+        ],
+        "sec-misc": [
+            { date: "2025.04", title: "Grant-in-Aid for JSPS Fellows", desc: "Japan Society for the Promotion of Science (JSPS)" },
+            { date: "2021.10", title: "Pioneering Research Award", desc: "University of Tsukuba & JST" },
+            { date: "2026.01.31", title: "Lecturer: Changes in Iranian Society and Voices of Youth", desc: "Fuchu City Lifelong Learning Center" }
+        ],
+        "societies": [
+            "International Migration Research Network (IMISCOE)",
+            "Japan Association for Middle East Studies (JAMES)",
+            "Japan Association for Human Security Studies (JAHSS)",
+            "United Nations Network on Migration"
+        ],
+        "skills": {
+            "languages": "English: Advanced / Japanese: Business / Persian: Native / Kurdish: Native / Arabic: Intermediate",
+            "technical": "Methodology: Qualitative Research, Data Analysis / Software: SPSS, R, MS Office / Creative: Adobe Photoshop"
+        }
+    };
+
+    const cvDataJp = {
+        "sec-edu": [
+            { date: "2018.04 - 2024.03", title: "筑波大学 大学院人文社会科学研究科", desc: "国際日本研究専攻 (博士後期課程） 博士（国際日本研究）" },
+            { date: "2017.04 - 2018.03", title: "筑波大学 大学院人文社会科学研究科", desc: "国際日本研究専攻 (研究生）" },
+            { date: "2013.09 - 2015.09", title: "テヘラン大学 大学院世界研究科", desc: "日本研究専攻（修士）" },
+            { date: "2008.09 - 2012.07", title: "テヘラン大学 外国語・外国文学部", desc: "日本語日本文学専攻（学士）" }
+        ],
+        "sec-work": [
+            { date: "2025.04 - 現在", title: "東京外国語大学 大学院総合国際学研究院", desc: "JSPS外国人特別研究員 (PD)" },
+            { date: "2026.03", title: "バーミンガム大学 (University of Birmingham)", desc: "IRIS, School of Social Policy and Society / 客員研究員" },
+            { date: "2024.05 - 2025.03", title: "千葉大学 グローバル関係融合研究センター", desc: "特任研究員" },
+            { date: "2024.04 - 2025.03", title: "東京外国語大学", desc: "非常勤講師 (クルド語入門)" },
+            { date: "2023.05 - 2025.03", title: "東京外国語大学 大学院総合国際学研究院", desc: "非常勤研究員" },
+            { date: "2021.07 - 2022.03", title: "筑波大学 大学院人文社会科学研究科", desc: "研究員" }
+        ],
+        "sec-projects": [
+            { date: "2025.04 - 2027.03", title: "共存のダイナミクス―地域住民、地方自治体と在日クルド、アフガン移民コミュニティー", desc: "日本学術振興会 科学研究費助成事業 (25KF0029)" },
+            { date: "2024.04 - 2027.03", title: "Everyday Forms of Ethnicity and Religiosity in Kurdistan", desc: "東京外国語大学 AA研 共同研究プロジェクト" }
+        ],
+        "sec-papers": [
+            { date: "2025.03.20", title: "在日クルド人の歴史的背景と現状： 多文化共生の視点から", desc: "『イスラーム信頼学ニュースレター』(5), pp. 20-21 [査読有り]" },
+            { date: "2024.06.04", title: "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media", desc: "Palgrave Macmillan Studies on Human Rights in Asia." },
+            { date: "2024.03.25", title: "在日クルド人のディアスポラ体験に関する質的研究", desc: "筑波大学 博士学位論文 [査読有り]" },
+            { date: "2023.12", title: "Jāmeʿeh va Nezām-e Ejtemāʿi-ye Jāpān (日本の社会と社会制度)", desc: "In Jāmeʿeh va Farhang-e Jāpān (テヘラン) [査読有り]" }
+        ],
+        "sec-books": [
+            { date: "2025.11", title: "変容する移民コミュニティ【第2版】：時間・空間・階層", desc: "明石書店 (分担執筆) ISBN: 9784750360089" },
+            { date: "2020.07", title: "変容する移民コミュニティ：時間・空間・階層", desc: "明石書店 (分担執筆: 第一章) ISBN: 9784750350325" },
+            { date: "2014.04", title: "Eʻterāf (自白)", desc: "詩集, Nashr-e Nīmāzh (テヘラン)" }
+        ],
+        "sec-talks": [
+            { date: "2026.02.06", title: "The 'Zero Plan' and Migration Governance in Japan", desc: "東京外国語大学 AA研" },
+            { date: "2025.12.06", title: "Negotiating Difference and Belonging", desc: "第16回 日本・イラク共同学術会議" },
+            { date: "2024.05.12", title: "在日クルド人ディアスポラにおける政治意識と団体活動", desc: "日本中東学会 第40回年次大会" }
+        ],
+        "sec-misc": [
+            { date: "2025.04", title: "JSPS 特別研究員奨励費 採択", desc: "日本学術振興会" },
+            { date: "2021.10", title: "2021年度挑戦的研究奨励賞", desc: "筑波大学・JST" },
+            { date: "2026.01.31", title: "講師「イラン社会の変化と若者たちの声」", desc: "府中市生涯学習センター" }
+        ],
+        "societies": ["IMISCOE", "日本中東学会 (JAMES)", "日本人間安全保障学会 (JAHSS)"],
+        "skills": {
+            "languages": "英語: 上級 / 日本語: ビジネス / ペルシア語: 母語 / クルド語: 母語",
+            "technical": "研究手法: 質的研究、データ分析 / 統計ソフト: SPSS, R / Office: Word, Excel, PowerPoint"
+        }
+    };
 
     function switchLang(lang) {
         document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-        const activeBtn = document.getElementById('btn-' + lang);
-        if(activeBtn) activeBtn.classList.add('active');
+        document.getElementById('btn-' + lang).classList.add('active');
 
-        const data = (lang === 'en') ? window.cvDataEn : window.cvDataJp;
-
-        if (!data) {
-            const errors = checkDiagnostics();
-            document.getElementById('cv-content').innerHTML = `
-                <div class="error-box">
-                    <h3 style="margin-top:0; color:#cf1322;">System Diagnostic Error</h3>
-                    <p>The browser was unable to find the <b>${lang}</b> data. Possible reasons:</p>
-                    <ul>
-                        ${errors.map(e => `<li>${e}</li>`).join('')}
-                        <li>Browser Cache: Press <b>Ctrl + F5</b> to force update.</li>
-                    </ul>
-                </div>`;
-            return;
-        }
+        const data = (lang === 'en') ? cvDataEn : cvDataJp;
 
         const config = {
             en: { name: "Sohrab AHMADIAN, Ph.D.", katakana: "", title: "JSPS Postdoctoral Research Fellow", uni: "Tokyo University of Foreign Studies (TUFS)", labels: ["Education", "Appointments", "Grants", "Publications", "Books", "Presentations", "Awards", "Memberships", "Languages", "Technical"] },
@@ -86,9 +163,9 @@
                     ${t.katakana ? `<span class="katakana">${t.katakana}</span>` : ''}
                     <p><strong>${t.title}</strong></p>
                     <p>${t.uni}</p>
-                    <p style="font-size:14px; margin-top:10px; color:#555;">Email: ako.sohrab@gmail.com / ahmadian@tufs.ac.jp</p>
+                    <p style="font-size:14px; margin-top:10px; color:#555;">Email: ako.sohrab@gmail.com | ahmadian@tufs.ac.jp</p>
                 </div>
-                <div class="photo"><img src="https://researchmap.jp/sohrab.ahmadian/avatar.jpg"></div>
+                <div class="photo"><img src="https://researchmap.jp/sohrab.ahmadian/avatar.jpg" alt="Profile Photo"></div>
             </header>
         `;
 
@@ -96,29 +173,23 @@
             if(data[id]) {
                 html += `<h2>${t.labels[i]}</h2>`;
                 data[id].forEach(item => {
-                    html += `<div class="entry"><div class="entry-date">${item.date}</div><div><span class="entry-title">${item.title}</span><span style="font-size:14px;">${item.desc}</span></div></div>`;
+                    html += `<div class="entry"><div class="entry-date">${item.date}</div><div><span class="entry-title">${item.title}</span><span class="entry-desc">${item.desc}</span></div></div>`;
                 });
             }
         });
 
-        if(data.societies) {
-            html += `<h2>${t.labels[7]}</h2><ul style="font-size:14px; line-height:1.8; padding-left:20px;">`;
-            data.societies.forEach(s => html += `<li>${s}</li>`);
-            html += `</ul>`;
-        }
+        html += `<h2>${t.labels[7]}</h2><ul style="font-size:14px; line-height:1.8; padding-left:20px;">`;
+        data.societies.forEach(s => html += `<li>${s}</li>`);
+        html += `</ul><div style="display:grid; grid-template-columns:150px 1fr; gap:10px; font-size:14px; margin-top:30px; border-top:1px solid #eee; padding-top:20px;">
+            <div style="font-weight:bold">${t.labels[8]}</div><div>${data.skills.languages}</div>
+            <div style="font-weight:bold">${t.labels[9]}</div><div>${data.skills.technical}</div>
+        </div>`;
 
-        if(data.skills) {
-            html += `<h2>Skills</h2><div style="display:grid; grid-template-columns:150px 1fr; gap:10px; font-size:14px; border-top:1px solid #eee; padding-top:20px;">
-                <div style="font-weight:bold">${t.labels[8]}</div><div>${data.skills.languages}</div>
-                <div style="font-weight:bold">${t.labels[9]}</div><div>${data.skills.technical}</div>
-            </div>`;
-        }
-
+        html += `<footer>Academic Curriculum Vitae | Sohrab Ahmadian | 2026</footer>`;
         document.getElementById('cv-content').innerHTML = html;
     }
 
-    // Default to English on load
-    window.onload = () => setTimeout(() => switchLang('en'), 300);
+    window.onload = () => switchLang('en');
 </script>
 </body>
 </html>
