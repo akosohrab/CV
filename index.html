@@ -3,30 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Academic Curriculum Vitae of Sohrab Ahmadian, Ph.D. - JSPS Postdoctoral Fellow">
     <title>Sohrab AHMADIAN, Ph.D. | Academic CV</title>
     
     <script src="data.js"></script>
     <script src="data-jp.js"></script>
 
     <style>
-        :root {
-            --primary: #1a2a3a;
-            --accent: #27ae60;
-            --bg: #fdfdfd;
-            --text-main: #222;
-        }
-
+        :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #fdfdfd; }
         * { box-sizing: border-box; }
+        body { font-family: "Times New Roman", "Hiragino Mincho ProN", serif; margin: 0; background: var(--bg); color: #222; }
         
-        body {
-            font-family: "Times New Roman", "Hiragino Mincho ProN", serif;
-            margin: 0;
-            background: var(--bg);
-            color: var(--text-main);
-        }
-        
-        /* Navigation Toolbar */
         .lang-toolbar {
             background: var(--primary);
             padding: 12px;
@@ -36,187 +22,144 @@
             justify-content: center;
             gap: 15px;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .lang-btn {
             background: rgba(255,255,255,0.1);
             color: white;
             border: 1px solid rgba(255,255,255,0.4);
-            padding: 6px 18px;
+            padding: 8px 20px;
             cursor: pointer;
             border-radius: 4px;
             font-weight: bold;
-            font-size: 13px;
-            text-transform: uppercase;
             transition: 0.3s;
         }
 
-        .lang-btn:hover { background: rgba(255,255,255,0.2); }
         .lang-btn.active { background: var(--accent); border-color: var(--accent); }
-
         .print-btn { background: #fff; color: var(--primary); border: none; }
-        .print-btn:hover { background: #eee; }
 
-        /* CV Layout */
         .cv-container {
             max-width: 850px;
             margin: 30px auto;
             background: white;
-            padding: 60px 80px;
+            padding: 50px 70px;
             box-shadow: 0 0 30px rgba(0,0,0,0.05);
             min-height: 100vh;
         }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
-        }
-
-        .header-info h1 { margin: 0; font-size: 28px; color: var(--primary); letter-spacing: 1px; }
-        .header-info p { margin: 5px 0; font-size: 15px; }
-
-        .profile-photo {
-            width: 130px;
-            height: 170px;
-            border: 1px solid #ccc;
-            overflow: hidden;
-        }
+        header { display: flex; justify-content: space-between; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .profile-photo { width: 130px; height: 170px; border: 1px solid #ccc; }
         .profile-photo img { width: 100%; height: auto; }
 
-        h2 {
-            border-bottom: 2px solid var(--primary);
-            color: var(--primary);
-            text-transform: uppercase;
-            margin-top: 35px;
-            margin-bottom: 15px;
-            font-size: 17px;
-            letter-spacing: 1px;
-            padding-bottom: 3px;
-        }
+        h2 { border-bottom: 2px solid var(--primary); color: var(--primary); text-transform: uppercase; margin-top: 35px; font-size: 17px; padding-bottom: 3px; }
+        .entry { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 15px; }
+        .entry-date { font-size: 13px; color: #666; }
+        .entry-title { font-weight: bold; font-size: 15px; display: block; }
+        .entry-desc { font-size: 14px; color: #333; }
 
-        .entry {
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        .entry-date { font-size: 13.5px; color: #666; font-variant-numeric: tabular-nums; }
-        .entry-title { font-weight: bold; font-size: 15px; display: block; margin-bottom: 2px; }
-        .entry-desc { font-size: 14px; color: #333; display: block; }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            gap: 10px;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-        .skills-label { font-weight: bold; }
-
-        footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 11px;
-            color: #999;
-            text-transform: uppercase;
-        }
-
-        @media print {
-            .lang-toolbar { display: none; }
-            .cv-container { box-shadow: none; padding: 0; margin: 0; max-width: 100%; }
-            body { background: white; }
-        }
-
-        @media (max-width: 768px) {
-            .cv-container { padding: 30px; }
-            header { flex-direction: column-reverse; align-items: center; text-align: center; }
-            .profile-photo { margin-bottom: 20px; }
-            .entry { grid-template-columns: 1fr; }
-            .entry-date { margin-bottom: 5px; font-weight: bold; }
-            .skills-grid { grid-template-columns: 1fr; }
-        }
+        @media print { .lang-toolbar { display: none; } .cv-container { box-shadow: none; padding: 0; } }
+        @media (max-width: 768px) { .cv-container { padding: 30px; } header { flex-direction: column-reverse; align-items: center; text-align: center; } .entry { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <div class="lang-toolbar">
-    <button class="lang-btn active" id="btn-en" onclick="switchLang('en')">English</button>
+    <button class="lang-btn" id="btn-en" onclick="switchLang('en')">English</button>
     <button class="lang-btn" id="btn-jp" onclick="switchLang('jp')">日本語</button>
-    <button class="lang-btn print-btn" onclick="window.print()">Print to PDF</button>
+    <button class="lang-btn print-btn" onclick="window.print()">Print PDF</button>
 </div>
 
 <div class="cv-container" id="cv-content">
-    </div>
+    <p style="text-align:center; padding:50px;">Loading Academic Records...</p>
+</div>
 
 <script>
     function switchLang(lang) {
-        // Toggle active button state
+        // 1. Update Buttons
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        if(lang === 'en') document.getElementById('btn-en').classList.add('active');
-        else document.getElementById('btn-jp').classList.add('active');
+        const activeBtn = document.getElementById('btn-' + lang);
+        if(activeBtn) activeBtn.classList.add('active');
 
-        // Note: Make sure your data files use cvDataEn and cvDataJp
-        const data = (lang === 'en') ? cvData : cvDataJp; 
-        const content = document.getElementById('cv-content');
+        // 2. Select Data Source
+        // Note: Using window['variableName'] to safely access global variables
+        let data;
+        try {
+            if (lang === 'en') {
+                data = window.cvDataEn;
+            } else {
+                data = window.cvDataJp;
+            }
+            
+            if (!data) throw new Error("Data not found for: " + lang);
+        } catch (e) {
+            console.error(e);
+            document.getElementById('cv-content').innerHTML = "<p style='color:red; text-align:center;'>Error: Data file is missing or contains a syntax error.</p>";
+            return;
+        }
 
+        // 3. Labels Logic
         const labels = (lang === 'en') ? 
             ["Education", "Appointments", "Grants", "Publications", "Books", "Presentations", "Awards", "Memberships", "Languages", "Technical"] :
             ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "書籍・出版物", "講演・口頭発表", "受賞・社会貢献", "所属学協会", "言語能力", "スキル・IT"];
 
         const sections = ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-books", "sec-talks", "sec-misc"];
 
+        // 4. Build Header
         let html = `
             <header>
-                <div class="header-info">
-                    <h1>Sohrab AHMADIAN, Ph.D.</h1>
-                    <p><strong>JSPS Postdoctoral Research Fellow</strong></p>
-                    <p>Tokyo University of Foreign Studies (TUFS)</p>
-                    <p style="margin-top:10px;">Email: ako.sohrab@gmail.com / ahmadian@tufs.ac.jp</p>
-                    <p>Web: researchmap.jp/sohrab.ahmadian</p>
+                <div>
+                    <h1 style="margin:0;">Sohrab AHMADIAN, Ph.D.</h1>
+                    <p><strong>JSPS Postdoctoral Fellow</strong></p>
+                    <p>Tokyo University of Foreign Studies</p>
+                    <p style="font-size:14.5px; margin-top:10px; color:#444;">
+                        Email: ako.sohrab@gmail.com<br>
+                        Web: researchmap.jp/sohrab.ahmadian
+                    </p>
                 </div>
                 <div class="profile-photo"><img src="https://researchmap.jp/sohrab.ahmadian/avatar.jpg"></div>
             </header>
         `;
 
+        // 5. Build Sections
         sections.forEach((id, i) => {
-            html += `<h2>${labels[i]}</h2>`;
-            data[id].forEach(item => {
-                html += `
-                    <div class="entry">
-                        <div class="entry-date">${item.date}</div>
-                        <div>
-                            <span class="entry-title">${item.title}</span>
-                            <span class="entry-desc">${item.desc}</span>
-                        </div>
-                    </div>
-                `;
-            });
+            if(data[id] && data[id].length > 0) {
+                html += `<h2>${labels[i]}</h2>`;
+                data[id].forEach(item => {
+                    html += `
+                        <div class="entry">
+                            <div class="entry-date">${item.date}</div>
+                            <div>
+                                <span class="entry-title">${item.title}</span>
+                                <span class="entry-desc">${item.desc}</span>
+                            </div>
+                        </div>`;
+                });
+            }
         });
 
-        // Memberships & Skills
-        html += `<h2>${labels[7]}</h2><ul style="font-size:14px; padding-left:20px; line-height:1.8;">`;
+        // 6. Societies & Skills
+        html += `<h2>${labels[7]}</h2><ul style="font-size:14px; line-height:1.8; padding-left:20px;">`;
         data.societies.forEach(s => html += `<li>${s}</li>`);
         html += `</ul>`;
 
         html += `
-            <h2>Skills</h2>
-            <div class="skills-grid">
-                <div class="skills-label">${labels[8]}</div><div>${data.skills.languages}</div>
-                <div class="skills-label">${labels[9]}</div><div>${data.skills.technical}</div>
+            <div style="display:grid; grid-template-columns:150px 1fr; gap:10px; font-size:14px; margin-top:30px; border-top:1px solid #eee; padding-top:20px;">
+                <div style="font-weight:bold">${labels[8]}</div><div>${data.skills.languages}</div>
+                <div style="font-weight:bold">${labels[9]}</div><div>${data.skills.technical}</div>
             </div>
-            <footer>Curriculum Vitae | Sohrab Ahmadian | 2026</footer>
+            <footer style="margin-top:60px; text-align:center; font-size:11px; color:#aaa; border-top:1px solid #f0f0f0; padding-top:20px;">
+                Curriculum Vitae | Sohrab Ahmadian | Generated 2026
+            </footer>
         `;
 
-        content.innerHTML = html;
+        document.getElementById('cv-content').innerHTML = html;
     }
 
-    // Default to Japanese as it is already indexed
-    window.onload = () => switchLang('jp');
+    // Initialize with Japanese
+    window.onload = () => {
+        // Small delay to ensure scripts are loaded
+        setTimeout(() => switchLang('jp'), 100);
+    };
 </script>
 </body>
 </html>
