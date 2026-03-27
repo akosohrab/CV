@@ -9,6 +9,7 @@ permissions:
   pages: write
   id-token: write
 
+# Moving the force flag to the top level
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -21,12 +22,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
+      
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
