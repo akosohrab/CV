@@ -12,9 +12,10 @@
         :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #fdfdfd; }
         * { box-sizing: border-box; }
         body { font-family: "Times New Roman", "Hiragino Mincho ProN", serif; margin: 0; background: var(--bg); color: #222; }
-        .toolbar { background: var(--primary); padding: 12px; position: sticky; top: 0; display: flex; justify-content: center; gap: 15px; z-index: 1000; }
+        .toolbar { background: var(--primary); padding: 12px; position: sticky; top: 0; display: flex; justify-content: center; gap: 15px; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .btn { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.3s; font-size: 13px; text-transform: uppercase; }
         .btn.active { background: var(--accent); border-color: var(--accent); }
+        .print-btn { background: #fff; color: var(--primary); border: none; margin-left: 10px; }
         .cv-paper { max-width: 850px; margin: 30px auto; background: white; padding: 60px 80px; box-shadow: 0 0 30px rgba(0,0,0,0.05); min-height: 100vh; }
         header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
         .header-text h1 { margin: 0; font-size: 28px; color: var(--primary); }
@@ -23,8 +24,9 @@
         .photo img { width: 100%; height: auto; }
         h2 { border-bottom: 2px solid var(--primary); color: var(--primary); text-transform: uppercase; margin-top: 35px; font-size: 17px; padding-bottom: 3px; letter-spacing: 1px; }
         .entry { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 15px; line-height: 1.5; }
-        .entry-date { font-size: 13px; color: #666; }
+        .entry-date { font-size: 13px; color: #666; font-family: Arial, sans-serif; }
         .entry-title { font-weight: bold; font-size: 15px; }
+        .error-box { background: #fff1f0; border: 1px solid #ffa39e; padding: 20px; border-radius: 4px; margin-top: 50px; text-align: left; }
         @media print { .toolbar { display: none; } .cv-paper { box-shadow: none; padding: 0; margin: 0; width: 100%; } }
     </style>
 </head>
@@ -33,25 +35,42 @@
 <div class="toolbar">
     <button class="btn" id="btn-en" onclick="switchLang('en')">English</button>
     <button class="btn" id="btn-jp" onclick="switchLang('jp')">日本語</button>
-    <button class="btn" style="background:white; color:black;" onclick="window.print()">Print PDF</button>
+    <button class="btn print-btn" onclick="window.print()">Print PDF</button>
 </div>
 
-<div class="cv-paper" id="cv-content"></div>
+<div class="cv-paper" id="cv-content">
+    <p style="text-align:center; padding:50px;">Detecting data files...</p>
+</div>
 
 <script>
+    function checkDiagnostics() {
+        let issues = [];
+        if (typeof window.cvDataEn === 'undefined') issues.push("Variable 'cvDataEn' missing in data.js");
+        if (typeof window.cvDataJp === 'undefined') issues.push("Variable 'cvDataJp' missing in data-jp.js");
+        return issues;
+    }
+
     function switchLang(lang) {
         document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('btn-' + lang).classList.add('active');
+        const activeBtn = document.getElementById('btn-' + lang);
+        if(activeBtn) activeBtn.classList.add('active');
 
-        // Verify data variables are loaded
         const data = (lang === 'en') ? window.cvDataEn : window.cvDataJp;
 
         if (!data) {
-            document.getElementById('cv-content').innerHTML = `<p style="color:red; text-align:center; padding:50px;">Error: Data for <b>${lang}</b> could not be loaded. Please refresh the page (Ctrl + F5).</p>`;
+            const errors = checkDiagnostics();
+            document.getElementById('cv-content').innerHTML = `
+                <div class="error-box">
+                    <h3 style="margin-top:0; color:#cf1322;">System Diagnostic Error</h3>
+                    <p>The browser was unable to find the <b>${lang}</b> data. Possible reasons:</p>
+                    <ul>
+                        ${errors.map(e => `<li>${e}</li>`).join('')}
+                        <li>Browser Cache: Press <b>Ctrl + F5</b> to force update.</li>
+                    </ul>
+                </div>`;
             return;
         }
 
-        // Header Configuration
         const config = {
             en: { name: "Sohrab AHMADIAN, Ph.D.", katakana: "", title: "JSPS Postdoctoral Research Fellow", uni: "Tokyo University of Foreign Studies (TUFS)", labels: ["Education", "Appointments", "Grants", "Publications", "Books", "Presentations", "Awards", "Memberships", "Languages", "Technical"] },
             jp: { name: "Sohrab AHMADIAN, Ph.D.", katakana: "アフマディヤーン ソホラブ", title: "JSPS 外国人特別研究員 (PD)", uni: "東京外国語大学 大学院総合国際学研究院", labels: ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "書籍・出版物", "講演・口頭発表", "受賞・社会貢献", "所属学協会", "言語能力", "スキル・IT"] }
@@ -99,7 +118,7 @@
     }
 
     // Default to English on load
-    window.onload = () => setTimeout(() => switchLang('en'), 200);
+    window.onload = () => setTimeout(() => switchLang('en'), 300);
 </script>
 </body>
 </html>
