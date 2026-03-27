@@ -3,91 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="アフマディヤーン ソホラブ博士（東京外国語大学 JSPS特別研究員）の研究者履歴書・業績目録。在日クルド人、移民、ディアスポラ研究。">
-    <title>アフマディヤーン ソホラブ | 研究者履歴書・業績目録</title>
+    <meta name="description" content="Academic CV of Sohrab Ahmadian, Ph.D. - JSPS Postdoctoral Fellow">
+    <title>Sohrab AHMADIAN, Ph.D. | Academic CV</title>
     
+    <script src="data-en.js"></script>
     <script src="data-jp.js"></script>
 
     <style>
-        :root { --primary: #1a2a3a; --text: #222; --bg: #fdfdfd; }
-        body { font-family: "Hiragino Mincho ProN", "MS Mincho", serif; line-height: 1.6; color: var(--text); background: var(--bg); margin: 0; }
-        .toolbar { background: var(--primary); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; }
-        .print-btn { background: #27ae60; color: white; border: none; padding: 10px 25px; cursor: pointer; border-radius: 4px; font-weight: bold; }
-        .cv-container { max-width: 900px; margin: 40px auto; background: white; padding: 70px 90px; box-shadow: 0 0 40px rgba(0,0,0,0.05); }
-        header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 40px; }
-        h1 { font-size: 28px; margin: 0; color: var(--primary); }
-        .profile-photo { width: 140px; height: 180px; border: 1px solid #000; overflow: hidden; }
-        .profile-photo img { width: 100%; height: auto; }
-        h2 { font-size: 18px; border-bottom: 2px solid var(--primary); margin: 40px 0 20px 0; padding-bottom: 5px; color: var(--primary); }
-        .entry { display: grid; grid-template-columns: 160px 1fr; margin-bottom: 15px; }
-        .entry-date { font-size: 14px; color: #666; }
-        .entry-title { font-weight: bold; display: block; font-size: 15px; }
-        .entry-desc { font-size: 14px; color: #333; }
-        .skills-section { display: grid; grid-template-columns: 140px 1fr; gap: 15px; font-size: 14px; border-top: 1px solid #eee; padding-top: 20px; }
-        @media print { .toolbar { display: none; } .cv-container { box-shadow: none; border: none; padding: 0; margin: 0; width: 100%; } }
-        @media (max-width: 768px) { .cv-container { padding: 30px; } header { flex-direction: column-reverse; align-items: center; } .entry { grid-template-columns: 1fr; } }
+        :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #fdfdfd; }
+        body { font-family: "Times New Roman", "Hiragino Mincho ProN", serif; margin: 0; background: var(--bg); }
+        
+        /* Language Switcher Toolbar */
+        .lang-toolbar {
+            background: var(--primary);
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+        }
+        .lang-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid white;
+            padding: 5px 15px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .lang-btn.active { background: var(--accent); border-color: var(--accent); }
+        
+        .cv-container { max-width: 850px; margin: 20px auto; background: white; padding: 50px 70px; box-shadow: 0 0 30px rgba(0,0,0,0.05); }
+        header { display: flex; justify-content: space-between; margin-bottom: 30px; }
+        .profile-photo { width: 130px; height: 170px; border: 1px solid #000; }
+        h2 { border-bottom: 2px solid var(--primary); color: var(--primary); text-transform: uppercase; margin-top: 30px; font-size: 18px; }
+        .entry { display: grid; grid-template-columns: 140px 1fr; margin-bottom: 15px; }
+        .entry-date { font-size: 13px; color: #666; }
+        .entry-title { font-weight: bold; display: block; }
+        
+        @media print { .lang-toolbar { display: none; } .cv-container { box-shadow: none; padding: 0; } }
+        @media (max-width: 600px) { .cv-container { padding: 20px; } .entry { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-<div class="toolbar">
-    <button class="print-btn" onclick="window.print()">履歴書をPDFで保存・印刷</button>
+<div class="lang-toolbar">
+    <button class="lang-btn active" id="btn-en" onclick="switchLang('en')">ENGLISH</button>
+    <button class="lang-btn" id="btn-jp" onclick="switchLang('jp')">日本語</button>
+    <button class="lang-btn" style="background:#27ae60" onclick="window.print()">Print PDF</button>
 </div>
 
-<div class="cv-container">
-    <header>
-        <div>
-            <h1>アフマディヤーン ソホラブ</h1>
-            <p style="font-size: 18px; margin: 10px 0;">Sohrab AHMADIAN, Ph.D.</p>
-            <p><strong>東京外国語大学 大学院総合国際学研究院 JSPS外国人特別研究員</strong></p>
-            <p>専門：ディアスポラ研究、政治人類学、移民研究</p>
-            <p style="margin-top:15px; font-size:14px;">Email: ako.sohrab@gmail.com / ahmadian@tufs.ac.jp</p>
-        </div>
-        <div class="profile-photo"><img src="https://researchmap.jp/sohrab.ahmadian/avatar.jpg"></div>
-    </header>
-
-    <div id="sections-main">
-        <h2>1. 学位・学歴</h2><div id="sec-edu"></div>
-        <h2>2. 職歴・研究歴</h2><div id="sec-work"></div>
-        <h2>3. 研究課題・受託研究等</h2><div id="sec-projects"></div>
-        <h2>4. 研究業績：論文</h2><div id="sec-papers"></div>
-        <h2>5. 研究業績：書籍・出版物</h2><div id="sec-books"></div>
-        <h2>6. 講演・口頭発表等</h2><div id="sec-talks"></div>
-        <h2>7. 受賞・社会貢献</h2><div id="sec-misc"></div>
-        <h2>8. 所属学協会</h2><ul id="sec-societies" style="list-style: none; padding-left: 10px; font-size: 14px;"></ul>
-        <h2>9. 言語能力・スキル</h2>
-        <div class="skills-section">
-            <div style="font-weight:bold;">言語能力</div><div id="skill-lang"></div>
-            <div style="font-weight:bold;">スキル・IT</div><div id="skill-tech"></div>
-        </div>
+<div class="cv-container" id="cv-content">
     </div>
 
-    <footer style="margin-top: 50px; text-align: right; font-size: 12px; color: #999;">
-        最終更新: 2026年3月21日 | 業績目録
-    </footer>
-</div>
-
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const sections = ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-books", "sec-talks", "sec-misc"];
-        sections.forEach(id => {
-            const container = document.getElementById(id);
-            if (cvData[id]) {
-                cvData[id].forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'entry';
-                    div.innerHTML = `<div class="entry-date">${item.date}</div><div><span class="entry-title">${item.title}</span><span class="entry-desc">${item.desc}</span></div>`;
-                    container.appendChild(div);
-                });
-            }
+    function switchLang(lang) {
+        // تغییر وضعیت دکمه‌ها
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + lang).classList.add('active');
+        
+        const data = (lang === 'en') ? cvDataEn : cvDataJp; // فرض بر اینکه متغیرها در فایل‌های دیتا متفاوت نام‌گذاری شده‌اند
+        const content = document.getElementById('cv-content');
+        
+        // ساختار هدر (Header)
+        let html = `
+            <header>
+                <div>
+                    <h1 style="margin:0; color:var(--primary)">${data.name}</h1>
+                    <p><strong>${data.title}</strong></p>
+                    <p>${data.affiliation}</p>
+                    <p style="font-size:14px">Email: ${data.email} | Address: ${data.address}</p>
+                </div>
+                <div class="profile-photo"><img src="${data.photo}" style="width:100%"></div>
+            </header>
+        `;
+
+        // بخش‌های اصلی
+        const sectionNames = lang === 'en' 
+            ? ["Education", "Appointments", "Grants", "Publications", "Books", "Presentations", "Awards"]
+            : ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "書籍・出版物", "講演・口頭発表", "受賞・社会貢献"];
+        
+        const ids = ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-books", "sec-talks", "sec-misc"];
+
+        ids.forEach((id, index) => {
+            html += `<h2>${sectionNames[index]}</h2>`;
+            data[id].forEach(item => {
+                html += `
+                    <div class="entry">
+                        <div class="entry-date">${item.date}</div>
+                        <div>
+                            <span class="entry-title">${item.title}</span>
+                            <span style="font-size:14px; color:#333">${item.desc}</span>
+                        </div>
+                    </div>
+                `;
+            });
         });
-        cvData.societies.forEach(s => {
-            const li = document.createElement('li'); li.innerHTML = `&bull; ${s}`;
-            document.getElementById('sec-societies').appendChild(li);
-        });
-        document.getElementById('skill-lang').textContent = cvData.skills.languages;
-        document.getElementById('skill-tech').textContent = cvData.skills.technical;
-    });
+
+        content.innerHTML = html;
+    }
+
+    // لود اولیه (انگلیسی یا ژاپنی به انتخاب شما)
+    window.onload = () => switchLang('jp');
 </script>
 </body>
 </html>
