@@ -15,16 +15,16 @@
         .btn-save { background: #27ae60; color: white; width: 100%; padding: 20px; font-size: 18px; margin-top: 30px; }
         .section-box { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 25px; overflow: hidden; }
         .section-header { background: #f8f9fa; padding: 12px 20px; font-weight: bold; color: var(--primary); border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
-        .entry-row { display: flex; gap: 10px; padding: 15px; border-bottom: 1px dotted #eee; background: #fff; }
+        .entry-row { display: flex; gap: 10px; padding: 15px; border-bottom: 1px dotted #eee; background: #fff; align-items: center; }
         .entry-row input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
-        .date-input { width: 150px; background: #fffde7; }
+        .date-input { width: 130px; background: #fffde7; }
         .title-input { flex: 2; font-weight: bold; }
         .desc-input { flex: 3; color: #555; }
-        .delete-btn { color: #e74c3c; background: none; border: none; cursor: pointer; font-weight: bold; }
+        .delete-btn { color: #e74c3c; background: none; border: none; cursor: pointer; font-weight: bold; font-size: 18px; }
         .add-btn { background: #3498db; color: white; font-size: 12px; padding: 5px 10px; }
         #status { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; display: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .lang-toggle { display: flex; gap: 10px; margin-bottom: 15px; }
-        .tab { padding: 10px 30px; cursor: pointer; border-radius: 5px; background: #ddd; }
+        .lang-toggle { display: flex; gap: 10px; }
+        .tab { padding: 10px 30px; cursor: pointer; border-radius: 5px; background: #ddd; font-weight: bold; }
         .tab.active { background: var(--primary); color: white; }
     </style>
 </head>
@@ -45,8 +45,7 @@
     </div>
 
     <div id="editor-ui" style="display:none;">
-        <div id="form-container">
-            </div>
+        <div id="form-container"></div>
         <button class="btn btn-save" onclick="saveFile()">2. Push Changes Live</button>
     </div>
 </div>
@@ -70,7 +69,7 @@
 
     async function fetchFile() {
         const token = document.getElementById('token').value;
-        if (!token) return alert("Token required!");
+        if (!token) return alert("Please enter your GitHub token!");
 
         notify("Connecting to GitHub...", "#3498db");
         try {
@@ -80,18 +79,38 @@
             const data = await response.json();
             fileSha = data.sha;
             
+            // Decode with UTF-8 support
             const binString = atob(data.content.replace(/\s/g, ''));
             const bytes = Uint8Array.from(binString, m => m.charCodeAt(0));
             fullFileContent = new TextDecoder().decode(bytes);
             
-            cvData.en = JSON.parse(fullFileContent.match(/const cvDataEn = ([\s\S]*?);/)[1]);
-            cvData.jp = JSON.parse(fullFileContent.match(/const cvDataJp = ([\s\S]*?);/)[1]);
+            // Extract using the Markers
+            const startMarker = "// --- DATA DASHBOARD ---";
+            const endMarker = "// --- END DATA DASHBOARD ---";
+            
+            const parts = fullFileContent.split(startMarker);
+            if (parts.length < 2) throw new Error("Could not find '// --- DATA DASHBOARD ---' in index.html");
+            
+            const contentParts = parts[1].split(endMarker);
+            if (contentParts.length < 2) throw new Error("Could not find '// --- END DATA DASHBOARD ---' in index.html");
+            
+            const rawDataBlock = contentParts[0];
+            
+            // Extract the two data objects
+            const enMatch = rawDataBlock.match(/const cvDataEn = ([\s\S]*?);/);
+            const jpMatch = rawDataBlock.match(/const cvDataJp = ([\s\S]*?);/);
+            
+            if (!enMatch || !jpMatch) throw new Error("Could not parse data objects. Check your index.html syntax.");
+            
+            cvData.en = JSON.parse(enMatch[1]);
+            cvData.jp = JSON.parse(jpMatch[1]);
             
             renderForm();
             document.getElementById('editor-ui').style.display = 'block';
-            notify("Data Loaded Successfully!", "#27ae60");
+            notify("Data Loaded!", "#27ae60");
         } catch (e) {
-            notify("Error loading data: " + e.message, "#e74c3c");
+            notify("Error: " + e.message, "#e74c3c");
+            console.error(e);
         }
     }
 
@@ -106,9 +125,9 @@
             
             let entriesHtml = currentData[key].map((item, i) => `
                 <div class="entry-row">
-                    <input class="date-input" value="${item.date}" onchange="updateItem('${key}', ${i}, 'date', this.value)">
-                    <input class="title-input" value="${item.title}" onchange="updateItem('${key}', ${i}, 'title', this.value)">
-                    <input class="desc-input" value="${item.desc}" onchange="updateItem('${key}', ${i}, 'desc', this.value)">
+                    <input class="date-input" value="${item.date || ''}" onchange="updateItem('${key}', ${i}, 'date', this.value)">
+                    <input class="title-input" value="${item.title || ''}" onchange="updateItem('${key}', ${i}, 'title', this.value)">
+                    <input class="desc-input" value="${item.desc || ''}" onchange="updateItem('${key}', ${i}, 'desc', this.value)">
                     <button class="delete-btn" onclick="removeItem('${key}', ${i})">✕</button>
                 </div>
             `).join('');
@@ -116,7 +135,7 @@
             sectionDiv.innerHTML = `
                 <div class="section-header">
                     <span>${sectionNames[currentLang][index]}</span>
-                    <button class="btn add-btn" onclick="addItem('${key}')">+ Add New</button>
+                    <button class="btn add-btn" onclick="addItem('${key}')">+ Add New Entry</button>
                 </div>
                 ${entriesHtml}
             `;
@@ -129,12 +148,12 @@
     }
 
     function addItem(key) {
-        cvData[currentLang][key].unshift({ date: "YYYY.MM", title: "New Title", desc: "Description" });
+        cvData[currentLang][key].unshift({ date: "YYYY.MM", title: "New Entry", desc: "Details here" });
         renderForm();
     }
 
     function removeItem(key, index) {
-        if(confirm("Delete this entry?")) {
+        if(confirm("Are you sure you want to delete this?")) {
             cvData[currentLang][key].splice(index, 1);
             renderForm();
         }
@@ -149,10 +168,17 @@
 
     async function saveFile() {
         const token = document.getElementById('token').value;
-        notify("Saving to GitHub... (Action will trigger)", "#f39c12");
+        notify("Saving... Please wait.", "#f39c12");
 
-        let updatedContent = fullFileContent.replace(/const cvDataEn = [\s\S]*?;/, `const cvDataEn = ${JSON.stringify(cvData.en, null, 4)};`);
-        updatedContent = updatedContent.replace(/const cvDataJp = [\s\S]*?;/, `const cvDataJp = ${JSON.stringify(cvData.jp, null, 4)};`);
+        const dataBlock = `\nconst cvDataEn = ${JSON.stringify(cvData.en, null, 4)};\n\nconst cvDataJp = ${JSON.stringify(cvData.jp, null, 4)};\n`;
+        
+        const startMarker = "// --- DATA DASHBOARD ---";
+        const endMarker = "// --- END DATA DASHBOARD ---";
+        
+        const parts = fullFileContent.split(startMarker);
+        const endParts = parts[1].split(endMarker);
+        
+        const updatedContent = parts[0] + startMarker + dataBlock + endMarker + endParts[1];
 
         try {
             const bytes = new TextEncoder().encode(updatedContent);
@@ -169,9 +195,10 @@
                 })
             });
 
-            if (response.ok) notify("LIVE! Check your website in 60 seconds.", "#27ae60");
+            if (response.ok) notify("Success! Live in 60 seconds.", "#27ae60");
+            else throw new Error("GitHub rejected the save.");
         } catch (e) {
-            notify("Save Error!", "#e74c3c");
+            notify("Error saving: " + e.message, "#e74c3c");
         }
     }
 
