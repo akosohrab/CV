@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CV मास्टर Editor Pro</title>
+    <title>Sohrab's CV Editor Pro</title>
     <style>
         :root { --primary: #1a2a3a; --bg: #f0f2f5; --accent: #27ae60; --danger: #e74c3c; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: #333; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
         .container { max-width: 1250px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .profile-header { background: #1a2a3a; color: white; padding: 25px; border-radius: 8px; margin-bottom: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .profile-header label { font-size: 11px; text-transform: uppercase; color: #bdc3c7; margin-bottom: 5px; font-weight: bold; }
@@ -17,7 +17,9 @@
         .section-header { background: #f8f9fa; padding: 15px 20px; font-weight: bold; color: var(--primary); border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .entry-row { display: grid; grid-template-columns: 120px 2fr 3fr 110px 80px; gap: 15px; padding: 15px 20px; border-bottom: 1px solid #eee; align-items: start; }
         textarea { resize: vertical; min-height: 45px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 100%; font-family: inherit; }
-        input, select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 100%; }
+        input, select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        .move-btns { display: flex; flex-direction: column; gap: 2px; }
+        .action-btn { background: #f8f9fa; border: 1px solid #ddd; cursor: pointer; font-size: 14px; padding: 2px 8px; border-radius: 4px; }
         .btn-save { background: var(--accent); color: white; width: 100%; padding: 20px; font-size: 18px; margin-top: 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         #status { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; display: none; color: white; font-weight: bold; z-index: 1000; }
     </style>
@@ -53,10 +55,10 @@
     let cvData = { en: {}, jp: {} };
     let currentLang = 'en';
 
-    const keys = ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-talks", "sec-misc"];
+    const keys = ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-books", "sec-talks", "sec-misc"];
     const sectionLabels = {
-        en: ["Education", "Appointments", "Research Projects", "Publications", "Presentations", "Awards"],
-        jp: ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "講演・口頭発表", "受賞・社会貢献"]
+        en: ["Education", "Appointments", "Research Projects", "Publications", "Books", "Presentations", "Awards"],
+        jp: ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "書籍・出版物", "講演・口頭発表", "受賞・社会貢献"]
     };
 
     async function fetchFile() {
@@ -89,7 +91,7 @@
         const p = cvData[currentLang].profile;
         document.getElementById('profile-container').innerHTML = `
             <div><label>Name</label><input value="${p.name}" onchange="updateProfile('name',this.value)"></div>
-            <div><label>Title</label><input value="${p.title}" onchange="updateProfile('title',this.value)"></div>
+            <div><label>Academic Title</label><input value="${p.title}" onchange="updateProfile('title',this.value)"></div>
             <div><label>Affiliation</label><input value="${p.uni}" onchange="updateProfile('uni',this.value)"></div>
             <div><label>Katakana (JP Only)</label><input value="${p.katakana || ''}" onchange="updateProfile('katakana',this.value)"></div>
             <div><label>Email</label><input value="${p.email}" onchange="updateProfile('email',this.value)"></div>
@@ -111,11 +113,12 @@
                         <option value="">No Label</option>
                         <option value="English" ${item.lang==='English'?'selected':''}>English</option>
                         <option value="Japanese" ${item.lang==='Japanese'?'selected':''}>Japanese</option>
+                        <option value="Persian" ${item.lang==='Persian'?'selected':''}>Persian</option>
                     </select>
-                    <div style="display:flex; flex-direction:column; gap:2px;">
-                        <button onclick="moveItem('${key}',${i},-1)">↑</button>
-                        <button onclick="moveItem('${key}',${i},1)">↓</button>
-                        <button style="color:red" onclick="deleteItem('${key}',${i})">✕</button>
+                    <div class="move-btns">
+                        <button class="action-btn" onclick="moveItem('${key}',${i},-1)">↑</button>
+                        <button class="action-btn" onclick="moveItem('${key}',${i},1)">↓</button>
+                        <button class="action-btn" style="color:#e74c3c" onclick="deleteItem('${key}',${i})">✕</button>
                     </div>
                 </div>
             `).join('');
@@ -126,8 +129,8 @@
 
     function updateProfile(f, v) { cvData[currentLang].profile[f] = v; }
     function updateEntry(k, i, f, v) { cvData[currentLang][k][i][f] = v; }
-    function addItem(key) { cvData[currentLang][key].unshift({ date: "2026", title: "New Entry", desc: "", lang: "" }); renderAll(); }
-    function deleteItem(key, index) { if(confirm("Delete?")) { cvData[currentLang][key].splice(index, 1); renderAll(); } }
+    function addItem(key) { cvData[currentLang][key].unshift({ date: "2026", title: "Title", desc: "Details", lang: "" }); renderAll(); }
+    function deleteItem(key, index) { if(confirm("Delete entry?")) { cvData[currentLang][key].splice(index, 1); renderAll(); } }
     function moveItem(k, i, d) { const a = cvData[currentLang][k]; const n = i + d; if (n >= 0 && n < a.length) { [a[i], a[n]] = [a[n], a[i]]; renderAll(); } }
     function switchTab(l) { currentLang = l; document.getElementById('tab-en').className = l==='en'?'tab active':'tab'; document.getElementById('tab-jp').className = l==='jp'?'tab active':'tab'; renderAll(); }
 
@@ -146,10 +149,11 @@
         let content = fullFileContent.replace(/\/\/ --- DATA DASHBOARD ---[\s\S]*?const cvDataEn = [\s\S]*?;/, `// --- DATA DASHBOARD ---\nconst cvDataEn = ${JSON.stringify(cvData.en, null, 4)};`);
         content = content.replace(/const cvDataJp = [\s\S]*?;[\s\S]*?\/\/ --- END DATA DASHBOARD ---/, `const cvDataJp = ${JSON.stringify(cvData.jp, null, 4)};\n// --- END DATA DASHBOARD ---`);
         try {
+            const b = new TextEncoder().encode(content);
             const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "Dashboard Pro Sync", content: btoa(unescape(encodeURIComponent(content))), sha: fileSha })
+                body: JSON.stringify({ message: "Final Redesign Sync", content: btoa(unescape(encodeURIComponent(content))), sha: fileSha })
             });
             if (res.ok) notify("Success! Live in 60s.", "#27ae60");
             else notify("Error Saving", "#e74c3c");
