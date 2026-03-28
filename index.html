@@ -1,3 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sohrab AHMADIAN, Ph.D. | Online CV</title>
+    <style>
+        :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #fdfdfd; }
+        * { box-sizing: border-box; }
+        body { font-family: "Times New Roman", "Hiragino Mincho ProN", serif; margin: 0; background: var(--bg); color: #222; line-height: 1.5; }
+        .toolbar { background: var(--primary); padding: 12px; position: sticky; top: 0; display: flex; justify-content: center; gap: 15px; z-index: 1000; }
+        .btn { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 13px; }
+        .btn.active { background: var(--accent); border-color: var(--accent); }
+        .cv-paper { max-width: 850px; margin: 30px auto; background: white; padding: 60px 80px; box-shadow: 0 0 30px rgba(0,0,0,0.05); }
+        header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
+        .header-text h1 { margin: 0; font-size: 28px; color: var(--primary); }
+        .photo { width: 130px; height: 170px; border: 1px solid #ccc; overflow: hidden; }
+        .photo img { width: 100%; height: auto; }
+        h2 { border-bottom: 2px solid var(--primary); color: var(--primary); text-transform: uppercase; margin-top: 35px; font-size: 17px; padding-bottom: 3px; }
+        .entry { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 15px; }
+        .entry-date { font-size: 13px; color: #666; font-family: Arial, sans-serif; }
+        .entry-title { font-weight: bold; font-size: 15px; }
+        .lang-badge { font-size: 10px; background: #f0f0f0; color: #666; padding: 2px 6px; border-radius: 3px; margin-left: 8px; font-weight: normal; }
+        .entry-desc { font-size: 14px; color: #333; display: block; margin-top: 2px; }
+        .skills-grid { display: grid; grid-template-columns: 120px 1fr; gap: 10px; font-size: 14px; margin-top: 20px; }
+        @media print { .toolbar { display: none; } .cv-paper { box-shadow: none; padding: 0; margin: 0; width: 100%; } }
+    </style>
+</head>
+<body>
+
+<div class="toolbar">
+    <button class="btn" id="btn-en" onclick="switchLang('en')">English</button>
+    <button class="btn" id="btn-jp" onclick="switchLang('jp')">日本語</button>
+    <button class="btn" style="background:#fff; color:#1a2a3a;" onclick="window.print()">Print PDF</button>
+</div>
+
+<div class="cv-paper" id="cv-content"></div>
+
 <script>
 // --- DATA DASHBOARD ---
 const cvDataEn = {
@@ -12,9 +50,9 @@ const cvDataEn = {
         "web": "researchmap.jp/sohrab.ahmadian"
     },
     "sec-edu": [
-        { "date": "2018.04 - 2024.03", "title": "Ph.D. in International and Advanced Japan Studies", "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba. Major: Migration and Diaspora Studies. Supervisor: Prof. AKASHI Junichi. Dissertation: 'Zainichi Kurudo-jin no Diaspora Taiken ni kansuru Shitsuteki Kenkyu' (A Qualitative Study on the Diaspora Experience of Kurds in Japan)", "lang": "Japanese" },
-        { "date": "2013.09 - 2015.09", "title": "M.A. in Japan Studies", "desc": "Graduate School of World Studies, University of Tehran. Supervisor: Prof. Mohammed Naghizadeh. Project: 'Abe Seiken ni okeru Heiwa-shugi no Shinro' (The Course of Pacifism under the Abe Administration)", "lang": "Japanese" },
-        { "date": "2008.09 - 2012.07", "title": "B.A. in Japanese Language and Literature", "desc": "Faculty of Foreign Languages and Literatures, University of Tehran. Project: 'Nihon no Haiku to Iran no Shikoushi ni okeru Mujoukan' (The View of Impermanence in Japanese Haiku and Iranian Quatrains)", "lang": "Japanese" }
+        { "date": "2018.04 - 2024.03", "title": "Ph.D. in International and Advanced Japan Studies", "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba. Major: Migration and Diaspora Studies. Supervisor: Prof. AKASHI Junichi. Dissertation: 'Zainichi Kurudo-jin no Diaspora Taiken ni kansuru Shitsuteki Kenkyu' (A Qualitative Study on the Diaspora Experience of Kurds in Japan)", "lang": "English" },
+        { "date": "2013.09 - 2015.09", "title": "M.A. in Japan Studies", "desc": "Graduate School of World Studies, University of Tehran. Supervisor: Prof. Mohammed Naghizadeh. Project: 'Abe Seiken ni okeru Heiwa-shugi no Shinro' (The Course of Pacifism under the Abe Administration - Focusing on Constitutional Amendment and Article 9)", "lang": "English" },
+        { "date": "2008.09 - 2012.07", "title": "B.A. in Japanese Language and Literature", "desc": "Faculty of Foreign Languages and Literatures, University of Tehran. Project: 'Nihon no Haiku to Iran no Shikoushi ni okeru Mujoukan' (The View of Impermanence in Japanese Haiku and Iranian Quatrains - Focusing on Matsuo Basho and Umar Khayyam)", "lang": "English" }
     ],
     "sec-work": [
         { "date": "2025.04 - Present", "title": "JSPS Postdoctoral Research Fellow", "desc": "Tokyo University of Foreign Studies (TUFS)", "lang": "English" },
@@ -25,17 +63,14 @@ const cvDataEn = {
         { "date": "2023.10 - Present", "title": "Sorani Kurdish Language Instructor", "desc": "Kimiya Ltd. (Online Lessons)", "lang": "English" },
         { "date": "2022.08 - Present", "title": "Japanese Language Trainer", "desc": "Learnlight UK Limited (Online Lessons)", "lang": "English" },
         { "date": "2021.07 - 2022.03", "title": "Research Fellow", "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba", "lang": "English" },
-        { "date": "2021.04 - 2021.12", "title": "Teaching Assistant (Media and Representation)", "desc": "University of Tsukuba. Responsibilities: Leading discussion sections, assisting in lesson planning, supporting small student groups.", "lang": "English" },
-        { "date": "2021.08 - 2021.11", "title": "Research Assistant", "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba", "lang": "English" },
-        { "date": "2017.10 - 2019.10", "title": "Freelance English Tutor", "desc": "Japan", "lang": "English" },
-        { "date": "2014.11 - 2016.11", "title": "Persian Language Teacher", "desc": "Iran Oxford Language Institute (for Japanese citizens)", "lang": "English" }
+        { "date": "2021.04 - 2021.12", "title": "Teaching Assistant (Media and Representation)", "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba. Responsibilities: Leading discussion sections, assisting in lesson planning, supporting small student groups.", "lang": "English" },
+        { "date": "2021.08 - 2021.11", "title": "Research Assistant", "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba", "lang": "English" }
     ],
     "sec-projects": [
         { "date": "2025.04 - 2027.03", "title": "Co-investigator: Dynamics of Coexistence: Interplay of Kurdish and Afghan Communities in Japan", "desc": "Grant-in-Aid for JSPS Fellows (No. 25KF0029). Total: ¥2,000,000", "lang": "English" },
         { "date": "2025.01 - 2025.12", "title": "Research Collaborator: Geopolitical Position and Social Religiosity in Eastern South Kurdistan", "desc": "JFE 21st Century Foundation - Asian History Research Grant. Total: ¥1,500,000", "lang": "Japanese" },
-        { "date": "2021.10 - 2026.03", "title": "Research Collaborator: The State, Politics and Religious Nationalisms", "desc": "Project Number: 21KK0019. Total Amount: ¥13,200,000", "lang": "English" },
-        { "date": "2024.04 - 2027.03", "title": "Joint Researcher: Everyday Forms of Ethnicity and Religiosity in Kurdistan", "desc": "ILCAA Joint Research Project, TUFS (ID: jrp000305)", "lang": "English" },
-        { "date": "2021.10 - 2022.03", "title": "Co-investigator: Identity and Politics of Kurdish Diaspora in Japan", "desc": "SPRING Fellowship Qualified Student (Class 2), University of Tsukuba. Annual: ¥250,000", "lang": "Japanese" }
+        { "date": "2021.10 - 2026.03", "title": "Research Collaborator: The State, Politics and Religious Nationalisms: Iran's Western Border Region", "desc": "Project Number: 21KK0019. Total Amount: ¥13,200,000", "lang": "English" },
+        { "date": "2024.04 - 2027.03", "title": "Joint Researcher: Everyday Forms of Ethnicity and Religiosity in Kurdistan", "desc": "ILCAA Joint Research Project, TUFS (ID: jrp000305)", "lang": "English" }
     ],
     "sec-papers": [
         { "date": "2025.11", "title": "Kurds in Japan: Current Situation and Issues of Arrival and Settlement", "desc": "In: Hen'you suru Imin Komyuniti [2nd Ed], Akashi Shoten. ISBN: 9784750360089", "lang": "Japanese" },
@@ -82,7 +117,7 @@ const cvDataJp = {
         "email": "ahmadian@tufs.ac.jp",
         "address": "東京都府中市朝日町3-11-1",
         "languages": "英語 (上級), 日本語 (ビジネス), ペルシア語 (母語), クルド語 (母語), タジク語 (母語), アラビア語 (中級), アゼルバイジャン・トルコ語 (初級)",
-        "technical": "質的研究手法、データ分析、異文化コミュニケーション / SPSS, R, MS Office (Word, Excel, PowerPoint, Publisher), Adobe Photoshop, Corel Video Studio, WordPress",
+        "technical": "質的研究手法、データ分析、異文化コミュニケーション、SPSS、R、MS Office、Adobe Photoshop、WordPress",
         "web": "researchmap.jp/sohrab.ahmadian"
     },
     "sec-edu": [
@@ -100,8 +135,7 @@ const cvDataJp = {
         { "date": "2022.08 - 現在", "title": "日本語トレーナー", "desc": "Learnlight UK Limited (オンライン講座)", "lang": "日本語" },
         { "date": "2021.07 - 2022.03", "title": "筑波大学 大学院人文社会科学研究科 研究員", "desc": "筑波大学", "lang": "日本語" },
         { "date": "2021.04 - 2021.12", "title": "ティーチング・アシスタント (表象メディア論)", "desc": "筑波大学。授業計画の補助、学生への個別指導およびディスカッションのモデレートを担当。", "lang": "日本語" },
-        { "date": "2021.08 - 2021.11", "title": "リサーチ・アシスタント (RA)", "desc": "筑波大学 大学院人文社会科学研究科", "lang": "日本語" },
-        { "date": "2014.11 - 2016.11", "title": "ペルシア語講師", "desc": "イラン・オックスフォード語学学院 (日本人対象)", "lang": "日本語" }
+        { "date": "2021.08 - 2021.11", "title": "リサーチ・アシスタント (RA)", "desc": "筑波大学 大学院人文社会科学研究科", "lang": "日本語" }
     ],
     "sec-projects": [
         { "date": "2025.04 - 2027.03", "title": "共存のダイナミクス―地域住民、地方自治体と在日クルド、アフガン移民コミュニティー", "desc": "日本学術振興会 特別研究員奨励費 (25KF0029)。総額 2,000,000円", "lang": "日本語" },
@@ -149,8 +183,16 @@ const cvDataJp = {
 // --- END DATA DASHBOARD ---
 
 function switchLang(lang) {
-    document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('btn-' + lang).classList.add('active');
+    // Force reset button states
+    const btnEn = document.getElementById('btn-en');
+    const btnJp = document.getElementById('btn-jp');
+    
+    if (btnEn) btnEn.classList.remove('active');
+    if (btnJp) btnJp.classList.remove('active');
+    
+    const activeBtn = document.getElementById('btn-' + lang);
+    if (activeBtn) activeBtn.classList.add('active');
+
     const data = (lang === 'en') ? cvDataEn : cvDataJp;
     const p = data.profile;
 
@@ -191,3 +233,5 @@ function switchLang(lang) {
 }
 window.onload = () => switchLang('en');
 </script>
+</body>
+</html>
