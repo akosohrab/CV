@@ -6,7 +6,7 @@
     <style>
         :root { --primary: #1a2a3a; --bg: #f4f7f9; --accent: #27ae60; --danger: #e74c3c; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 1100px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; }
         .setup-bar { background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #ddd; display: flex; gap: 10px; margin-bottom: 20px; }
         input[type="password"] { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
@@ -15,9 +15,9 @@
         .btn-save { background: var(--accent); color: white; width: 100%; padding: 20px; font-size: 18px; margin-top: 30px; }
         .section-box { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 25px; background: #fff; }
         .section-header { background: #f8f9fa; padding: 12px 20px; font-weight: bold; color: var(--primary); border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .entry-row { display: grid; grid-template-columns: 120px 2fr 3fr 110px 100px; gap: 10px; padding: 12px; border-bottom: 1px solid #eee; align-items: center; }
+        .entry-row { display: grid; grid-template-columns: 140px 2fr 3fr 110px 100px; gap: 10px; padding: 12px; border-bottom: 1px solid #eee; align-items: center; }
         .entry-row:last-child { border-bottom: none; }
-        input, select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        input, select, textarea { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; font-family: inherit; }
         .move-btns { display: flex; gap: 5px; }
         .action-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 5px; border-radius: 4px; }
         .action-btn:hover { background: #f0f0f0; }
@@ -35,10 +35,10 @@
 
 <div class="container">
     <div class="header">
-        <h1>CV Content Manager Pro</h1>
+        <h1>Sohrab's CV Manager</h1>
         <div class="tab-bar">
-            <div id="tab-en" class="tab active" onclick="switchTab('en')">English</div>
-            <div id="tab-jp" class="tab" onclick="switchTab('jp')">日本語</div>
+            <div id="tab-en" class="tab active" onclick="switchTab('en')">English (Mirror Data)</div>
+            <div id="tab-jp" class="tab" onclick="switchTab('jp')">日本語 (Mirror Data)</div>
         </div>
     </div>
 
@@ -50,7 +50,7 @@
     <div id="editor-ui" style="display:none;">
         <div id="records-container"></div>
 
-        <h3>9. Language Proficiency & Technical Skills</h3>
+        <h3>Profile, Languages & Technical Skills</h3>
         <div id="profile-container" class="profile-grid"></div>
         
         <button class="btn btn-save" onclick="saveFile()">2. Push Changes Live</button>
@@ -70,7 +70,7 @@
 
     const keys = ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-books", "sec-talks", "sec-misc"];
     const sectionLabels = {
-        en: ["Education", "Appointments", "Grants", "Publications", "Books", "Presentations", "Awards"],
+        en: ["Education", "Appointments", "Research Projects", "Publications", "Books", "Presentations", "Awards"],
         jp: ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "書籍・出版物", "講演・口頭発表", "受賞・社会貢献"]
     };
     const langOptions = ["English", "Japanese", "Persian", "Kurdish", "Arabic", "Turkish"];
@@ -88,17 +88,17 @@
             const bin = atob(d.content.replace(/\s/g, ''));
             fullFileContent = new TextDecoder().decode(Uint8Array.from(bin, m => m.charCodeAt(0)));
             
+            // Fixed extraction logic for Profile-enabled index
             cvData.en = JSON.parse(fullFileContent.match(/const cvDataEn = ([\s\S]*?);/)[1]);
             cvData.jp = JSON.parse(fullFileContent.match(/const cvDataJp = ([\s\S]*?);/)[1]);
             
             renderAll();
             document.getElementById('editor-ui').style.display = 'block';
             notify("Data Loaded!", "#27ae60");
-        } catch (e) { notify("Error: Check your index.html markers", "#e74c3c"); }
+        } catch (e) { notify("Error: Sync failed. Check index.html markers.", "#e74c3c"); }
     }
 
     function renderAll() {
-        // Render Academic Records
         const recordsContainer = document.getElementById('records-container');
         recordsContainer.innerHTML = '';
         
@@ -110,15 +110,15 @@
                 <div class="entry-row">
                     <input value="${item.date || ''}" placeholder="Date" onchange="updateEntry('${key}',${i},'date',this.value)">
                     <input value="${item.title || ''}" placeholder="Title" onchange="updateEntry('${key}',${i},'title',this.value)">
-                    <input value="${item.desc || ''}" placeholder="Details" onchange="updateEntry('${key}',${i},'desc',this.value)">
+                    <textarea placeholder="Details" onchange="updateEntry('${key}',${i},'desc',this.value)">${item.desc || ''}</textarea>
                     <select onchange="updateEntry('${key}',${i},'lang',this.value)">
                         <option value="">No Lang</option>
                         ${langOptions.map(l => `<option value="${l}" ${item.lang===l?'selected':''}>${l}</option>`).join('')}
                     </select>
                     <div class="move-btns">
-                        <button class="action-btn" onclick="moveItem('${key}',${i},-1)">↑</button>
-                        <button class="action-btn" onclick="moveItem('${key}',${i},1)">↓</button>
-                        <button class="action-btn del-btn" onclick="deleteItem('${key}',${i})">✕</button>
+                        <button class="action-btn" title="Move Up" onclick="moveItem('${key}',${i},-1)">↑</button>
+                        <button class="action-btn" title="Move Down" onclick="moveItem('${key}',${i},1)">↓</button>
+                        <button class="action-btn del-btn" title="Delete" onclick="deleteItem('${key}',${i})">✕</button>
                     </div>
                 </div>
             `).join('');
@@ -126,22 +126,22 @@
             sectionDiv.innerHTML = `
                 <div class="section-header">
                     <span>${sectionLabels[currentLang][idx]}</span>
-                    <button class="btn add-btn" onclick="addItem('${key}')">+ Add New Entry</button>
+                    <button class="btn add-btn" onclick="addItem('${key}')">+ Add Record</button>
                 </div>
                 ${rows}
             `;
             recordsContainer.appendChild(sectionDiv);
         });
 
-        // Render Profile & Skills at the bottom
         const p = cvData[currentLang].profile;
         document.getElementById('profile-container').innerHTML = `
-            <div><label>Full Name</label><input value="${p.name}" onchange="updateProfile('name',this.value)"></div>
-            <div><label>Current Title</label><input value="${p.title}" onchange="updateProfile('title',this.value)"></div>
+            <div><label>Name</label><input value="${p.name}" onchange="updateProfile('name',this.value)"></div>
+            <div><label>Job Title</label><input value="${p.title}" onchange="updateProfile('title',this.value)"></div>
             <div><label>Affiliation</label><input value="${p.uni}" onchange="updateProfile('uni',this.value)"></div>
-            <div><label>Email Contact</label><input value="${p.email}" onchange="updateProfile('email',this.value)"></div>
-            <div style="grid-column: span 2;"><label>Languages (comma separated)</label><input value="${p.languages}" onchange="updateProfile('languages',this.value)"></div>
-            <div style="grid-column: span 2;"><label>Technical Skills</label><input value="${p.technical}" onchange="updateProfile('technical',this.value)"></div>
+            <div><label>Email</label><input value="${p.email}" onchange="updateProfile('email',this.value)"></div>
+            <div style="grid-column: span 2;"><label>Languages (Levels)</label><input value="${p.languages}" onchange="updateProfile('languages',this.value)"></div>
+            <div style="grid-column: span 2;"><label>Technical Skills</label><textarea onchange="updateProfile('technical',this.value)">${p.technical}</textarea></div>
+            <div style="grid-column: span 2;"><label>ResearchMap URL</label><input value="${p.web}" onchange="updateProfile('web',this.value)"></div>
         `;
     }
 
@@ -149,12 +149,12 @@
     function updateEntry(k, i, f, v) { cvData[currentLang][k][i][f] = v; }
     
     function addItem(key) {
-        cvData[currentLang][key].unshift({ date: "2026.01", title: "New Title", desc: "Description", lang: "" });
+        cvData[currentLang][key].unshift({ date: "2026.01", title: "New Entry", desc: "", lang: "" });
         renderAll();
     }
 
     function deleteItem(key, index) {
-        if(confirm("Permanently delete this entry?")) {
+        if(confirm("Permanently delete this?")) {
             cvData[currentLang][key].splice(index, 1);
             renderAll();
         }
@@ -162,9 +162,9 @@
 
     function moveItem(key, index, direction) {
         const arr = cvData[currentLang][key];
-        const newIndex = index + direction;
-        if (newIndex >= 0 && newIndex < arr.length) {
-            [arr[index], arr[newIndex]] = [arr[newIndex], arr[index]];
+        const newIdx = index + direction;
+        if (newIdx >= 0 && newIdx < arr.length) {
+            [arr[index], arr[newIdx]] = [arr[newIdx], arr[index]];
             renderAll();
         }
     }
@@ -186,9 +186,9 @@
             const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "CV Pro Dashboard Update", content: btoa(String.fromCharCode(...b)), sha: fileSha })
+                body: JSON.stringify({ message: "CV Pro Dashboard Sync", content: btoa(String.fromCharCode(...b)), sha: fileSha })
             });
-            if (res.ok) notify("Success! Website updated.", "#27ae60");
+            if (res.ok) notify("Success! Live in 60s.", "#27ae60");
         } catch (e) { notify("Save Error!", "#e74c3c"); }
     }
 
