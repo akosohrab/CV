@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Academic CV Manager Pro</title>
+    <title>Sohrab's Master CV Editor</title>
     <style>
         :root { --primary: #1a2a3a; --bg: #f4f7f9; --accent: #27ae60; --danger: #e74c3c; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
         .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; }
         .setup-bar { background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #ddd; display: flex; gap: 10px; margin-bottom: 20px; }
@@ -16,15 +16,13 @@
         .section-box { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 25px; background: #fff; }
         .section-header { background: #f8f9fa; padding: 12px 20px; font-weight: bold; color: var(--primary); border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .entry-row { display: grid; grid-template-columns: 140px 2fr 3fr 110px 100px; gap: 10px; padding: 12px; border-bottom: 1px solid #eee; align-items: center; }
-        input, select, textarea { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; font-family: inherit; }
-        textarea { resize: vertical; min-height: 45px; }
+        textarea { resize: vertical; min-height: 45px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 100%; font-family: inherit; }
+        input, select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 100%; }
         .move-btns { display: flex; gap: 5px; }
         .action-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 5px; border-radius: 4px; }
-        .action-btn:hover { background: #f0f0f0; }
         .del-btn { color: var(--danger); }
         .add-btn { background: #3498db; color: white; font-size: 12px; }
         .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #fdfdfd; padding: 20px; border: 1px solid #eee; border-radius: 8px; margin-top: 10px; }
-        .profile-grid label { font-size: 11px; font-weight: bold; color: #777; display: block; margin-bottom: 4px; }
         #status { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; display: none; z-index: 1000; color: white; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .tab-bar { display: flex; gap: 10px; }
         .tab { padding: 10px 25px; cursor: pointer; border-radius: 5px; background: #ddd; font-weight: bold; }
@@ -35,24 +33,22 @@
 
 <div class="container">
     <div class="header">
-        <h1>Sohrab's CV Editor Pro</h1>
+        <h1>CV Editor Pro</h1>
         <div class="tab-bar">
-            <div id="tab-en" class="tab active" onclick="switchTab('en')">English Editor</div>
-            <div id="tab-jp" class="tab" onclick="switchTab('jp')">日本語エディタ</div>
+            <div id="tab-en" class="tab active" onclick="switchTab('en')">English</div>
+            <div id="tab-jp" class="tab" onclick="switchTab('jp')">日本語</div>
         </div>
     </div>
 
     <div class="setup-bar">
-        <input type="password" id="token" placeholder="GitHub Token (with 'Contents' Write access)">
+        <input type="password" id="token" placeholder="GitHub Token (with Contents Write access)">
         <button class="btn btn-load" onclick="fetchFile()">1. Load Records</button>
     </div>
 
     <div id="editor-ui" style="display:none;">
         <div id="records-container"></div>
-
-        <h3>9. Profile Information & Skills</h3>
+        <h3>Profile & Skills</h3>
         <div id="profile-container" class="profile-grid"></div>
-        
         <button class="btn btn-save" onclick="saveFile()">2. Push Changes Live</button>
     </div>
 </div>
@@ -78,7 +74,7 @@
     async function fetchFile() {
         const t = document.getElementById('token').value;
         if (!t) return alert("Please enter your token!");
-        notify("Loading data...", "#3498db");
+        notify("Loading...", "#3498db");
         try {
             const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
                 headers: { 'Authorization': `token ${t}` }
@@ -88,24 +84,22 @@
             const bin = atob(d.content.replace(/\s/g, ''));
             fullFileContent = new TextDecoder().decode(Uint8Array.from(bin, m => m.charCodeAt(0)));
             
-            // Refined extraction logic to ensure profile object is captured
+            // Fixed extraction logic
             cvData.en = JSON.parse(fullFileContent.match(/const cvDataEn = ([\s\S]*?);/)[1]);
             cvData.jp = JSON.parse(fullFileContent.match(/const cvDataJp = ([\s\S]*?);/)[1]);
             
             renderAll();
             document.getElementById('editor-ui').style.display = 'block';
             notify("Ready!", "#27ae60");
-        } catch (e) { notify("Error reading markers in index.html", "#e74c3c"); }
+        } catch (e) { notify("Marker Error: Replace index.html code", "#e74c3c"); }
     }
 
     function renderAll() {
         const recordsContainer = document.getElementById('records-container');
         recordsContainer.innerHTML = '';
-        
         keys.forEach((key, idx) => {
             const sectionDiv = document.createElement('div');
             sectionDiv.className = 'section-box';
-            
             let rows = cvData[currentLang][key].map((item, i) => `
                 <div class="entry-row">
                     <input value="${item.date || ''}" onchange="updateEntry('${key}',${i},'date',this.value)">
@@ -122,22 +116,14 @@
                     </div>
                 </div>
             `).join('');
-
-            sectionDiv.innerHTML = `
-                <div class="section-header">
-                    <span>${sectionLabels[currentLang][idx]}</span>
-                    <button class="btn add-btn" onclick="addItem('${key}')">+ Add Record</button>
-                </div>
-                ${rows}
-            `;
+            sectionDiv.innerHTML = `<div class="section-header"><span>${sectionLabels[currentLang][idx]}</span><button class="btn add-btn" onclick="addItem('${key}')">+ Add</button></div>${rows}`;
             recordsContainer.appendChild(sectionDiv);
         });
 
         const p = cvData[currentLang].profile;
         document.getElementById('profile-container').innerHTML = `
-            <div><label>Full Name</label><input value="${p.name}" onchange="updateProfile('name',this.value)"></div>
-            <div><label>Academic Title</label><input value="${p.title}" onchange="updateProfile('title',this.value)"></div>
-            <div><label>University</label><input value="${p.uni}" onchange="updateProfile('uni',this.value)"></div>
+            <div><label>Name</label><input value="${p.name}" onchange="updateProfile('name',this.value)"></div>
+            <div><label>Title</label><input value="${p.title}" onchange="updateProfile('title',this.value)"></div>
             <div><label>Email</label><input value="${p.email}" onchange="updateProfile('email',this.value)"></div>
             <div style="grid-column: span 2;"><label>Languages (Levels)</label><input value="${p.languages}" onchange="updateProfile('languages',this.value)"></div>
             <div style="grid-column: span 2;"><label>Technical Skills</label><textarea onchange="updateProfile('technical',this.value)">${p.technical}</textarea></div>
@@ -146,34 +132,14 @@
 
     function updateProfile(f, v) { cvData[currentLang].profile[f] = v; }
     function updateEntry(k, i, f, v) { cvData[currentLang][k][i][f] = v; }
-    
-    function addItem(key) {
-        cvData[currentLang][key].unshift({ date: "2026", title: "Title", desc: "Details", lang: "" });
-        renderAll();
-    }
-
-    function deleteItem(key, index) {
-        if(confirm("Delete this entry permanently?")) {
-            cvData[currentLang][key].splice(index, 1);
-            renderAll();
-        }
-    }
-
+    function addItem(key) { cvData[currentLang][key].unshift({ date: "2026", title: "New Title", desc: "Details", lang: "" }); renderAll(); }
+    function deleteItem(key, index) { if(confirm("Delete?")) { cvData[currentLang][key].splice(index, 1); renderAll(); } }
     function moveItem(key, index, direction) {
         const arr = cvData[currentLang][key];
         const newIdx = index + direction;
-        if (newIdx >= 0 && newIdx < arr.length) {
-            [arr[index], arr[newIdx]] = [arr[newIdx], arr[index]];
-            renderAll();
-        }
+        if (newIdx >= 0 && newIdx < arr.length) { [arr[index], arr[newIdx]] = [arr[newIdx], arr[index]]; renderAll(); }
     }
-
-    function switchTab(l) { 
-        currentLang = l; 
-        document.getElementById('tab-en').className = l==='en'?'tab active':'tab';
-        document.getElementById('tab-jp').className = l==='jp'?'tab active':'tab';
-        renderAll(); 
-    }
+    function switchTab(l) { currentLang = l; document.getElementById('tab-en').className = l==='en'?'tab active':'tab'; document.getElementById('tab-jp').className = l==='jp'?'tab active':'tab'; renderAll(); }
 
     async function saveFile() {
         const t = document.getElementById('token').value;
@@ -185,11 +151,11 @@
             const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "CV Standardized Update", content: btoa(String.fromCharCode(...b)), sha: fileSha })
+                body: JSON.stringify({ message: "Dashboard Sync", content: btoa(String.fromCharCode(...b)), sha: fileSha })
             });
             if (res.ok) notify("Success! Website Updated.", "#27ae60");
             else notify("Save Error", "#e74c3c");
-        } catch (e) { notify("Network Error", "#e74c3c"); }
+        } catch (e) { notify("Error Saving", "#e74c3c"); }
     }
 
     function notify(m, c) {
