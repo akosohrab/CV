@@ -2,174 +2,174 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sohrab's CV Professional Editor</title>
+    <title>Sohrab's CV Ultimate Dashboard v6.1</title>
     <style>
-        :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
-        .nav-bar { background: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .container { max-width: 1100px; margin: 30px auto; }
-        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        .profile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        label { display: block; font-size: 11px; font-weight: bold; color: #666; margin-bottom: 5px; text-transform: uppercase; }
-        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; margin-bottom: 15px; padding-bottom: 10px; }
-        .entry-card { background: #f9f9f9; border-left: 4px solid var(--accent); padding: 15px; margin-bottom: 15px; position: relative; }
+        :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #f4f7f6; --info: #3498db; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        .nav-bar { background: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .container { max-width: 1100px; margin: 25px auto; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #eee; }
+        
+        /* Label Editor Box */
+        .label-editor { background: #f0f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; border: 1px dashed var(--info); }
+        .label-editor div { display: flex; flex-direction: column; }
+        
+        .entry-box { border-left: 5px solid var(--accent); background: #fafafa; padding: 15px; margin-bottom: 12px; position: relative; border-radius: 6px; }
+        label { display: block; font-size: 11px; font-weight: bold; color: #777; margin-bottom: 4px; text-transform: uppercase; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
+        textarea { height: 80px; resize: vertical; }
+        
         .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-save { background: var(--accent); color: white; width: 100%; font-size: 18px; margin-top: 30px; }
-        .btn-add-cat { background: #3498db; color: white; }
-        .btn-delete { background: #e74c3c; color: white; padding: 5px 10px; font-size: 12px; }
-        #status { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; color: white; font-weight: bold; display: none; z-index: 2000; }
+        .btn-add { background: var(--accent); color: white; }
+        .btn-new-cat { background: var(--info); color: white; margin-bottom: 20px; }
+        .btn-save { background: var(--accent); color: white; width: 100%; padding: 18px; font-size: 18px; margin-top: 20px; box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3); }
+        .btn-delete { background: #e74c3c; color: white; padding: 5px 10px; font-size: 11px; position: absolute; right: 10px; top: 10px; }
+        
+        #status { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 30px; color: white; font-weight: bold; display: none; z-index: 2000; }
     </style>
 </head>
 <body>
 
 <div class="nav-bar">
-    <div style="font-size: 18px; font-weight: bold;">CV MANAGER PRO v4.0</div>
-    <div style="display: flex; gap: 10px;">
-        <select id="lang-switch" onchange="switchLang(this.value)" style="width: auto; background: rgba(255,255,255,0.1); color: white;">
+    <div style="font-size: 20px; font-weight: 800;">CV MANAGER PRO <span style="font-weight: 300; font-size: 14px;">v6.1</span></div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <select id="lang-switch" onchange="switchEditorLang(this.value)" style="padding: 8px; border-radius: 4px; background: rgba(255,255,255,0.2); color: white; border: none;">
             <option value="en" style="color: black;">English Data</option>
-            <option value="jp" style="color: black;">Japanese Data</option>
+            <option value="jp" style="color: black;">日本語データ</option>
         </select>
-        <input type="password" id="gh-token" placeholder="GitHub Token" style="width: 200px; margin: 0;">
-        <button class="btn" style="background: white; color: var(--primary);" onclick="fetchCVData()">Load Records</button>
+        <input type="password" id="gh-token" placeholder="GitHub Token" style="width: 220px; margin: 0; padding: 8px;">
+        <button class="btn" style="background: white; color: var(--primary);" onclick="fetchData()">Sync with GitHub</button>
     </div>
 </div>
 
-<div class="container" id="main-editor" style="display: none;">
-    <div class="card">
-        <div class="section-header"><h3>Profile Information</h3></div>
-        <div id="profile-container" class="profile-grid"></div>
+<div class="container" id="editor-ui" style="display:none;">
+    <div style="text-align: right;">
+        <button class="btn btn-new-cat" onclick="addNewCategory()">+ Create New Category</button>
     </div>
-
-    <div style="text-align: right; margin-bottom: 20px;">
-        <button class="btn btn-add-cat" onclick="addNewCategory()">+ Create New Section (Category)</button>
-    </div>
-
+    
     <div id="dynamic-sections"></div>
-
-    <button class="btn btn-save" onclick="saveCVData()">PUSH ALL CHANGES TO GITHUB</button>
+    
+    <button class="btn btn-save" onclick="saveToGitHub()">PUBLISH ALL CHANGES LIVE</button>
 </div>
 
 <div id="status"></div>
 
 <script>
-    const CONFIG = { owner: "akosohrab", repo: "CV", path: "index.html" };
-    let fileSha = "", fullContent = "", cvData = {}, currentLang = 'en';
+    const GITHUB = { owner: "akosohrab", repo: "CV", path: "index.html" };
+    let cvData = {}, fileSha = "", originalFullContent = "", currentLang = 'en';
 
-    async function fetchCVData() {
+    async function fetchData() {
         const token = document.getElementById('gh-token').value;
-        if(!token) return notify("Enter Token!", "#e74c3c");
+        if(!token) return showMsg("Please enter GitHub Token!", "#e74c3c");
         
-        notify("Connecting...", "#f39c12");
+        showMsg("Connecting to GitHub...", "#f39c12");
         try {
-            const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`, {
+            const res = await fetch(`https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${GITHUB.path}`, {
                 headers: { 'Authorization': `token ${token}` }
             });
             const d = await res.json();
             fileSha = d.sha;
-            fullContent = decodeURIComponent(escape(atob(d.content)));
+            originalFullContent = decodeURIComponent(escape(atob(d.content)));
             
-            // Robust Marker Identification
-            const rawData = fullContent.split('/* DATA_START */')[1].split('/* DATA_END */')[0];
-            cvData = JSON.parse(rawData.replace('const cvData = ', '').trim().replace(/;$/, ''));
+            const jsonPart = originalFullContent.split('/* DATA_START */')[1].split('/* DATA_END */')[0];
+            cvData = JSON.parse(jsonPart.replace('const cvData = ', '').trim().replace(/;$/, ''));
             
-            document.getElementById('main-editor').style.display = 'block';
-            renderAll();
-            notify("Data Synced!", "#27ae60");
+            document.getElementById('editor-ui').style.display = 'block';
+            render();
+            showMsg("Sync Successful!", "#27ae60");
         } catch (e) {
-            notify("Marker Pattern Error!", "#e74c3c");
-            console.error(e);
+            showMsg("Error identifying markers!", "#e74c3c");
         }
     }
 
-    function renderAll() {
-        const p = cvData[currentLang].profile;
-        // 1. Render Profile
-        document.getElementById('profile-container').innerHTML = `
-            <div><label>Name</label><input value="${p.name}" onchange="cvData['${currentLang}'].profile.name=this.value"></div>
-            <div><label>Academic Title</label><input value="${p.title}" onchange="cvData['${currentLang}'].profile.title=this.value"></div>
-            <div><label>Institution</label><input value="${p.uni}" onchange="cvData['${currentLang}'].profile.uni=this.value"></div>
-            <div><label>Email</label><input value="${p.email}" onchange="cvData['${currentLang}'].profile.email=this.value"></div>
-            <div><label>Web/ResearchMap</label><input value="${p.web}" onchange="cvData['${currentLang}'].profile.web=this.value"></div>
-            <div><label>Address</label><input value="${p.address}" onchange="cvData['${currentLang}'].profile.address=this.value"></div>
-            <div style="grid-column: span 3;"><label>Skills & Languages</label>
-            <textarea onchange="cvData['${currentLang}'].profile.technical=this.value">${p.technical}</textarea></div>
-        `;
-
-        // 2. Render Dynamic Sections
-        const list = document.getElementById('dynamic-sections');
-        list.innerHTML = '';
+    function render() {
+        const sectionsList = document.getElementById('dynamic-sections');
+        sectionsList.innerHTML = '';
         
-        // Find all categories except profile
-        const categories = Object.keys(cvData[currentLang]).filter(k => k !== 'profile');
+        // Identity Categories (except labels and profile)
+        const categories = Object.keys(cvData[currentLang]).filter(c => c !== 'profile');
         
         categories.forEach(cat => {
-            let sectionHTML = `
+            let html = `
                 <div class="card">
-                    <div class="section-header">
-                        <h3 style="text-transform: uppercase;">${cat}</h3>
-                        <button class="btn btn-add-cat" onclick="addEntry('${cat}')">+ Add Item</button>
+                    <div class="label-editor">
+                        <div>
+                            <label>English Section Title (H2)</label>
+                            <input value="${cvData.labels.en[cat] || ''}" onchange="cvData.labels.en['${cat}']=this.value">
+                        </div>
+                        <div>
+                            <label>Japanese Section Title (H2)</label>
+                            <input value="${cvData.labels.jp[cat] || ''}" onchange="cvData.labels.jp['${cat}']=this.value">
+                        </div>
                     </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        <h3 style="margin:0; font-size: 16px; color: var(--primary);">ID: ${cat}</h3>
+                        <button class="btn btn-add" onclick="addItem('${cat}')">+ Add New Record</button>
+                    </div>
+                    
                     <div id="items-${cat}">`;
             
             cvData[currentLang][cat].forEach((item, i) => {
-                sectionHTML += `
-                    <div class="entry-card">
-                        <button class="btn btn-delete" style="float:right" onclick="deleteEntry('${cat}',${i})">X</button>
-                        <div style="display:grid; grid-template-columns: 150px 1fr; gap:15px;">
-                            <div><label>Date</label><input value="${item.date}" onchange="cvData['${currentLang}']['${cat}'][${i}].date=this.value"></div>
+                html += `
+                    <div class="entry-box">
+                        <button class="btn btn-delete" onclick="removeItem('${cat}', ${i})">Delete</button>
+                        <div style="display:grid; grid-template-columns: 180px 1fr; gap:15px;">
+                            <div><label>Date/Period</label><input value="${item.date}" onchange="cvData['${currentLang}']['${cat}'][${i}].date=this.value"></div>
                             <div><label>Title</label><input value="${item.title}" onchange="cvData['${currentLang}']['${cat}'][${i}].title=this.value"></div>
                             <div style="grid-column: span 2;"><label>Description</label>
                             <textarea onchange="cvData['${currentLang}']['${cat}'][${i}].desc=this.value">${item.desc}</textarea></div>
                         </div>
                     </div>`;
             });
-            sectionHTML += `</div></div>`;
-            list.innerHTML += sectionHTML;
+            html += `</div></div>`;
+            sectionsList.innerHTML += html;
         });
     }
 
     function addNewCategory() {
-        const name = prompt("Enter category name in English (e.g. awards, grants, teaching):");
-        if (name && !cvData.en[name]) {
-            cvData.en[name] = [];
-            cvData.jp[name] = [];
-            renderAll();
-            notify("New Category Added!", "#3498db");
+        const id = prompt("Enter a unique ID for the new category (English small letters, no spaces, e.g., 'grants'):");
+        if (id && !cvData.en[id]) {
+            // Initialize labels and empty arrays for both languages
+            cvData.labels.en[id] = id.toUpperCase();
+            cvData.labels.jp[id] = id.toUpperCase();
+            cvData.en[id] = [];
+            cvData.jp[id] = [];
+            render();
+            showMsg("Category Created! Define labels in the blue box.", "#info");
         }
     }
 
-    function addEntry(cat) { cvData[currentLang][cat].unshift({date:"2026", title:"New Entry", desc:""}); renderAll(); }
-    function deleteEntry(cat, i) { if(confirm("Delete this entry?")) { cvData[currentLang][cat].splice(i,1); renderAll(); } }
-    function switchLang(l) { currentLang = l; renderAll(); }
+    function addItem(cat) { cvData[currentLang][cat].unshift({date:"2026", title:"New Record", desc:""}); render(); }
+    function removeItem(cat, i) { if(confirm("Permanently delete this record?")) { cvData[currentLang][cat].splice(i, 1); render(); } }
+    function switchEditorLang(l) { currentLang = l; render(); }
 
-    async function saveCVData() {
+    async function saveToGitHub() {
         const token = document.getElementById('gh-token').value;
-        notify("Pushing to GitHub...", "#f39c12");
+        showMsg("Uploading to GitHub...", "#f39c12");
         
-        const newDataBlock = `/* DATA_START */\nconst cvData = ${JSON.stringify(cvData, null, 2)};\n/* DATA_END */`;
-        const finalContent = fullContent.replace(/\/\* DATA_START \*\/[\s\S]*?\/\* DATA_END \*\//, newDataBlock);
+        const newData = `/* DATA_START */\nconst cvData = ${JSON.stringify(cvData, null, 2)};\n/* DATA_END */`;
+        const updatedContent = originalFullContent.replace(/\/\* DATA_START \*\/[\s\S]*?\/\* DATA_END \*\//, newData);
 
         try {
-            const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`, {
+            const res = await fetch(`https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${GITHUB.path}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: "CV Update: Dynamic Category Sync",
-                    content: btoa(unescape(encodeURIComponent(finalContent))),
+                    message: "CV Manager: Label & Record Sync",
+                    content: btoa(unescape(encodeURIComponent(updatedContent))),
                     sha: fileSha
                 })
             });
             if(res.ok) {
-                const updated = await res.json();
-                fileSha = updated.content.sha;
-                notify("Success! Live in 60s.", "#27ae60");
+                const result = await res.json();
+                fileSha = result.content.sha;
+                showMsg("Changes Published Successfully!", "#27ae60");
             } else { throw new Error(); }
-        } catch (e) { notify("Save Failed!", "#e74c3c"); }
+        } catch (e) { showMsg("Failed to Push! Check Token.", "#e74c3c"); }
     }
 
-    function notify(m, c) {
+    function showMsg(m, c) {
         const s = document.getElementById('status');
         s.innerText = m; s.style.background = c; s.style.display = 'block';
         setTimeout(() => s.style.display = 'none', 4000);
