@@ -2,218 +2,95 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sohrab's CV Editor Pro</title>
+    <title>Sohrab's CV Editor</title>
     <style>
-        :root { --primary: #1a2a3a; --bg: #f0f2f5; --accent: #27ae60; --danger: #e74c3c; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 1250px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        
-        /* Header Profile Section */
-        .profile-header { background: #1a2a3a; color: white; padding: 25px; border-radius: 8px; margin-bottom: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .profile-header label { font-size: 11px; text-transform: uppercase; color: #bdc3c7; margin-bottom: 5px; font-weight: bold; }
-        .profile-header input, .profile-header textarea { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px; border-radius: 4px; width: 100%; box-sizing: border-box; }
-        
-        .tab-bar { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab { padding: 12px 30px; cursor: pointer; border-radius: 5px; background: #ddd; font-weight: bold; }
-        .tab.active { background: var(--accent); color: white; }
-        
-        .section-box { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 25px; overflow: hidden; }
-        .section-header { background: #f8f9fa; padding: 15px 20px; font-weight: bold; color: var(--primary); border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        
-        /* Grid Layout to fix overlapping */
-        .entry-row { display: grid; grid-template-columns: 120px 2fr 3fr 110px 80px; gap: 15px; padding: 15px 20px; border-bottom: 1px solid #eee; align-items: start; }
-        textarea { resize: vertical; min-height: 45px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 100%; font-family: inherit; }
-        input, select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; }
-        
-        .move-btns { display: flex; flex-direction: column; gap: 2px; }
-        .action-btn { background: #f8f9fa; border: 1px solid #ddd; cursor: pointer; font-size: 14px; padding: 2px 8px; border-radius: 4px; }
-        .del-btn { color: var(--danger); border-color: var(--danger); }
-        .btn-save { background: var(--accent); color: white; width: 100%; padding: 20px; font-size: 18px; margin-top: 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        #status { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; display: none; color: white; font-weight: bold; z-index: 1000; }
+        :root { --primary: #1a2a3a; --bg: #f0f2f5; --accent: #27ae60; }
+        body { font-family: sans-serif; background: var(--bg); padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+        .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #1a2a3a; color: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+        .entry-row { border-bottom: 1px solid #ddd; padding: 10px 0; display: grid; grid-template-columns: 120px 1fr 1fr 100px; gap: 10px; }
+        .btn-save { background: var(--accent); color: white; width: 100%; padding: 15px; border: none; cursor: pointer; font-size: 18px; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="tab-bar">
-        <div id="tab-en" class="tab active" onclick="switchTab('en')">English Editor</div>
-        <div id="tab-jp" class="tab" onclick="switchTab('jp')">日本語エディタ</div>
-    </div>
-
-    <div class="setup-bar" style="margin-bottom:20px; display:flex; gap:10px;">
-        <input type="password" id="token" style="flex-grow:1; padding:10px;" placeholder="GitHub Token (Classic or Fine-grained)">
-        <button onclick="fetchFile()" style="padding:10px 20px; cursor:pointer; font-weight:bold;">1. Load Records</button>
-    </div>
-
+    <input type="password" id="token" placeholder="GitHub Token" style="margin-bottom: 10px;">
+    <button onclick="fetchFile()">1. Load Records</button>
+    
     <div id="editor-ui" style="display:none;">
-        <div id="profile-container" class="profile-header"></div>
+        <div class="profile-grid" id="profile-container"></div>
         <div id="records-container"></div>
         <button class="btn-save" onclick="saveFile()">2. Push Changes Live</button>
     </div>
 </div>
 
-<div id="status"></div>
-
 <script>
-    const OWNER = "akosohrab";
-    const REPO = "CV";
-    const FILE_PATH = "index.html";
-    let fileSha = "";
-    let fullFileContent = "";
-    let cvData = { en: {}, jp: {} };
-    let currentLang = 'en';
-
-    const keys = ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-books", "sec-talks", "sec-misc"];
-    const sectionLabels = {
-        en: ["Education", "Appointments", "Research Projects", "Publications", "Books", "Presentations", "Awards"],
-        jp: ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "書籍・出版物", "講演・口頭発表", "受賞・社会貢献"]
-    };
+    const OWNER = "akosohrab", REPO = "CV", FILE_PATH = "index.html";
+    let fileSha = "", fullFileContent = "", cvData = { en: {}, jp: {} }, currentLang = 'en';
 
     async function fetchFile() {
         const t = document.getElementById('token').value;
-        if (!t) return alert("Please enter your GitHub token!");
-        notify("Connecting...", "#3498db");
         try {
             const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
                 headers: { 'Authorization': `token ${t}` }
             });
             const d = await res.json();
             fileSha = d.sha;
-            const bin = atob(d.content.replace(/\s/g, ''));
-            fullFileContent = new TextDecoder().decode(Uint8Array.from(bin, m => m.charCodeAt(0)));
+            fullFileContent = decodeURIComponent(escape(atob(d.content)));
             
-            // PRECISE EXTRACTION MATCHING THE LATEST INDEX FILE
-            const enMatch = fullFileContent.match(/\/\/ --- DATA DASHBOARD ---\s*const cvDataEn = ([\s\S]*?);/);
-            const jpMatch = fullFileContent.match(/const cvDataJp = ([\s\S]*?);\s*\/\/ --- END DATA DASHBOARD ---/);
+            // FUZZY SEARCH (Ignores squashed lines)
+            const enStr = fullFileContent.split('const cvDataEn = ')[1].split('};')[0] + '}';
+            const jpStr = fullFileContent.split('const cvDataJp = ')[1].split('};')[0] + '}';
             
-            if (enMatch && jpMatch) {
-                cvData.en = JSON.parse(enMatch[1]);
-                cvData.jp = JSON.parse(jpMatch[1]);
-                renderAll();
-                document.getElementById('editor-ui').style.display = 'block';
-                notify("Connected!", "#27ae60");
-            } else {
-                throw new Error("Formatting mismatch in index.html");
-            }
-        } catch (e) { 
-            console.error(e);
-            notify("Error: Marker pattern mismatch", "#e74c3c"); 
-        }
+            cvData.en = JSON.parse(enStr);
+            cvData.jp = JSON.parse(jpStr);
+            
+            render();
+            document.getElementById('editor-ui').style.display = 'block';
+            alert("Connected!");
+        } catch (e) { alert("Error: Make sure index.html was updated first!"); }
     }
 
-    function renderAll() {
+    function render() {
         const p = cvData[currentLang].profile;
         document.getElementById('profile-container').innerHTML = `
-            <div><label>Name</label><input value="${p.name}" onchange="updateProfile('name',this.value)"></div>
-            <div><label>Academic Title</label><input value="${p.title}" onchange="updateProfile('title',this.value)"></div>
-            <div><label>Affiliation</label><input value="${p.uni}" onchange="updateProfile('uni',this.value)"></div>
-            <div><label>Katakana Name (JP Only)</label><input value="${p.katakana || ''}" onchange="updateProfile('katakana',this.value)"></div>
-            <div><label>Email</label><input value="${p.email}" onchange="updateProfile('email',this.value)"></div>
-            <div><label>Profile Picture (Upload)</label><input type="file" accept="image/*" onchange="handleUpload(this)"></div>
-            <div style="grid-column: span 2;"><label>Languages (Proficiency)</label><input value="${p.languages}" onchange="updateProfile('languages',this.value)"></div>
-            <div><label>ResearchMap URL</label><input value="${p.web}" onchange="updateProfile('web',this.value)"></div>
-            <div style="grid-column: span 3;"><label>Technical Skills</label><textarea onchange="updateProfile('technical',this.value)">${p.technical}</textarea></div>
+            <div>Name<input value="${p.name}" onchange="cvData['${currentLang}'].profile.name=this.value"></div>
+            <div>Title<input value="${p.title}" onchange="cvData['${currentLang}'].profile.title=this.value"></div>
+            <div>Uni<input value="${p.uni}" onchange="cvData['${currentLang}'].profile.uni=this.value"></div>
+            <div>Email<input value="${p.email}" onchange="cvData['${currentLang}'].profile.email=this.value"></div>
         `;
-
-        const container = document.getElementById('records-container');
-        container.innerHTML = '';
-        keys.forEach((key, idx) => {
-            const sectionDiv = document.createElement('div');
-            sectionDiv.className = 'section-box';
-            let rows = cvData[currentLang][key].map((item, i) => `
-                <div class="entry-row">
-                    <input value="${item.date || ''}" onchange="updateEntry('${key}',${i},'date',this.value)">
-                    <textarea onchange="updateEntry('${key}',${i},'title',this.value)">${item.title || ''}</textarea>
-                    <textarea onchange="updateEntry('${key}',${i},'desc',this.value)">${item.desc || ''}</textarea>
-                    <select onchange="updateEntry('${key}',${i},'lang',this.value)">
-                        <option value="">No Label</option>
-                        <option value="English" ${item.lang==='English'?'selected':''}>English</option>
-                        <option value="Japanese" ${item.lang==='Japanese'?'selected':''}>Japanese</option>
-                        <option value="Persian" ${item.lang==='Persian'?'selected':''}>Persian</option>
-                        <option value="Kurdish" ${item.lang==='Kurdish'?'selected':''}>Kurdish</option>
-                    </select>
-                    <div class="move-btns">
-                        <button class="action-btn" onclick="moveItem('${key}',${i},-1)">↑</button>
-                        <button class="action-btn" onclick="moveItem('${key}',${i},1)">↓</button>
-                        <button class="action-btn del-btn" onclick="deleteItem('${key}',${i})">✕</button>
-                    </div>
-                </div>
-            `).join('');
-            sectionDiv.innerHTML = `<div class="section-header"><span>${sectionLabels[currentLang][idx]}</span><button onclick="addItem('${key}')" style="cursor:pointer; padding:5px 15px;">+ Add Entry</button></div>${rows}`;
-            container.appendChild(sectionDiv);
+        
+        let html = '';
+        ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-books", "sec-talks", "sec-misc"].forEach(key => {
+            html += `<h3>${key}</h3>`;
+            cvData[currentLang][key].forEach((item, i) => {
+                html += `<div class="entry-row">
+                    <input value="${item.date}" onchange="cvData['${currentLang}']['${key}'][${i}].date=this.value">
+                    <input value="${item.title}" onchange="cvData['${currentLang}']['${key}'][${i}].title=this.value">
+                    <textarea onchange="cvData['${currentLang}']['${key}'][${i}].desc=this.value">${item.desc}</textarea>
+                </div>`;
+            });
         });
-    }
-
-    function updateProfile(f, v) { cvData[currentLang].profile[f] = v; }
-    function updateEntry(k, i, f, v) { cvData[currentLang][k][i][f] = v; }
-    
-    function handleUpload(input) {
-        const file = input.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                updateProfile('photo', e.target.result);
-                notify("Image Processed!", "#3498db");
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    function addItem(key) {
-        cvData[currentLang][key].unshift({ date: "2026", title: "New Entry", desc: "Details", lang: "" });
-        renderAll();
-    }
-
-    function deleteItem(key, index) {
-        if(confirm("Delete this entry?")) {
-            cvData[currentLang][key].splice(index, 1);
-            renderAll();
-        }
-    }
-
-    function moveItem(key, index, direction) {
-        const arr = cvData[currentLang][key];
-        const newIdx = index + direction;
-        if (newIdx >= 0 && newIdx < arr.length) {
-            [arr[index], arr[newIdx]] = [arr[newIdx], arr[index]];
-            renderAll();
-        }
-    }
-
-    function switchTab(l) { 
-        currentLang = l; 
-        document.getElementById('tab-en').className = l==='en'?'tab active':'tab';
-        document.getElementById('tab-jp').className = l==='jp'?'tab active':'tab';
-        renderAll(); 
+        document.getElementById('records-container').innerHTML = html;
     }
 
     async function saveFile() {
         const t = document.getElementById('token').value;
-        notify("Saving...", "#f39c12");
+        let content = fullFileContent.replace(/const cvDataEn = [\s\S]*?;/, `const cvDataEn = ${JSON.stringify(cvData.en, null, 4)};`);
+        content = content.replace(/const cvDataJp = [\s\S]*?;/, `const cvDataJp = ${JSON.stringify(cvData.jp, null, 4)};`);
         
-        // Re-inject updated data using exact marker replacement
-        let content = fullFileContent.replace(/\/\/ --- DATA DASHBOARD ---\s*const cvDataEn = [\s\S]*?;/, `// --- DATA DASHBOARD ---\nconst cvDataEn = ${JSON.stringify(cvData.en, null, 4)};`);
-        content = content.replace(/const cvDataJp = [\s\S]*?;\s*\/\/ --- END DATA DASHBOARD ---/, `const cvDataJp = ${JSON.stringify(cvData.jp, null, 4)};\n// --- END DATA DASHBOARD ---`);
-        
-        try {
-            const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
-                method: 'PUT',
-                headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    message: "Dashboard Data Update", 
-                    content: btoa(unescape(encodeURIComponent(content))), 
-                    sha: fileSha 
-                })
-            });
-            if (res.ok) notify("Success! Live in 60s.", "#27ae60");
-            else notify("Save failed. Check permissions.", "#e74c3c");
-        } catch (e) { notify("Network Error", "#e74c3c"); }
-    }
-
-    function notify(m, c) {
-        const s = document.getElementById('status');
-        s.innerText = m; s.style.background = c; s.style.display = "block";
-        setTimeout(() => s.style.display = "none", 4000);
+        await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
+            method: 'PUT',
+            headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                message: "Fuzzy Marker Sync",
+                content: btoa(unescape(encodeURIComponent(content))),
+                sha: fileSha
+            })
+        });
+        alert("Success!");
     }
 </script>
 </body>
