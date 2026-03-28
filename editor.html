@@ -2,95 +2,159 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sohrab's CV Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sohrab's CV Professional Manager</title>
     <style>
-        :root { --primary: #1a2a3a; --bg: #f0f2f5; --accent: #27ae60; }
-        body { font-family: sans-serif; background: var(--bg); padding: 20px; }
-        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
-        .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #1a2a3a; color: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
-        input, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
-        .entry-row { border-bottom: 1px solid #ddd; padding: 10px 0; display: grid; grid-template-columns: 120px 1fr 1fr 100px; gap: 10px; }
-        .btn-save { background: var(--accent); color: white; width: 100%; padding: 15px; border: none; cursor: pointer; font-size: 18px; margin-top: 20px; }
+        :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #f4f7f6; --white: #ffffff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 0; color: #333; }
+        .nav-bar { background: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .card { background: var(--white); padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        label { display: block; font-size: 12px; font-weight: bold; color: #666; margin-bottom: 5px; text-transform: uppercase; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
+        textarea { height: 80px; resize: vertical; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; margin-bottom: 15px; padding-bottom: 10px; }
+        .entry-card { background: #f9f9f9; border-left: 4px solid var(--accent); padding: 15px; margin-bottom: 15px; position: relative; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-outline { background: transparent; border: 1px solid white; color: white; }
+        .btn-danger { background: #e74c3c; color: white; padding: 5px 10px; font-size: 12px; }
+        .btn-add { background: #3498db; color: white; margin-bottom: 20px; }
+        #status-bar { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: 5px; color: white; font-weight: bold; display: none; z-index: 2000; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <input type="password" id="token" placeholder="GitHub Token" style="margin-bottom: 10px;">
-    <button onclick="fetchFile()">1. Load Records</button>
-    
-    <div id="editor-ui" style="display:none;">
-        <div class="profile-grid" id="profile-container"></div>
-        <div id="records-container"></div>
-        <button class="btn-save" onclick="saveFile()">2. Push Changes Live</button>
+<div class="nav-bar">
+    <div style="font-size: 20px; font-weight: bold;">CV MANAGER PRO</div>
+    <div style="display: flex; gap: 10px;">
+        <select id="lang-switch" onchange="switchEditorLang(this.value)" style="width: auto; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3);">
+            <option value="en" style="color: black;">English Data</option>
+            <option value="jp" style="color: black;">Japanese Data</option>
+        </select>
+        <input type="password" id="gh-token" placeholder="GitHub Token" style="width: 200px; margin: 0;">
+        <button class="btn btn-outline" onclick="fetchCVData()">Load Data</button>
     </div>
 </div>
 
-<script>
-    const OWNER = "akosohrab", REPO = "CV", FILE_PATH = "index.html";
-    let fileSha = "", fullFileContent = "", cvData = { en: {}, jp: {} }, currentLang = 'en';
+<div class="container" id="main-editor" style="display: none;">
+    <div class="card">
+        <div class="section-header"><h3>Profile Information</h3></div>
+        <div id="profile-fields" class="grid-3"></div>
+    </div>
 
-    async function fetchFile() {
-        const t = document.getElementById('token').value;
+    <div id="sections-container"></div>
+
+    <button class="btn btn-primary" style="width: 100%; font-size: 20px; padding: 20px;" onclick="saveCVData()">PUSH ALL CHANGES TO GITHUB</button>
+</div>
+
+<div id="status-bar"></div>
+
+<script>
+    const CONFIG = { owner: "akosohrab", repo: "CV", path: "index.html" };
+    let fileSha = "", fullContent = "", cvData = {}, currentLang = 'en';
+
+    async function fetchCVData() {
+        const token = document.getElementById('gh-token').value;
+        if(!token) return showStatus("Enter Token First!", "#e74c3c");
+        
+        showStatus("Fetching Data...", "#f39c12");
         try {
-            const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
-                headers: { 'Authorization': `token ${t}` }
+            const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`, {
+                headers: { 'Authorization': `token ${token}` }
             });
             const d = await res.json();
             fileSha = d.sha;
-            fullFileContent = decodeURIComponent(escape(atob(d.content)));
+            fullContent = decodeURIComponent(escape(atob(d.content)));
             
-            // FUZZY SEARCH (Ignores squashed lines)
-            const enStr = fullFileContent.split('const cvDataEn = ')[1].split('};')[0] + '}';
-            const jpStr = fullFileContent.split('const cvDataJp = ')[1].split('};')[0] + '}';
+            const rawData = fullContent.split('/* DATA_START */')[1].split('/* DATA_END */')[0];
+            cvData = JSON.parse(rawData.replace('const cvData = ', '').trim().replace(/;$/, ''));
             
-            cvData.en = JSON.parse(enStr);
-            cvData.jp = JSON.parse(jpStr);
-            
-            render();
-            document.getElementById('editor-ui').style.display = 'block';
-            alert("Connected!");
-        } catch (e) { alert("Error: Make sure index.html was updated first!"); }
+            document.getElementById('main-editor').style.display = 'block';
+            renderEditor();
+            showStatus("Data Synchronized!", "#27ae60");
+        } catch (e) {
+            showStatus("Marker Pattern Mismatch!", "#e74c3c");
+            console.error(e);
+        }
     }
 
-    function render() {
+    function renderEditor() {
         const p = cvData[currentLang].profile;
-        document.getElementById('profile-container').innerHTML = `
-            <div>Name<input value="${p.name}" onchange="cvData['${currentLang}'].profile.name=this.value"></div>
-            <div>Title<input value="${p.title}" onchange="cvData['${currentLang}'].profile.title=this.value"></div>
-            <div>Uni<input value="${p.uni}" onchange="cvData['${currentLang}'].profile.uni=this.value"></div>
-            <div>Email<input value="${p.email}" onchange="cvData['${currentLang}'].profile.email=this.value"></div>
-        `;
+        const profileFields = [
+            {label: "Full Name", key: "name"}, {label: "Katakana", key: "katakana"}, {label: "Academic Title", key: "title"},
+            {label: "Institution", key: "uni"}, {label: "Email", key: "email"}, {label: "Address", key: "address"},
+            {label: "ResearchMap URL", key: "web"}
+        ];
         
-        let html = '';
-        ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-books", "sec-talks", "sec-misc"].forEach(key => {
-            html += `<h3>${key}</h3>`;
-            cvData[currentLang][key].forEach((item, i) => {
-                html += `<div class="entry-row">
-                    <input value="${item.date}" onchange="cvData['${currentLang}']['${key}'][${i}].date=this.value">
-                    <input value="${item.title}" onchange="cvData['${currentLang}']['${key}'][${i}].title=this.value">
-                    <textarea onchange="cvData['${currentLang}']['${key}'][${i}].desc=this.value">${item.desc}</textarea>
-                </div>`;
+        let pHTML = profileFields.map(f => `
+            <div><label>${f.label}</label><input value="${p[f.key] || ''}" onchange="updateProfile('${f.key}', this.value)"></div>
+        `).join('');
+        pHTML += `<div style="grid-column: span 3;"><label>Languages & Technical Skills</label>
+                  <textarea onchange="updateProfile('technical', this.value)">${p.technical}</textarea></div>`;
+        document.getElementById('profile-fields').innerHTML = pHTML;
+
+        let sHTML = '';
+        const sections = { edu: "Education", work: "Appointments", projects: "Projects", papers: "Publications", talks: "Presentations", misc: "Awards" };
+        
+        for (const [key, label] of Object.entries(sections)) {
+            sHTML += `<div class="card"><div class="section-header"><h3>${label}</h3>
+                      <button class="btn btn-add" onclick="addNewEntry('${key}')">+ Add New</button></div>
+                      <div id="section-${key}">`;
+            
+            (cvData[currentLang][key] || []).forEach((item, i) => {
+                sHTML += `
+                    <div class="entry-card">
+                        <button class="btn btn-danger" style="position:absolute; right:10px; top:10px;" onclick="removeEntry('${key}', ${i})">Delete</button>
+                        <div style="display:grid; grid-template-columns: 150px 1fr; gap:15px;">
+                            <div><label>Date</label><input value="${item.date}" onchange="updateEntry('${key}', ${i}, 'date', this.value)"></div>
+                            <div><label>Title</label><input value="${item.title}" onchange="updateEntry('${key}', ${i}, 'title', this.value)"></div>
+                            <div style="grid-column: span 2;"><label>Description</label>
+                            <textarea onchange="updateEntry('${key}', ${i}, 'desc', this.value)">${item.desc}</textarea></div>
+                        </div>
+                    </div>`;
             });
-        });
-        document.getElementById('records-container').innerHTML = html;
+            sHTML += `</div></div>`;
+        }
+        document.getElementById('sections-container').innerHTML = sHTML;
     }
 
-    async function saveFile() {
-        const t = document.getElementById('token').value;
-        let content = fullFileContent.replace(/const cvDataEn = [\s\S]*?;/, `const cvDataEn = ${JSON.stringify(cvData.en, null, 4)};`);
-        content = content.replace(/const cvDataJp = [\s\S]*?;/, `const cvDataJp = ${JSON.stringify(cvData.jp, null, 4)};`);
+    function updateProfile(key, val) { cvData[currentLang].profile[key] = val; }
+    function updateEntry(sec, i, key, val) { cvData[currentLang][sec][i][key] = val; }
+    function addNewEntry(sec) { cvData[currentLang][sec].unshift({date: "2026", title: "New Entry", desc: ""}); renderEditor(); }
+    function removeEntry(sec, i) { if(confirm("Delete this?")) { cvData[currentLang][sec].splice(i, 1); renderEditor(); } }
+    function switchEditorLang(lang) { currentLang = lang; renderEditor(); }
+
+    async function saveCVData() {
+        const token = document.getElementById('gh-token').value;
+        showStatus("Saving to GitHub...", "#f39c12");
         
-        await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
-            method: 'PUT',
-            headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                message: "Fuzzy Marker Sync",
-                content: btoa(unescape(encodeURIComponent(content))),
-                sha: fileSha
-            })
-        });
-        alert("Success!");
+        const newDataBlock = `/* DATA_START */\nconst cvData = ${JSON.stringify(cvData, null, 2)};\n/* DATA_END */`;
+        const finalContent = fullContent.replace(/\/\* DATA_START \*\/[\s\S]*?\/\* DATA_END \*\//, newDataBlock);
+
+        try {
+            const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: "Professional CV Update",
+                    content: btoa(unescape(encodeURIComponent(finalContent))),
+                    sha: fileSha
+                })
+            });
+            if(res.ok) {
+                const updated = await res.json();
+                fileSha = updated.content.sha; // Update local SHA
+                showStatus("Published Successfully!", "#27ae60");
+            } else { throw new Error(); }
+        } catch (e) { showStatus("Save Failed!", "#e74c3c"); }
+    }
+
+    function showStatus(msg, color) {
+        const s = document.getElementById('status-bar');
+        s.innerText = msg; s.style.background = color; s.style.display = 'block';
+        setTimeout(() => s.style.display = 'none', 4000);
     }
 </script>
 </body>
