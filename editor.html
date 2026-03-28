@@ -2,57 +2,78 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sohrab's CV Ultimate Dashboard v6.1</title>
+    <title>Sohrab's CV Ultimate Manager v7.5</title>
     <style>
         :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #f4f7f6; --info: #3498db; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
-        .nav-bar { background: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        
+        /* Navigation & Status */
+        .nav-bar { background: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .nav-controls { display: flex; gap: 10px; align-items: center; }
+        
+        /* Layout Containers */
         .container { max-width: 1100px; margin: 25px auto; }
-        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #eee; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #eee; position: relative; }
         
-        /* Label Editor Box */
-        .label-editor { background: #f0f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; border: 1px dashed var(--info); }
-        .label-editor div { display: flex; flex-direction: column; }
+        /* Reordering Buttons */
+        .reorder-zone { position: absolute; left: -45px; top: 10px; display: flex; flex-direction: column; gap: 5px; }
+        .btn-order { background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 5px; cursor: pointer; font-size: 10px; transition: 0.2s; }
+        .btn-order:hover { background: var(--info); color: white; border-color: var(--info); }
+
+        /* Profile & Labels Editor */
+        .profile-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .label-editor { background: #eef6fc; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; border: 1px dashed var(--info); }
         
-        .entry-box { border-left: 5px solid var(--accent); background: #fafafa; padding: 15px; margin-bottom: 12px; position: relative; border-radius: 6px; }
-        label { display: block; font-size: 11px; font-weight: bold; color: #777; margin-bottom: 4px; text-transform: uppercase; }
+        /* Entry Styling */
+        .entry-box { border-left: 5px solid var(--accent); background: #fafafa; padding: 15px; margin-bottom: 15px; border-radius: 6px; position: relative; transition: 0.3s; }
+        .entry-box:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        
+        label { display: block; font-size: 11px; font-weight: bold; color: #777; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
         input, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
-        textarea { height: 80px; resize: vertical; }
-        
+        textarea { height: 70px; resize: vertical; }
+
+        /* General Buttons */
         .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn-add { background: var(--accent); color: white; }
+        .btn-save { background: var(--accent); color: white; width: 100%; padding: 18px; font-size: 18px; margin-top: 20px; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4); }
         .btn-new-cat { background: var(--info); color: white; margin-bottom: 20px; }
-        .btn-save { background: var(--accent); color: white; width: 100%; padding: 18px; font-size: 18px; margin-top: 20px; box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3); }
-        .btn-delete { background: #e74c3c; color: white; padding: 5px 10px; font-size: 11px; position: absolute; right: 10px; top: 10px; }
-        
-        #status { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 30px; color: white; font-weight: bold; display: none; z-index: 2000; }
+        .btn-danger { background: #e74c3c; color: white; padding: 5px 10px; font-size: 11px; position: absolute; right: 10px; top: 10px; }
+
+        #status-msg { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 30px; border-radius: 50px; color: white; font-weight: bold; display: none; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
 <div class="nav-bar">
-    <div style="font-size: 20px; font-weight: 800;">CV MANAGER PRO <span style="font-weight: 300; font-size: 14px;">v6.1</span></div>
-    <div style="display: flex; gap: 10px; align-items: center;">
-        <select id="lang-switch" onchange="switchEditorLang(this.value)" style="padding: 8px; border-radius: 4px; background: rgba(255,255,255,0.2); color: white; border: none;">
-            <option value="en" style="color: black;">English Data</option>
-            <option value="jp" style="color: black;">日本語データ</option>
+    <div style="font-size: 20px; font-weight: 800;">CV MANAGER PRO <span style="font-weight: 300; font-size: 13px;">v7.5</span></div>
+    <div class="nav-controls">
+        <select id="lang-switch" onchange="switchEditorLang(this.value)" style="padding: 8px; border-radius: 4px; background: rgba(255,255,255,0.2); color: white; border: none; cursor:pointer;">
+            <option value="en" style="color:black">English View</option>
+            <option value="jp" style="color:black">日本語表示</option>
         </select>
-        <input type="password" id="gh-token" placeholder="GitHub Token" style="width: 220px; margin: 0; padding: 8px;">
-        <button class="btn" style="background: white; color: var(--primary);" onclick="fetchData()">Sync with GitHub</button>
+        <input type="password" id="gh-token" placeholder="GitHub Personal Token" style="width: 220px; padding: 8px; border-radius: 4px; border:none;">
+        <button class="btn" style="background: white; color: var(--primary);" onclick="fetchData()">Load Records</button>
     </div>
 </div>
 
 <div class="container" id="editor-ui" style="display:none;">
+    <div class="card">
+        <div style="border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px;">
+            <h3 style="margin:0; color: var(--primary);">IDENTITY & PROFILE (HEADER)</h3>
+        </div>
+        <div id="profile-editor-ui" class="profile-grid"></div>
+    </div>
+
     <div style="text-align: right;">
         <button class="btn btn-new-cat" onclick="addNewCategory()">+ Create New Category</button>
     </div>
     
     <div id="dynamic-sections"></div>
     
-    <button class="btn btn-save" onclick="saveToGitHub()">PUBLISH ALL CHANGES LIVE</button>
+    <button class="btn btn-save" onclick="saveToGitHub()">PUBLISH ALL CHANGES TO GITHUB</button>
 </div>
 
-<div id="status"></div>
+<div id="status-msg"></div>
 
 <script>
     const GITHUB = { owner: "akosohrab", repo: "CV", path: "index.html" };
@@ -60,9 +81,9 @@
 
     async function fetchData() {
         const token = document.getElementById('gh-token').value;
-        if(!token) return showMsg("Please enter GitHub Token!", "#e74c3c");
+        if(!token) return showNotify("Token is required!", "#e74c3c");
         
-        showMsg("Connecting to GitHub...", "#f39c12");
+        showNotify("Syncing with GitHub...", "#f39c12");
         try {
             const res = await fetch(`https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${GITHUB.path}`, {
                 headers: { 'Authorization': `token ${token}` }
@@ -71,40 +92,54 @@
             fileSha = d.sha;
             originalFullContent = decodeURIComponent(escape(atob(d.content)));
             
+            // Marker Extraction
             const jsonPart = originalFullContent.split('/* DATA_START */')[1].split('/* DATA_END */')[0];
             cvData = JSON.parse(jsonPart.replace('const cvData = ', '').trim().replace(/;$/, ''));
             
             document.getElementById('editor-ui').style.display = 'block';
             render();
-            showMsg("Sync Successful!", "#27ae60");
+            showNotify("Data Synced Successfully!", "#27ae60");
         } catch (e) {
-            showMsg("Error identifying markers!", "#e74c3c");
+            showNotify("Error: Marker pattern mismatch!", "#e74c3c");
         }
     }
 
     function render() {
+        // 1. Render Header Profile Info
+        const p = cvData[currentLang].profile;
+        document.getElementById('profile-editor-ui').innerHTML = `
+            <div><label>Name</label><input value="${p.name || ''}" onchange="cvData['${currentLang}'].profile.name=this.value"></div>
+            <div><label>Katakana (JP only)</label><input value="${p.katakana || ''}" onchange="cvData['${currentLang}'].profile.katakana=this.value"></div>
+            <div><label>Academic Title</label><input value="${p.title || ''}" onchange="cvData['${currentLang}'].profile.title=this.value"></div>
+            <div><label>Affiliation</label><input value="${p.uni || ''}" onchange="cvData['${currentLang}'].profile.uni=this.value"></div>
+            <div><label>Email</label><input value="${p.email || ''}" onchange="cvData['${currentLang}'].profile.email=this.value"></div>
+            <div><label>Website/Map</label><input value="${p.web || ''}" onchange="cvData['${currentLang}'].profile.web=this.value"></div>
+            <div style="grid-column: span 2;"><label>Postal Address</label><input value="${p.address || ''}" onchange="cvData['${currentLang}'].profile.address=this.value"></div>
+            <div style="grid-column: span 2;"><label>Technical Skills & Methodology</label><textarea onchange="cvData['${currentLang}'].profile.technical=this.value">${p.technical || ''}</textarea></div>
+        `;
+
+        // 2. Render Categories with Reordering
         const sectionsList = document.getElementById('dynamic-sections');
         sectionsList.innerHTML = '';
-        
-        // Identity Categories (except labels and profile)
         const categories = Object.keys(cvData[currentLang]).filter(c => c !== 'profile');
         
-        categories.forEach(cat => {
+        categories.forEach((cat, idx) => {
             let html = `
                 <div class="card">
+                    <div class="reorder-zone">
+                        <button class="btn-order" onclick="moveCategory('${cat}', -1)">▲</button>
+                        <button class="btn-order" onclick="moveCategory('${cat}', 1)">▼</button>
+                    </div>
+                    
                     <div class="label-editor">
-                        <div>
-                            <label>English Section Title (H2)</label>
-                            <input value="${cvData.labels.en[cat] || ''}" onchange="cvData.labels.en['${cat}']=this.value">
-                        </div>
-                        <div>
-                            <label>Japanese Section Title (H2)</label>
-                            <input value="${cvData.labels.jp[cat] || ''}" onchange="cvData.labels.jp['${cat}']=this.value">
-                        </div>
+                        <div><label>English Display Title</label>
+                        <input value="${cvData.labels.en[cat] || ''}" onchange="cvData.labels.en['${cat}']=this.value"></div>
+                        <div><label>Japanese Display Title</label>
+                        <input value="${cvData.labels.jp[cat] || ''}" onchange="cvData.labels.jp['${cat}']=this.value"></div>
                     </div>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                        <h3 style="margin:0; font-size: 16px; color: var(--primary);">ID: ${cat}</h3>
+                        <h3 style="margin:0; font-size: 13px; color: #888;">ID: ${cat}</h3>
                         <button class="btn btn-add" onclick="addItem('${cat}')">+ Add New Record</button>
                     </div>
                     
@@ -113,11 +148,11 @@
             cvData[currentLang][cat].forEach((item, i) => {
                 html += `
                     <div class="entry-box">
-                        <button class="btn btn-delete" onclick="removeItem('${cat}', ${i})">Delete</button>
+                        <button class="btn btn-danger" onclick="removeItem('${cat}', ${i})">X</button>
                         <div style="display:grid; grid-template-columns: 180px 1fr; gap:15px;">
                             <div><label>Date/Period</label><input value="${item.date}" onchange="cvData['${currentLang}']['${cat}'][${i}].date=this.value"></div>
                             <div><label>Title</label><input value="${item.title}" onchange="cvData['${currentLang}']['${cat}'][${i}].title=this.value"></div>
-                            <div style="grid-column: span 2;"><label>Description</label>
+                            <div style="grid-column: span 2;"><label>Description/Details (Links allowed)</label>
                             <textarea onchange="cvData['${currentLang}']['${cat}'][${i}].desc=this.value">${item.desc}</textarea></div>
                         </div>
                     </div>`;
@@ -127,50 +162,55 @@
         });
     }
 
+    function moveCategory(key, direction) {
+        ['en', 'jp'].forEach(lang => {
+            const keys = Object.keys(cvData[lang]);
+            const index = keys.indexOf(key);
+            const newIndex = index + direction;
+            if (newIndex >= 1 && newIndex < keys.length) {
+                const tempData = {};
+                keys.splice(index, 1);
+                keys.splice(newIndex, 0, key);
+                keys.forEach(k => tempData[k] = cvData[lang][k]);
+                cvData[lang] = tempData;
+            }
+        });
+        render();
+    }
+
     function addNewCategory() {
-        const id = prompt("Enter a unique ID for the new category (English small letters, no spaces, e.g., 'grants'):");
+        const id = prompt("Unique ID (e.g., 'grants'):");
         if (id && !cvData.en[id]) {
-            // Initialize labels and empty arrays for both languages
             cvData.labels.en[id] = id.toUpperCase();
             cvData.labels.jp[id] = id.toUpperCase();
             cvData.en[id] = [];
             cvData.jp[id] = [];
             render();
-            showMsg("Category Created! Define labels in the blue box.", "#info");
+            showNotify("Category Created Locally!", "#3498db");
         }
     }
 
     function addItem(cat) { cvData[currentLang][cat].unshift({date:"2026", title:"New Record", desc:""}); render(); }
-    function removeItem(cat, i) { if(confirm("Permanently delete this record?")) { cvData[currentLang][cat].splice(i, 1); render(); } }
+    function removeItem(cat, i) { if(confirm("Permanently delete?")) { cvData[currentLang][cat].splice(i, 1); render(); } }
     function switchEditorLang(l) { currentLang = l; render(); }
 
     async function saveToGitHub() {
         const token = document.getElementById('gh-token').value;
-        showMsg("Uploading to GitHub...", "#f39c12");
-        
+        showNotify("Pushing to GitHub...", "#f39c12");
         const newData = `/* DATA_START */\nconst cvData = ${JSON.stringify(cvData, null, 2)};\n/* DATA_END */`;
-        const updatedContent = originalFullContent.replace(/\/\* DATA_START \*\/[\s\S]*?\/\* DATA_END \*\//, newData);
-
+        const updated = originalFullContent.replace(/\/\* DATA_START \*\/[\s\S]*?\/\* DATA_END \*\//, newData);
         try {
             const res = await fetch(`https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${GITHUB.path}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: "CV Manager: Label & Record Sync",
-                    content: btoa(unescape(encodeURIComponent(updatedContent))),
-                    sha: fileSha
-                })
+                body: JSON.stringify({ message: "CV Professional Sync v7.5", content: btoa(unescape(encodeURIComponent(updated))), sha: fileSha })
             });
-            if(res.ok) {
-                const result = await res.json();
-                fileSha = result.content.sha;
-                showMsg("Changes Published Successfully!", "#27ae60");
-            } else { throw new Error(); }
-        } catch (e) { showMsg("Failed to Push! Check Token.", "#e74c3c"); }
+            if(res.ok) { const result = await res.json(); fileSha = result.content.sha; showNotify("LIVE SUCCESS!", "#27ae60"); }
+        } catch (e) { showNotify("PUSH FAILED!", "#e74c3c"); }
     }
 
-    function showMsg(m, c) {
-        const s = document.getElementById('status');
+    function showNotify(m, c) {
+        const s = document.getElementById('status-msg');
         s.innerText = m; s.style.background = c; s.style.display = 'block';
         setTimeout(() => s.style.display = 'none', 4000);
     }
