@@ -1,44 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sohrab AHMADIAN, Ph.D. | Academic CV</title>
-    <style>
-        :root { --primary: #1a2a3a; --accent: #27ae60; --bg: #fdfdfd; }
-        * { box-sizing: border-box; }
-        body { font-family: "Times New Roman", "Hiragino Mincho ProN", serif; margin: 0; background: var(--bg); color: #222; line-height: 1.5; }
-        .toolbar { background: var(--primary); padding: 12px; position: sticky; top: 0; display: flex; justify-content: center; gap: 15px; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .btn { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.3s; font-size: 13px; }
-        .btn.active { background: var(--accent); border-color: var(--accent); }
-        .cv-paper { max-width: 850px; margin: 30px auto; background: white; padding: 60px 80px; box-shadow: 0 0 30px rgba(0,0,0,0.05); min-height: 100vh; }
-        header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
-        .header-text h1 { margin: 0; font-size: 28px; color: var(--primary); }
-        .katakana-name { display: block; font-size: 16px; margin-top: 5px; color: #666; font-weight: normal; }
-        .photo { width: 130px; height: 170px; border: 1px solid #ccc; overflow: hidden; }
-        .photo img { width: 100%; height: auto; }
-        h2 { border-bottom: 2px solid var(--primary); color: var(--primary); text-transform: uppercase; margin-top: 35px; font-size: 16px; padding-bottom: 3px; letter-spacing: 1px; }
-        .entry { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 15px; }
-        .entry-date { font-size: 13px; color: #666; font-family: Arial, sans-serif; }
-        .entry-title { font-weight: bold; font-size: 15px; }
-        .lang-badge { font-size: 10px; background: #f0f0f0; color: #666; padding: 2px 6px; border-radius: 3px; margin-left: 8px; vertical-align: middle; font-weight: normal; }
-        .entry-desc { font-size: 14px; color: #333; display: block; margin-top: 2px; }
-        .skills-grid { display: grid; grid-template-columns: 120px 1fr; gap: 10px; font-size: 14px; margin-top: 20px; }
-        footer { margin-top: 50px; text-align: center; font-size: 11px; color: #bbb; border-top: 1px solid #eee; padding-top: 20px; }
-        @media print { .toolbar { display: none; } .cv-paper { box-shadow: none; padding: 0; margin: 0; width: 100%; } }
-    </style>
-</head>
-<body>
-
-<div class="toolbar">
-    <button class="btn" id="btn-en" onclick="switchLang('en')">English</button>
-    <button class="btn" id="btn-jp" onclick="switchLang('jp')">日本語</button>
-    <button class="btn" style="background:#fff; color:#1a2a3a; border:none;" onclick="window.print()">Print PDF</button>
-</div>
-
-<div class="cv-paper" id="cv-content"></div>
-
-<script>
 // --- DATA DASHBOARD ---
 const cvDataEn = {
     "profile": {
@@ -53,90 +12,47 @@ const cvDataEn = {
         "web": "researchmap.jp/sohrab.ahmadian"
     },
     "sec-edu": [
-        {
-            "date": "2018.04 - 2024.03",
-            "title": "Ph.D. International and Advanced Japan Studies",
-            "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba. Supervisor: Prof. AKASHI Junichi. Dissertation: 'Zainichi Kurudo-jin no Diaspora Taiken ni kan-suru Shitsuteki Kenkyu' (A Qualitative Study on the Diaspora Experience of Kurds in Japan)"
-        },
-        {
-            "date": "2013.09 - 2015.09",
-            "title": "M.A. Japan Studies",
-            "desc": "Graduate School of World Studies, University of Tehran. Supervisor: Prof. Mohammed Naghizadeh. Master's Project: 'Abe Seiken ni okeru Heiwa-shugi no Shinro' (The Course of Pacifism under the Abe Administration)"
-        }
+        { "date": "2018.04 - 2024.03", "title": "Ph.D. International and Advanced Japan Studies", "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba. Supervisor: Prof. AKASHI Junichi. Dissertation: 'Zainichi Kurudo-jin no Diaspora Taiken ni kan-suru Shitsuteki Kenkyu'" },
+        { "date": "2013.09 - 2015.09", "title": "M.A. Japan Studies", "desc": "Graduate School of World Studies, University of Tehran. Supervisor: Prof. Mohammed Naghizadeh. Master's Project: 'Abe Seiken ni okeru Heiwa-shugi no Shinro'" },
+        { "date": "2008.09 - 2012.07", "title": "B.A. Japanese language and literature", "desc": "Faculty of Foreign Languages and Literatures, University of Tehran. Bachelor Project: 'Nihon no Haiku to Iran no Shikoushi ni okeru Mujoukan'" }
     ],
     "sec-work": [
-        {
-            "date": "2025.04 - Present",
-            "title": "JSPS Postdoctoral Research Fellow",
-            "desc": "Tokyo University of Foreign Studies (TUFS)"
-        },
-        {
-            "date": "2026.03",
-            "title": "Visiting Research Fellow",
-            "desc": "IRIS, School of Social Policy and Society, University of Birmingham"
-        }
+        { "date": "2025.04 - Present", "title": "JSPS Postdoctoral Research Fellow", "desc": "Tokyo University of Foreign Studies (TUFS)" },
+        { "date": "2026.03", "title": "Visiting Research Fellow", "desc": "IRIS, School of Social Policy and Society, University of Birmingham" },
+        { "date": "2024.05 - 2025.03", "title": "Project Researcher", "desc": "Center for Global Relations Integration Studies, Chiba University" },
+        { "date": "2024.04 - 2025.03", "title": "Part-time Lecturer", "desc": "Asian Languages 1, Introduction to Kurdish (Sorani), Tokyo University of Foreign Studies" }
     ],
     "sec-projects": [
-        {
-            "date": "2025.04 - 2027.03",
-            "title": "Dynamics of Coexistence: Interplay of the Kurdish and Afghan Communities in Japan",
-            "desc": "Co-investigator. Grant-in-Aid for JSPS Fellows (No. 25KF0029). Total Amount: ¥2,000,000"
-        }
+        { "date": "2025.04 - 2027.03", "title": "Dynamics of Coexistence: Interplay of the Kurdish and Afghan Communities in Japan", "desc": "Co-investigator. Grant-in-Aid for JSPS Fellows (No. 25KF0029). Total Amount: ¥2,000,000. URL: https://kaken.nii.ac.jp/grant/KAKENHI-PROJECT-25KF0029" },
+        { "date": "2025.01 - 2025.12", "title": "Minami Kurudisutan Toubu no Chiseigakuteki Ichi to Shakaiteki Shuukyousei no Henshen", "desc": "Research Collaborator. JFE 21st Century Foundation - Asian History Research Grant. Total: ¥1,500,000" },
+        { "date": "2021.10 - 2026.03", "title": "The State, Politics and Religious Nationalisms: Iran's Western Border Region in Comparative Perspective", "desc": "Research Collaborator. Project No: 21KK0019. Total Amount: ¥13,200,000. URL: https://kaken.nii.ac.jp/grant/KAKENHI-PROJECT-21KK0019/" },
+        { "date": "2024.04 - 2027.03", "title": "Everyday Forms of Ethnicity and Religiosity in Kurdistan", "desc": "Joint Researcher. ILCAA Joint Research Project, TUFS (ID: jrp000305). URL: https://www.aa.tufs.ac.jp/en/projects/detail/jrp000305/" }
     ],
     "sec-papers": [
-        {
-            "date": "2025.03.20",
-            "title": "Zainichi Kurudo-jin no Rekishiteki Haikei to Genjou: Tabunka Kyousei no Shiten kara",
-            "desc": "Islamic Trust Studies Newsletter (5), 20-21. [Peer-reviewed]",
-            "lang": "Japanese"
-        },
-        {
-            "date": "2024.06.04",
-            "title": "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media",
-            "desc": "Palgrave Macmillan. DOI: 10.1007/978-981-97-2867-1_10",
-            "lang": "English"
-        },
-        {
-            "date": "2023.12",
-            "title": "Jame'e-ye Japan (The Society of Japan)",
-            "desc": "In Jame'e va Farhang-e Japan (Tehran), pp. 66–88.",
-            "lang": "Persian"
-        }
+        { "date": "2025.03.20", "title": "Zainichi Kurudo-jin no Rekishiteki Haikei to Genjou: Tabunka Kyousei no Shiten kara", "desc": "Islamic Trust Studies Newsletter (5), 20-21. [Peer-reviewed]", "lang": "Japanese" },
+        { "date": "2024.06.04", "title": "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media", "desc": "In Momesso, L. & Ivanova, P. (eds), Refugees and Asylum Seekers in East Asia. Palgrave Macmillan. DOI: 10.1007/978-981-97-2867-1_10", "lang": "English" },
+        { "date": "2023.12", "title": "Jame'e-ye Japan (The Society of Japan)", "desc": "In Jame'e va Farhang-e Japan (Tehran), pp. 66–88.", "lang": "Persian" },
+        { "date": "2019", "title": "Integrated Knowledge: Interdisciplinary Collaboration Experience of Japan", "desc": "Proceedings of the First National Conference on Relation between Humanities, Production, and Industry. Vol.1: 599-618.", "lang": "Persian" }
     ],
     "sec-books": [
-        {
-            "date": "2025.11",
-            "title": "Hen'you suru Imin Komyuniti [2nd Ed]",
-            "desc": "Chapter: 'Kurudo-jin — Rainichi to Teijuu wo meguru Genjou to Kadai'. Akashi Shoten. ISBN: 9784750360089",
-            "lang": "Japanese"
-        }
+        { "date": "2025.11", "title": "Hen'you suru Imin Komyuniti [2nd Ed]", "desc": "Chapter: 'Kurudo-jin — Rainichi to Teijuu wo meguru Genjou to Kadai'. Akashi Shoten. ISBN: 9784750360089", "lang": "Japanese" },
+        { "date": "2020.07", "title": "Hen'you suru Imin Komyuniti", "desc": "Chapter: 'Kurudo-jin — furusato kara no koe'. Akashi Shoten. ISBN: 9784750350325", "lang": "Japanese" },
+        { "date": "2014", "title": "Eteraf", "desc": "Poetry collection. Nimaj Publishing, Tehran. ISBN: 9786007185247", "lang": "Persian" }
     ],
     "sec-talks": [
-        {
-            "date": "2026.02.06",
-            "title": "The 'Zero Plan' and Migration Governance in Japan: A Case Study of Kurdish Asylum Seekers",
-            "desc": "Kurdish Worlds Conference, ILCAA, Tokyo University of Foreign Studies.",
-            "lang": "English"
-        },
-        {
-            "date": "2024.11.02",
-            "title": "Zainichi Kurudo-jin to Hosuto Shakai no Juyou",
-            "desc": "Islamic Trust Studies Civil Dialogue, TUFS.",
-            "lang": "Japanese"
-        }
+        { "date": "2026.02.06", "title": "The 'Zero Plan' and Migration Governance in Japan: A Case Study of Kurdish Asylum Seekers", "desc": "Kurdish Worlds Conference, ILCAA, Tokyo University of Foreign Studies.", "lang": "English" },
+        { "date": "2026.01.31", "title": "Changes in Iranian Society and the Voices of Youth", "desc": "Fuchu City Lifelong Learning Center, Tokyo.", "lang": "Japanese" },
+        { "date": "2025.12.06", "title": "Negotiating Difference and Belonging: Social Dynamics of Kurdish-Japanese Interaction", "desc": "16th Iraq-Japan Joint Academic Conference, Waseda University, Tokyo.", "lang": "English" },
+        { "date": "2024.11.02", "title": "Zainichi Kurudo-jin to Hosuto Shakai no Juyou", "desc": "Islamic Trust Studies Civil Dialogue, TUFS.", "lang": "Japanese" }
     ],
     "sec-misc": [
-        {
-            "date": "2025.04",
-            "title": "JSPS Postdoctoral Research Fellow (PD)",
-            "desc": "Japan Society for the Promotion of Science"
-        }
+        { "date": "2025.04", "title": "JSPS Postdoctoral Research Fellow (PD)", "desc": "Japan Society for the Promotion of Science" }
     ]
 };
 
 const cvDataJp = {
     "profile": {
-        "name": "Sohrab AHMADIAN",
+        "name": "ソホラブ アフマディヤーン (Sohrab AHMADIAN)",
         "katakana": "アフマディヤーン ソホラブ",
         "title": "JSPS 外国人特別研究員 (PD)",
         "uni": "東京外国語大学 大学院総合国際学研究院",
@@ -147,86 +63,41 @@ const cvDataJp = {
         "web": "researchmap.jp/sohrab.ahmadian"
     },
     "sec-edu": [
-        {
-            "date": "2018.04 - 2024.03",
-            "title": "筑波大学 大学院人文社会科学研究科 博士（国際日本研究）",
-            "desc": "指導教員：明石純一教授。博士論文：『在日クルド人のディアスポラ体験に関する質的研究』"
-        },
-        {
-            "date": "2013.09 - 2015.09",
-            "title": "テヘラン大学 大学院世界研究科 日本研究専攻（修士）",
-            "desc": "指導教員：Mohammed Naghizadeh教授。修士論文：『安倍政権における平和主義の進路― 憲法9条改正／解釈問題を中心に』"
-        }
+        { "date": "2018.04 - 2024.03", "title": "筑波大学 大学院人文社会科学研究科 博士（国際日本研究）", "desc": "専攻：移民・ディアスポラ研究。指導教員：明石純一教授。博士論文：『在日クルド人のディアスポラ体験に関する質的研究』" },
+        { "date": "2013.09 - 2015.09", "title": "テヘラン大学 大学院世界研究科 日本研究専攻（修士）", "desc": "指導教員：Mohammed Naghizadeh教授。修士論文：『安倍政権における平和主義の進路― 憲法9条改正／解釈問題を中心に』" }
     ],
     "sec-work": [
-        {
-            "date": "2025.04 - 現在",
-            "title": "東京外国語大学 JSPS外国人特別研究員 (PD)",
-            "desc": "東京外国語大学"
-        },
-        {
-            "date": "2026.03",
-            "title": "IRIS, School of Social Policy and Society, University of Birmingham",
-            "desc": "IRIS, School of Social Policy and Society"
-        }
+        { "date": "2025.04 - 現在", "title": "東京外国語大学 JSPS外国人特別研究員 (PD)", "desc": "東京外国語大学" },
+        { "date": "2026.03", "title": "IRIS, School of Social Policy and Society, University of Birmingham", "desc": "IRIS, School of Social Policy and Society" }
     ],
     "sec-projects": [
-        {
-            "date": "2025.04 - 2027.03",
-            "title": "共存のダイナミクス―在日クルド、アフガン移民コミュニティー",
-            "desc": "日本学術振興会 特別研究員奨励費 (25KF0029)。総額 2,000,000円"
-        }
+        { "date": "2025.04 - 2027.03", "title": "共存のダイナミクス―在日クルド、アフガン移民コミュニティー", "desc": "日本学術振興会 特別研究員奨励費 (25KF0029)。総額 2,000,000円。URL: https://kaken.nii.ac.jp/grant/KAKENHI-PROJECT-25KF0029" },
+        { "date": "2021.10 - 2026.03", "title": "The State, Politics and Religious Nationalisms: Iran's Western Border Region in Comparative Perspective", "desc": "課題番号：21KK0019。総額 13,200,000円。URL: https://kaken.nii.ac.jp/grant/KAKENHI-PROJECT-21KK0019/" }
     ],
     "sec-papers": [
-        {
-            "date": "2025.11",
-            "title": "変容する移民コミュニティ【第2版】 : 時間・空間・階層",
-            "desc": "分担執筆：「クルド人――来日と定住をめぐる現状と課題」。明石書店. ISBN: 9784750360089",
-            "lang": "Japanese"
-        },
-        {
-            "date": "2025.03.20",
-            "title": "在日クルド人の歴史的背景と現状： 多文化共生の視点から",
-            "desc": "『イスラーム信頼学ニュースレター』(5), 20-21. [査読有り]",
-            "lang": "Japanese"
-        },
-        {
-            "date": "2024.06.04",
-            "title": "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media",
-            "desc": "Palgrave Macmillan. DOI: 10.1007/978-981-97-2867-1_10",
-            "lang": "English"
-        },
-        {
-            "date": "2023.12",
-            "title": "Jame'e-ye Japan",
-            "desc": "『イランの社会と文化』所収, pp. 66–88. Al-Hoda 出版 (テヘラン)",
-            "lang": "Persian"
-        }
+        { "date": "2025.03.20", "title": "在日クルド人の歴史的背景と現状： 多文化共生の視点から", "desc": "『イスラーム信頼学ニュースレター』(5), 20-21. [査読有り]", "lang": "Japanese" },
+        { "date": "2024.06.04", "title": "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media", "desc": "Palgrave Macmillan. DOI: 10.1007/978-981-97-2867-1_10", "lang": "English" },
+        { "date": "2023.12", "title": "Jame'e-ye Japan", "desc": "『イランの社会と文化』所収, pp. 66–88. Al-Hoda 出版 (テヘラン)", "lang": "Persian" }
     ],
-    "sec-books": [],
+    "sec-books": [
+        { "date": "2025.11", "title": "変容する移民コミュニティ【第2版】 : 時間・空間・階層", "desc": "分担執筆：「クルド人――来日と定住をめぐる現状と課題」。明石書店. ISBN: 9784750360089", "lang": "Japanese" }
+    ],
     "sec-talks": [
-        {
-            "date": "2026.02.06",
-            "title": "The 'Zero Plan' and Migration Governance in Japan: Kurdish Asylum Seekers",
-            "desc": "東京外国語大学 AA研 (ILCAA) 国際会議",
-            "lang": "English"
-        },
-        {
-            "date": "2024.11.02",
-            "title": "在日クルド人とホスト社会の受容：歴史的背景と現状の課題",
-            "desc": "イスラーム信頼学対話シリーズ、東京外国語大学",
-            "lang": "Japanese"
-        }
+        { "date": "2026.02.06", "title": "The 'Zero Plan' and Migration Governance in Japan: Kurdish Asylum Seekers", "desc": "東京外国語大学 AA研 (ILCAA) 国際会議", "lang": "English" },
+        { "date": "2024.11.02", "title": "在日クルド人とホスト社会の受容：歴史的背景と現状の課題", "desc": "イスラーム信頼学対話シリーズ、東京外国語大学", "lang": "Japanese" }
     ],
     "sec-misc": [
-        {
-            "date": "2025.04",
-            "title": "日本学術振興会 外国人特別研究員 (PD) 採用",
-            "desc": "日本学術振興会"
-        }
+        { "date": "2025.04", "title": "日本学術振興会 外国人特別研究員 (PD) 採用", "desc": "日本学術振興会" }
     ]
 };
 // --- END DATA DASHBOARD ---
+
+// New Linkification Helper
+function makeLinksClickable(text) {
+    if (!text) return "";
+    const urlPattern = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlPattern, url => `<a href="${url}" target="_blank" style="color:var(--accent); text-decoration:none;">${url}</a>`);
+}
 
 function switchLang(lang) {
     const btnEn = document.getElementById('btn-en');
@@ -243,11 +114,11 @@ function switchLang(lang) {
         ["学位・学歴", "職歴・研究歴", "研究課題", "研究業績：論文", "書籍・出版物", "講演・口頭発表", "受賞・社会貢献"];
 
     let html = `<header><div class="header-text"><h1>${p.name}</h1>
-        ${p.katakana ? `<span class="katakana-name">${p.katakana}</span>` : ''}
+        ${p.katakana ? `<span class="katakana-name" style="display: block; font-size: 16px; margin-top: 5px; color: #666; font-weight: normal;">${p.katakana}</span>` : ''}
         <p><strong>${p.title}</strong></p><p>${p.uni}</p>
         <p style="font-size:13px; color:#555; margin-top:5px;">${p.email} | ${p.address}</p>
-        <p style="font-size:12px; color:var(--accent);">${p.web}</p></div>
-        <div class="photo"><img src="https://researchmap.jp/sohrab.ahmadian/avatar.jpg"></div></header>`;
+        <p style="font-size:12px;">${makeLinksClickable(p.web)}</p></div>
+        <div class="photo" style="width: 130px; height: 170px; border: 1px solid #ccc; overflow: hidden;"><img src="https://researchmap.jp/sohrab.ahmadian/avatar.jpg" style="width: 100%; height: auto;"></div></header>`;
 
     const keys = ["sec-edu", "sec-work", "sec-projects", "sec-papers", "sec-books", "sec-talks", "sec-misc"];
     keys.forEach((key, idx) => {
@@ -255,18 +126,15 @@ function switchLang(lang) {
             html += `<h2>${labels[idx]}</h2>`;
             data[key].forEach(item => {
                 const badge = item.lang ? `<span class="lang-badge">[${item.lang}]</span>` : '';
-                html += `<div class="entry"><div class="entry-date">${item.date}</div><div><span class="entry-title">${item.title} ${badge}</span><span class="entry-desc">${item.desc}</span></div></div>`;
+                html += `<div class="entry"><div class="entry-date">${item.date}</div><div><span class="entry-title">${item.title} ${badge}</span><span class="entry-desc">${makeLinksClickable(item.desc)}</span></div></div>`;
             });
         }
     });
 
-    html += `<h2>${lang==='en'?'Skills':'スキル'}</h2><div class="skills-grid">
+    html += `<h2>${lang==='en'?'Skills':'スキル'}</h2><div class="skills-grid" style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; font-size: 14px; margin-top: 20px;">
         <div style="font-weight:bold">${lang==='en'?'Languages':'言語能力'}</div><div>${p.languages}</div>
         <div style="font-weight:bold">${lang==='en'?'Technical':'技能'}</div><div>${p.technical}</div></div>`;
 
     document.getElementById('cv-content').innerHTML = html;
 }
 window.onload = () => switchLang('en');
-</script>
-</body>
-</html>
