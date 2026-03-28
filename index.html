@@ -21,7 +21,6 @@
         .entry-date { color: #666; font-weight: bold; font-family: Arial, sans-serif; }
         .entry-title { font-weight: bold; font-size: 15px; }
         .entry-desc { color: #333; display: block; margin-top: 2px; white-space: pre-wrap; }
-        .skills-grid { display: grid; grid-template-columns: 120px 1fr; gap: 10px; font-size: 14px; margin-top: 20px; }
         @media print { .toolbar { display: none; } .cv-paper { box-shadow: none; margin: 0; padding: 40px; width: 100%; } }
     </style>
 </head>
@@ -35,509 +34,134 @@
 
 <div class="cv-paper" id="cv-content"></div>
 
-<script>
+<script id="cv-data-script">
 /* DATA_START */
 const cvData = {
   "en": {
     "profile": {
       "name": "Sohrab AHMADIAN, Ph.D.",
-      "katakana": "",
       "title": "JSPS Postdoctoral Research Fellow",
       "uni": "Tokyo University of Foreign Studies (TUFS)",
       "email": "ahmadian@tufs.ac.jp",
-      "address": "3-11-1 Asahi-cho, Fuchu-shi, Tokyo, Japan",
-      "web": "https://researchmap.jp/sohrab.ahmadian?lang=en",
+      "address": "3-11-1 Asahi-cho, Fuchu-shi, Tokyo 183-8534, Japan",
+      "web": "https://researchmap.jp/sohrab.ahmadian",
       "photo": "",
-      "languages": "English (Advanced), Japanese (Business), Persian (Native), Kurdish (Native), Tajiki (Native), Arabic (Intermediate), Azari Turkish (Basic)",
-      "technical": "Methodology: Qualitative Research, Data Analysis / Software: SPSS, R, MS Office (Word, Excel, PowerPoint, Publisher) / Creative: Adobe Photoshop, Corel Video Studio / Web: WordPress"
+      "technical": "Methodology: Qualitative Research, Data Analysis / Software: SPSS, R, MS Office, Adobe Photoshop, WordPress"
     },
-    "edu": [
-      {
-        "date": "2018.04-2024.03",
-        "title": "Ph.D. International and Advanced Japan Studies",
-        "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba. Major Field: Migration and Diaspora Studies. Supervisor: Prof. AKASHI Junichi. Dissertation: 'Zainichi Kurudo-jin no Diaspora Taiken ni kansuru Shitsuteki Kenkyu' (A Qualitative Study on the Diaspora Experience of Kurds in Japan)"
-      },
-      {
-        "date": "2013.09-2015.09",
-        "title": "M.A. Japan Studies",
-        "desc": "Graduate School of World Studies, University of Tehran. Supervisor: Prof. Mohammed Naghizadeh. Project: 'Abe Seiken ni okeru Heiwa-shugi no Shinro' (The Course of Pacifism under the Abe Administration - Focusing on Constitutional Amendment and Interpretation of Article 9)"
-      },
-      {
-        "date": "2008.09-2012.07",
-        "title": "B.A. Japanese Language and Literature",
-        "desc": "Faculty of Foreign Languages and Literatures, University of Tehran. Project: 'Nihon no Haiku to Iran no Shikoushi ni okeru Mujoukan' (The View of Impermanence in Japanese Haiku and Iranian Quatrains)"
-      }
+    "education": [
+      { "date": "2018.04-2024.03", "title": "Ph.D. International and Advanced Japan Studies", "desc": "University of Tsukuba. Dissertation: 'A Qualitative Study on the Diaspora Experience of Kurds in Japan'" },
+      { "date": "2013.09-2015.09", "title": "M.A. Japan Studies", "desc": "University of Tehran. Project: 'The Course of Pacifism under the Abe Administration'" },
+      { "date": "2008.09-2012.07", "title": "B.A. Japanese Language and Literature", "desc": "University of Tehran." }
     ],
-    "work": [
-      {
-        "date": "2025.04-Present",
-        "title": "JSPS Postdoctoral Research Fellow",
-        "desc": "Tokyo University of Foreign Studies (TUFS)"
-      },
-      {
-        "date": "2026.03",
-        "title": "Visiting Research Fellow",
-        "desc": "IRIS, School of Social Policy and Society, University of Birmingham"
-      },
-      {
-        "date": "2024.05-2025.03",
-        "title": "Project Researcher",
-        "desc": "Center for Global Relations Integration Studies, Chiba University"
-      },
-      {
-        "date": "2024.04-2025.03",
-        "title": "Part-time Lecturer (Kurdish)",
-        "desc": "Asian Languages 1, Introduction to Kurdish (Sorani), Tokyo University of Foreign Studies"
-      },
-      {
-        "date": "2023.05-2025.03",
-        "title": "Part-time Researcher",
-        "desc": "Institute of Global Studies, Tokyo University of Foreign Studies"
-      },
-      {
-        "date": "2023.10-2024.01",
-        "title": "Part-time Lecturer",
-        "desc": "Sorani Kurdish (Online), Kimiya Ltd."
-      },
-      {
-        "date": "2022.08-2023.05",
-        "title": "Instructor",
-        "desc": "Japanese Language Education (Online), Learnlight UK Limited"
-      },
-      {
-        "date": "2021.07-2022.03",
-        "title": "Research Fellow",
-        "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba"
-      },
-      {
-        "date": "2021.04-2021.12",
-        "title": "Teaching Assistant",
-        "desc": "Media and Representation, University of Tsukuba."
-      },
-      {
-        "date": "2021.08-2021.11",
-        "title": "Research Assistant",
-        "desc": "Graduate School of Humanities and Social Sciences, University of Tsukuba"
-      },
-      {
-        "date": "2017.10-2019.10",
-        "title": "Freelance English Tutor",
-        "desc": "Japan"
-      },
-      {
-        "date": "2014.11-2016.11",
-        "title": "Persian Language Teacher",
-        "desc": "Iran Oxford Language Institute"
-      }
+    "appointments": [
+      { "date": "2025.04-Present", "title": "JSPS Postdoctoral Research Fellow", "desc": "Tokyo University of Foreign Studies (TUFS)" },
+      { "date": "2026.03", "title": "Visiting Research Fellow", "desc": "IRIS, University of Birmingham, UK" },
+      { "date": "2024.05-2025.03", "title": "Project Researcher", "desc": "Center for Global Relations Integration Studies, Chiba University" },
+      { "date": "2024.04-2025.03", "title": "Part-time Lecturer (Kurdish)", "desc": "Tokyo University of Foreign Studies" },
+      { "date": "2023.05-2025.03", "title": "Part-time Researcher", "desc": "Institute of Global Studies, TUFS" },
+      { "date": "2023.10-2024.01", "title": "Part-time Lecturer", "desc": "Sorani Kurdish (Online), Kimiya Ltd." },
+      { "date": "2022.08-2023.05", "title": "Instructor", "desc": "Japanese Language Education, Learnlight UK Limited" },
+      { "date": "2021.07-2022.03", "title": "Research Fellow", "desc": "Graduate School, University of Tsukuba" },
+      { "date": "2021.04-2021.12", "title": "Teaching Assistant", "desc": "Media and Representation, University of Tsukuba" },
+      { "date": "2021.08-2021.11", "title": "Research Assistant", "desc": "University of Tsukuba" },
+      { "date": "2017.10-2019.10", "title": "Freelance English Tutor", "desc": "Japan" },
+      { "date": "2014.11-2016.11", "title": "Persian Language Teacher", "desc": "Iran Oxford Language Institute" }
     ],
     "projects": [
-      {
-        "date": "2025.04-2027.03",
-        "title": "Dynamics of Coexistence: Interplay of Kurdish & Afghan Communities",
-        "desc": "Co-investigator. Grant-in-Aid for JSPS Fellows (No. 25KF0029). Total Amount: 2,000,000 JPY. https://kaken.nii.ac.jp/grant/KAKENHI-PROJECT-25KF0029"
-      },
-      {
-        "date": "2025.01-2025.12",
-        "title": "Geopolitical Position in Eastern South Kurdistan",
-        "desc": "Research Collaborator. JFE 21st Century Foundation, Asian History Research Grant. Total Amount: 1,500,000 JPY."
-      },
-      {
-        "date": "2021.10-2026.03",
-        "title": "The State, Politics and Religious Nationalisms: Iran's Border Region",
-        "desc": "Research Collaborator. Project Number: 21KK0019. Total Amount: 13,200,000 JPY."
-      },
-      {
-        "date": "2024.04-2027.03",
-        "title": "Everyday Forms of Ethnicity and Religiosity in Kurdistan",
-        "desc": "Joint Researcher. ILCAA Joint Research Project, TUFS (ID: jrp000305)."
-      },
-      {
-        "date": "2021.10-2022.03",
-        "title": "Identity and Politics of Kurdish Diaspora in Japan",
-        "desc": "Co-investigator. SPRING Fellowship, University of Tsukuba. Annual Amount: 250,000 JPY"
-      }
+      { "date": "2025.04-2027.03", "title": "Dynamics of Coexistence: Interplay of Kurdish & Afghan Communities", "desc": "JSPS Grant No. 25KF0029. Total: 2,000,000 JPY" },
+      { "date": "2025.01-2025.12", "title": "Geopolitical Position in Eastern South Kurdistan", "desc": "JFE 21st Century Foundation, Asian History Research Grant. Total: 1,500,000 JPY" },
+      { "date": "2021.10-2026.03", "title": "The State, Politics and Religious Nationalisms", "desc": "Project No: 21KK0019. Total: 13,200,000 JPY" },
+      { "date": "2024.04-2027.03", "title": "Everyday Forms of Ethnicity and Religiosity in Kurdistan", "desc": "ILCAA Joint Research Project, TUFS (ID: jrp000305)" },
+      { "date": "2021.10-2022.03", "title": "Identity and Politics of Kurdish Diaspora in Japan", "desc": "SPRING Fellowship, University of Tsukuba. Annual Amount: 250,000 JPY" }
     ],
-    "papers": [
-      {
-        "date": "2025.11",
-        "title": "Hen'you suru Imin Komyuniti (Transforming Migrant Communities) [2nd Ed]",
-        "desc": "Chapter: 'Kurudo-jin — Rainichi to Teijuu wo meguru Genjou to Kadai'. Akashi Shoten. ISBN: 9784750360089"
-      },
-      {
-        "date": "2025.03.20",
-        "title": "Zainichi Kurudo-jin no Rekishiteki Haikei to Genjou: Tabunka Kyousei no Shiten kara",
-        "desc": "Islamic Trust Studies Newsletter (5), 20-21. [Peer-reviewed]"
-      },
-      {
-        "date": "2024.06.04",
-        "title": "Kurdish Diaspora in Japan: Navigating Identity and Activism on Social Media",
-        "desc": "In Refugees and Asylum Seekers in East Asia. Palgrave Macmillan. DOI: 10.1007/978-981-97-2867-1_10"
-      },
-      {
-        "date": "2023.12",
-        "title": "Jame'e-ye Japan (The Society of Japan)",
-        "desc": "In Jame'e va Farhang-e Japan (Tehran), pp. 66–88. Al-Hoda Publications."
-      },
-      {
-        "date": "2022.01",
-        "title": "Kurdish Diaspora in Japan: Caught in a Limbo",
-        "desc": "NEPCAP Policy Brief 2022/01, University of Central Lancashire."
-      },
-      {
-        "date": "2020.07",
-        "title": "Kurudo-jin, furusato kara no koe (Kurdish Diaspora, Voices from Homeland)",
-        "desc": "In Hen'you suru Imin Komyuniti, Akashi Shoten. ISBN: 9784750350325"
-      },
-      {
-        "date": "2019",
-        "title": "Integrated Knowledge: Interdisciplinary Collaboration Experience of Japan",
-        "desc": "Proceedings of the First National Conference on Relation between Humanities, Production, and Industry. Vol.1: 599-618."
-      },
-      {
-        "date": "2014.04",
-        "title": "Haiku-shu Kibou (Haiku Collection of Hope)",
-        "desc": "Kavosh Qalam, p. 54."
-      },
-      {
-        "date": "2014",
-        "title": "Eteraf (Confession)",
-        "desc": "Poetry collection. Nimaj Publishing, Tehran. ISBN: 9786007185247"
-      }
+    "publications": [
+      { "date": "2025.11", "title": "Transforming Migrant Communities [2nd Ed]", "desc": "Akashi Shoten. ISBN: 9784750360089" },
+      { "date": "2025.03.20", "title": "Zainichi Kurudo-jin no Rekishiteki Haikei to Genjou", "desc": "Islamic Trust Studies Newsletter (5), 20-21. [Peer-reviewed]" },
+      { "date": "2024.06.04", "title": "Kurdish Diaspora in Japan: Identity and Activism", "desc": "Palgrave Macmillan. DOI: 10.1007/978-981-97-2867-1_10" },
+      { "date": "2023.12", "title": "Jame'e-ye Japan (The Society of Japan)", "desc": "In Jame'e va Farhang-e Japan (Tehran), pp. 66–88." },
+      { "date": "2022.01", "title": "Kurdish Diaspora in Japan: Caught in a Limbo", "desc": "NEPCAP Policy Brief, University of Central Lancashire" },
+      { "date": "2020.07", "title": "Kurudo-jin, furusato kara no koe", "desc": "In Hen'you suru Imin Komyuniti, Akashi Shoten. ISBN: 9784750350325" },
+      { "date": "2019", "title": "Integrated Knowledge: Interdisciplinary Collaboration", "desc": "First National Conference on Humanities, Production, and Industry." },
+      { "date": "2014.04", "title": "Haiku-shu Kibou", "desc": "Kavosh Qalam, p. 54." },
+      { "date": "2014", "title": "Eteraf (Confession)", "desc": "Poetry collection. Nimaj Publishing. ISBN: 9786007185247" }
     ],
-    "talks": [
-      {
-        "date": "2026.02.06",
-        "title": "The 'Zero Plan' and Migration Governance in Japan: Kurdish Asylum Seekers",
-        "desc": "Kurdish Worlds Across Time and Space. ILCAA, TUFS."
-      },
-      {
-        "date": "2026.01.31",
-        "title": "Changes in Iranian Society and the Voices of Youth",
-        "desc": "Fuchu City Lifelong Learning Center, Tokyo."
-      },
-      {
-        "date": "2025.12.06",
-        "title": "Negotiating Difference and Belonging: Kurdish-Japanese Interaction",
-        "desc": "16th Iraq-Japan Joint Academic Conference. Waseda University, Tokyo."
-      },
-      {
-        "date": "2024.11.02",
-        "title": "Zainichi Kurudo-jin to Hosuto Shakai no Juyou",
-        "desc": "Islamic Trust Studies Civil Dialogue Series, TUFS."
-      },
-      {
-        "date": "2024.07.02",
-        "title": "Refugee and asylum seeker protection in East Asia",
-        "desc": "21st IMISCOE Annual Conference, Lisbon and online."
-      },
-      {
-        "date": "2024.05.23",
-        "title": "An Anatomy of Islamic Awakening in Iranian Ouramanat: Case of Naser Sobhani",
-        "desc": "Kurdish Studies Conference, University of Sheffield."
-      },
-      {
-        "date": "2024.05.12",
-        "title": "Zainichi Kurudo Diaspora ni okeru Seiji Ishiki to Dantai Katsudou",
-        "desc": "40th Annual Meeting of JAMES, University of Tokyo."
-      },
-      {
-        "date": "2024.03.11",
-        "title": "Nihon ni okeru Kurudo-jin Community no Activity",
-        "desc": "Research Results Report Meeting, Chiba University."
-      },
-      {
-        "date": "2023.12.03",
-        "title": "Human security of refugees and asylum seekers in Japan",
-        "desc": "JAHSS Annual Conference 2023, Kobe University."
-      },
-      {
-        "date": "2023.11.29",
-        "title": "Article 9 and the Revision Politics of Japan's Constitution",
-        "desc": "University of Tehran, Iran."
-      },
-      {
-        "date": "2018.07.13",
-        "title": "Kurudo Diaspora towa Nanika (What is Kurdish Diaspora)",
-        "desc": "Tokyo Immigration Bureau, Shinagawa, Tokyo."
-      },
-      {
-        "date": "2019.03.17",
-        "title": "Newroz towa Nanika (What is Newroz)",
-        "desc": "Kurd's New Year Festival, Saitama City, Japan."
-      }
+    "presentations": [
+      { "date": "2026.02.06", "title": "The 'Zero Plan' and Migration Governance in Japan", "desc": "ILCAA, TUFS." },
+      { "date": "2026.01.31", "title": "Changes in Iranian Society and Voices of Youth", "desc": "Fuchu City Lifelong Learning Center, Tokyo." },
+      { "date": "2025.12.06", "title": "Negotiating Difference and Belonging", "desc": "Waseda University, Tokyo." },
+      { "date": "2024.11.02", "title": "Zainichi Kurudo-jin to Hosuto Shakai", "desc": "Islamic Trust Studies, TUFS." },
+      { "date": "2024.07.02", "title": "Refugee protection in East Asia", "desc": "21st IMISCOE Annual Conference, Lisbon." },
+      { "date": "2024.05.23", "title": "Islamic Awakening in Iranian Ouramanat", "desc": "University of Sheffield, UK." },
+      { "date": "2024.05.12", "title": "Zainichi Kurudo Diaspora ni okeru Seiji Ishiki", "desc": "JAMES, University of Tokyo." },
+      { "date": "2024.03.11", "title": "Nihon ni okeru Kurudo-jin Community", "desc": "Chiba University." },
+      { "date": "2023.12.03", "title": "Human security of refugees in Japan", "desc": "JAHSS, Kobe University." },
+      { "date": "2023.11.29", "title": "Article 9 and Revision Politics", "desc": "University of Tehran, Iran." },
+      { "date": "2018.07.13", "title": "Kurudo Diaspora towa Nanika", "desc": "Tokyo Immigration Bureau." },
+      { "date": "2019.03.17", "title": "Newroz towa Nanika", "desc": "Saitama City, Japan." }
     ],
-    "misc": [
-      {
-        "date": "2025.04",
-        "title": "JSPS Postdoctoral Research Fellow (PD)",
-        "desc": "Japan Society for the Promotion of Science"
-      },
-      {
-        "date": "2021.10",
-        "title": "2nd Pioneering Research Award",
-        "desc": "University of Tsukuba & JST (SPRING Program)"
-      },
-      {
-        "date": "2019.04",
-        "title": "MEXT Scholarship - Top Global University Project",
-        "desc": "University of Tsukuba"
-      },
-      {
-        "date": "2010.11",
-        "title": "13th Japanese Speech Contest Excellence Award",
-        "desc": "Embassy of Japan in Iran"
-      }
+    "awards": [
+      { "date": "2025.04", "title": "JSPS Postdoctoral Research Fellow (PD)", "desc": "Japan Society for the Promotion of Science" },
+      { "date": "2021.10", "title": "2nd Pioneering Research Award", "desc": "University of Tsukuba & JST" },
+      { "date": "2019.04", "title": "MEXT Scholarship", "desc": "University of Tsukuba" },
+      { "date": "2010.11", "title": "13th Japanese Speech Contest Excellence Award", "desc": "Embassy of Japan in Iran" }
     ]
   },
   "jp": {
     "profile": {
-      "name": "Sohrab AHMADIAN",
-      "katakana": " ソホラブ  アフマディヤーン",
+      "name": "ソホラブ アフマディヤーン",
+      "katakana": "アフマディヤーン ソホラブ",
       "title": "JSPS 外国人特別研究員 (PD)",
       "uni": "東京外国語大学 大学院総合国際学研究院",
       "email": "ahmadian@tufs.ac.jp",
       "address": "東京都府中市朝日町3-11-1",
-      "web": "https://researchmap.jp/sohrab.ahmadian?lang=ja",
+      "web": "https://researchmap.jp/sohrab.ahmadian",
       "photo": "",
-      "languages": "英語 (上級), 日本語 (ビジネス), ペルシア語 (母語), クルド語 (母語), タジク語 (母語), アラビア語 (中級), アゼルバイジャン・トルコ語 (初級)",
-      "technical": "質的研究手法, データ分析, SPSS, R, MS Office, Adobe Photoshop, Corel Video Studio, WordPress"
+      "technical": "質的研究手法, データ分析, SPSS, R, MS Office, Photoshop, Corel Video Studio, WordPress"
     },
-    "edu": [
-      {
-        "date": "2018.04-2024.03",
-        "title": "筑波大学 大学院人文社会科学研究科 博士（国際日本研究）",
-        "desc": "専攻：移民・ディアスポラ研究。指導教員：明石純一教授。博士論文：『在日クルド人のディアスポラ体験に関する質的研究』"
-      },
-      {
-        "date": "2013.09-2015.09",
-        "title": "テヘラン大学 大学院世界研究科 日本研究専攻（修士）",
-        "desc": "指導教員：Mohammed Naghizadeh教授。修士論文：『安倍政権における平和主義の進路― 憲法9条改正／解釈問題を中心に』"
-      },
-      {
-        "date": "2008.09-2012.07",
-        "title": "テヘラン大学 外国語・外国文学部 日本語日本文学専攻（学士）",
-        "desc": "卒業論文：『日本の俳句とイランの四行詩における「無常観」― 松尾芭蕉とウマル・ハイヤームを中心に』"
-      }
+    "education": [
+      { "date": "2018.04-2024.03", "title": "筑波大学 大学院 博士（国際日本研究）", "desc": "指導教員：明石純一教授。博士論文：『在日クルド人のディアスポラ体験に関する質的研究』" },
+      { "date": "2013.09-2015.09", "title": "テヘラン大学 大学院 日本研究専攻（修士）", "desc": "修士論文：『安倍政権における平和主義の進路』" },
+      { "date": "2008.09-2012.07", "title": "テヘラン大学 日本語日本文学専攻（学士）", "desc": "卒業論文：『日本の俳句とイランの四行詩における無常観』" }
     ],
-    "work": [
-      {
-        "date": "2025.04-現在",
-        "title": "東京外国語大学 JSPS外国人特別研究員 (PD)",
-        "desc": "東京外国語大学"
-      },
-      {
-        "date": "2026.03",
-        "title": "IRIS, School of Social Policy and Society, University of Birmingham",
-        "desc": "IRIS, School of Social Policy and Society, University of Birmingham"
-      },
-      {
-        "date": "2024.05-2025.03",
-        "title": "千葉大学 グローバル関係融合研究センター 特任研究員",
-        "desc": "千葉大学"
-      },
-      {
-        "date": "2024.04-2025.03",
-        "title": "東京外国語大学 非常勤講師 (クルド語)",
-        "desc": "東京外国語大学"
-      },
-      {
-        "date": "2023.05-2025.03",
-        "title": "東京外国語大学 大学院総合国際学研究院 非常勤研究員",
-        "desc": "東京外国語大学"
-      },
-      {
-        "date": "2023.10-2024.01",
-        "title": "Sorani Kurdish Language Instructor",
-        "desc": "株式会社 Kimiya (オンライン講座)"
-      },
-      {
-        "date": "2022.08-2023.05",
-        "title": "Japanese Language Trainer",
-        "desc": "Learnlight UK Limited (オンライン講座)"
-      },
-      {
-        "date": "2021.07-2022.03",
-        "title": "筑波大学 大学院人文社会科学研究科 研究員",
-        "desc": "筑波大学"
-      },
-      {
-        "date": "2021.04-2021.12",
-        "title": "ティーチング・アシスタント (表象メディア論)",
-        "desc": "筑波大学。授業計画の補助、学生への個別指導およびディスカッションのモデレートを担当。"
-      },
-      {
-        "date": "2021.08-2021.11",
-        "title": "リサーチ・アシスタント (RA)",
-        "desc": "筑波大学 大学院人文社会科学研究科"
-      },
-      {
-        "date": "2017.10-2019.10",
-        "title": "フリーランス 英語講師",
-        "desc": "日本"
-      },
-      {
-        "date": "2014.11-2016.11",
-        "title": "ペルシア語講師",
-        "desc": "Iran Oxford Language Institute (日本人対象)"
-      }
+    "appointments": [
+      { "date": "2025.04-現在", "title": "東京外国語大学 JSPS外国人特別研究員 (PD)", "desc": "東京外国語大学" },
+      { "date": "2026.03", "title": "IRIS, University of Birmingham 客員研究員", "desc": "IRIS, University of Birmingham" },
+      { "date": "2024.05-2025.03", "title": "千葉大学 特任研究員", "desc": "千葉大学" },
+      { "date": "2024.04-2025.03", "title": "東京外国語大学 非常勤講師 (クルド語)", "desc": "東京外国語大学" },
+      { "date": "2023.05-2025.03", "title": "東京外国語大学 非常勤研究員", "desc": "東京外国語大学" },
+      { "date": "2023.10-2024.01", "title": "クルド語講師", "desc": "株式会社 Kimiya" },
+      { "date": "2022.08-2023.05", "title": "日本語トレーナー", "desc": "Learnlight UK Limited" },
+      { "date": "2021.07-2022.03", "title": "筑波大学 研究員", "desc": "筑波大学" },
+      { "date": "2021.04-2021.12", "title": "ティーチング・アシスタント", "desc": "筑波大学" },
+      { "date": "2021.08-2021.11", "title": "リサーチ・アシスタント", "desc": "筑波大学" },
+      { "date": "2017.10-2019.10", "title": "フリーランス英語講師", "desc": "日本" },
+      { "date": "2014.11-2016.11", "title": "ペルシア語講師", "desc": "Iran Oxford Language Institute" }
     ],
     "projects": [
-      {
-        "date": "2025.04-2027.03",
-        "title": "共存のダイナミクス―地域住民、地方自治体と在日クルド、アフガン移民コミュニティー",
-        "desc": "日本学術振興会 特別研究員奨励費 (25KF0029)。総額 2,000,000円"
-      },
-      {
-        "date": "2025.01-2025.12",
-        "title": "南クルディスタン東部の地政学的位置と社会的宗教性の変遷",
-        "desc": "JFE21世紀財団 アジア歴史研究助成。総額 1,500,000円"
-      },
-      {
-        "date": "2021.10-2026.03",
-        "title": "The State, Politics and Religious Nationalisms: Iran's Western Border Region in Comparative Perspective",
-        "desc": "課題番号：21KK0019。総額 13,200,000円"
-      },
-      {
-        "date": "2024.04-2027.03",
-        "title": "Everyday Forms of Ethnicity and Religiosity in Kurdistan",
-        "desc": "共同研究員。東京外国語大学 AA研 (ILCAA) 共同研究プロジェクト (ID: jrp000305)"
-      },
-      {
-        "date": "2021.10-2022.03",
-        "title": "在日クルド人ディアスポラのアイデンティティとポリティクス",
-        "desc": "SPRING 次世代研究者挑戦的研究プログラム、筑波大学。年額 250,000円"
-      }
+      { "date": "2025.04-2027.03", "title": "共存のダイナミクス", "desc": "日本学術振興会 特別研究員奨励費 (25KF0029)" },
+      { "date": "2025.01-2025.12", "title": "南クルディスタン東部の地政学的位置", "desc": "JFE21世紀財団 アジア歴史研究助成" },
+      { "date": "2021.10-2026.03", "title": "The State, Politics and Religious Nationalisms", "desc": "課題番号：21KK0019" },
+      { "date": "2024.04-2027.03", "title": "Everyday Forms of Ethnicity in Kurdistan", "desc": "東京外国語大学 AA研 (ILCAA) 共同研究" },
+      { "date": "2021.10-2022.03", "title": "在日クルド人のアイデンتیティとポリティクス", "desc": "SPRING プログラム, 筑波大学" }
     ],
-    "papers": [
-      {
-        "date": "2025.11",
-        "title": "変容する移民コミュニティ【第2版】 : 時間・空間・階層",
-        "desc": "分担執筆：「クルド人――来日と定住をめぐる現状と課題」。明石書店. ISBN: 9784750360089"
-      },
-      {
-        "date": "2025.03.20",
-        "title": "在日クルド人の歴史的背景と現状： 多文化共生の視点から",
-        "desc": "『イスラーム信頼学ニュースレター』(5), 20-21. [査読有り]"
-      },
-      {
-        "date": "2024.06.04",
-        "title": "Kurdish Diaspora in Japan: Navigating Kurdish Identity and Activism on Social Media",
-        "desc": "Palgrave Macmillan Studies on Human Rights in Asia. DOI: 10.1007/978-981-97-2867-1_10"
-      },
-      {
-        "date": "2023.12",
-        "title": "Jame'e-ye Japan",
-        "desc": "『イランの社会と文化』所収 (pp. 66–88). Al-Hoda 出版 (テヘラン)."
-      },
-      {
-        "date": "2022.01",
-        "title": "Kurdish Diaspora in Japan: Caught in a Limbo Between Immigration Policies and Politics",
-        "desc": "NEPCAP Policy Brief 2022/01, セントラル・ランカシャー大学."
-      },
-      {
-        "date": "2020.07",
-        "title": "在日クルド人、ふるさとからの声",
-        "desc": "変容する移民コミュニティ (pp. 38-41). 明石書店. ISBN: 9784750350325"
-      },
-      {
-        "date": "2019",
-        "title": "Integrated Knowledge: interdisciplinary collaboration experience of Japan",
-        "desc": "第1回 人文学・生産・産業連携国内会議 論文集. Vol.1: 599-618."
-      },
-      {
-        "date": "2014.04",
-        "title": "『俳句集 希望』掲載作品",
-        "desc": "Kavosh Qalam, p. 54"
-      },
-      {
-        "date": "2014",
-        "title": "詩集 Eteraf",
-        "desc": "Nimaj 出版 (テヘラン). ISBN: 9786007185247"
-      }
+    "publications": [
+      { "date": "2025.11", "title": "変容する移民コミュニティ【第2版】", "desc": "明石書店. ISBN: 9784750360089" },
+      { "date": "2025.03.20", "title": "在日クルド人の歴史的背景と現状", "desc": "『イスラーム信頼学ニュースレター』" },
+      { "date": "2024.06.04", "title": "Kurdish Diaspora in Japan", "desc": "Palgrave Macmillan 出版" },
+      { "date": "2020.07", "title": "在日クルド人、ふるさとからの声", "desc": "明石書店. ISBN: 9784750350325" },
+      { "date": "2014", "title": "詩集 Eteraf", "desc": "Nimaj 出版 (テヘラン). ISBN: 9786007185247" }
     ],
-    "talks": [
-      {
-        "date": "2026.02.06",
-        "title": "The 'Zero Plan' and Migration Governance in Japan: A Case Study of Kurdish Asylum Seekers",
-        "desc": "東京外国語大学 AA研 (ILCAA) 国際会議"
-      },
-      {
-        "date": "2026.01.31",
-        "title": "講師：「イラン社会の変化と若者たちの声」",
-        "desc": "府中市生涯学習センター"
-      },
-      {
-        "date": "2025.12.06",
-        "title": "Negotiating Difference and Belonging: Social Dynamics of Kurdish-Japanese Interaction in a Changing Society",
-        "desc": "第16回 日本・イラク共同学術会議 (早稲田大学)"
-      },
-      {
-        "date": "2024.11.02",
-        "title": "在日クルド人とホスト社会の受容：歴史的背景と現状の課題",
-        "desc": "イスラーム信頼学対話シリーズ、東京外国語大学"
-      },
-      {
-        "date": "2024.07.02",
-        "title": "Refugee and asylum seeker protection in East Asia: The interplay between state, civil society, and migrant actors",
-        "desc": "第21回 IMISCOE 年次大会 (リスボン)"
-      },
-      {
-        "date": "2024.05.23",
-        "title": "An Anatomy of Islamic Awakening in Iranian Ouramanat: the Case of Naser Sobhani",
-        "desc": "シェフィールド大学 クルド研究会議"
-      },
-      {
-        "date": "2024.05.12",
-        "title": "在日クルド人ディアスポラにおける政治意識と団体活動",
-        "desc": "日本中東学会 第40回年次大会 (東京大学)"
-      },
-      {
-        "date": "2024.03.11",
-        "title": "日本におけるクルド人コミュニティの活動",
-        "desc": "研究成果報告会, 千葉大学."
-      },
-      {
-        "date": "2023.12.03",
-        "title": "日本における難民と庇護申請者の人間の安全保障",
-        "desc": "人間の安全保障学会 (神戸大学)"
-      },
-      {
-        "date": "2023.11.29",
-        "title": "Article 9 and the Revision Politics of Japan's Constitution",
-        "desc": "テヘران大学 第38回日本研究セッション"
-      },
-      {
-        "date": "2018.07.13",
-        "title": "クルド人ディアスポラとはなにか",
-        "desc": "東京入国管理局（品川）"
-      },
-      {
-        "date": "2019.03.17",
-        "title": "ネウロズ（クルドの新年）とは何か：クルドの歴史の視点から",
-        "desc": "埼玉県さいたま市"
-      }
+    "presentations": [
+      { "date": "2026.02.06", "title": "在日クルド人の庇護申請と移住ガバナンス", "desc": "東京外国語大学 AA研 国際会議" },
+      { "date": "2026.01.31", "title": "イラン社会の変化と若者たちの声", "desc": "府中市生涯学習センター" },
+      { "date": "2025.12.06", "title": "Negotiating Difference and Belonging", "desc": "早稲田大学" },
+      { "date": "2024.11.02", "title": "在日クルド人とホスト社会の受容", "desc": "東京外国語大学 イスラーム信頼学" },
+      { "date": "2024.07.02", "title": "Refugee protection in East Asia", "desc": "IMISCOE (リスボン)" },
+      { "date": "2018.07.13", "title": "クルド人ディアスポラとはなにか", "desc": "東京入国管理局" }
     ],
-    "misc": [
-      {
-        "date": "2025.04",
-        "title": "日本学術振兴会 外国人特別研究員 (PD) 採用",
-        "desc": "日本学術振兴会"
-      },
-      {
-        "date": "2021.10",
-        "title": "2021年度挑戦的研究奨励賞 (SPRINGプログラム)",
-        "desc": "筑波大学・日本科学技術振興機構（JST）"
-      },
-      {
-        "date": "2019.04",
-        "title": "文部科学省奨学金 (スーパーグローバル大学創成支援事業)",
-        "desc": "筑波大学"
-      },
-      {
-        "date": "2010.11",
-        "title": "第13回日本語スピーチコンテスト 優秀賞",
-        "desc": "在イラン日本国大使館"
-      }
+    "awards": [
+      { "date": "2025.04", "title": "日本学術振興会 特別研究員 (PD) 採用", "desc": "日本学術振興会" },
+      { "date": "2021.10", "title": "筑波大学 挑戦的研究奨励賞", "desc": "筑波大学" }
     ]
   }
 };
@@ -561,30 +185,21 @@ function switchLang(lang) {
         <p style="font-size:12px;">${makeLinks(p.web)}</p></div>
         <div class="photo"><img src="${img}"></div></header>`;
     
-    const sections = { 
-        "edu": "Education / 学歴", 
-        "work": "Appointments / 職歴", 
-        "projects": "Projects / 研究課題", 
-        "papers": "Publications / 業績", 
-        "talks": "Presentations / 講演",
-        "misc": "Awards & Others / 受賞・その他"
-    };
-    
-    for (const [key, label] of Object.entries(sections)) {
+    const categories = Object.keys(d).filter(k => k !== 'profile');
+    categories.forEach(key => {
         if (d[key] && d[key].length > 0) {
-            html += `<h2>${label}</h2>`;
+            const displayTitle = key.replace(/_/g, ' ').toUpperCase();
+            html += `<h2>${displayTitle}</h2>`;
             d[key].forEach(item => {
                 html += `<div class="entry"><div class="entry-date">${item.date}</div><div><div class="entry-title">${item.title}</div><div class="entry-desc">${makeLinks(item.desc)}</div></div></div>`;
             });
         }
-    }
+    });
     
-    html += `<h2>Skills / スキル</h2><div class="skills-grid">
-        <div><strong>Languages</strong></div><div>${p.languages}</div>
-        <div><strong>Technical</strong></div><div>${p.technical}</div></div>`;
-    
+    html += `<h2>Technical Skills</h2><div style="font-size:14px; margin-top:10px;">${p.technical}</div>`;
     document.getElementById('cv-content').innerHTML = html;
 }
+
 window.onload = () => switchLang('en');
 </script>
 </body>
