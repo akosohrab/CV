@@ -35,22 +35,22 @@
 
 <div class="container">
     <div class="header">
-        <h1>Sohrab's CV Manager</h1>
+        <h1>Sohrab's CV Editor</h1>
         <div class="tab-bar">
-            <div id="tab-en" class="tab active" onclick="switchTab('en')">English (Mirror Data)</div>
-            <div id="tab-jp" class="tab" onclick="switchTab('jp')">日本語 (Mirror Data)</div>
+            <div id="tab-en" class="tab active" onclick="switchTab('en')">English Editor</div>
+            <div id="tab-jp" class="tab" onclick="switchTab('jp')">日本語エディタ</div>
         </div>
     </div>
 
     <div class="setup-bar">
-        <input type="password" id="token" placeholder="GitHub Token (ghp_...)">
+        <input type="password" id="token" placeholder="Enter GitHub Token (with 'Contents' Write access)">
         <button class="btn btn-load" onclick="fetchFile()">1. Load Records</button>
     </div>
 
     <div id="editor-ui" style="display:none;">
         <div id="records-container"></div>
 
-        <h3>Profile, Languages & Technical Skills</h3>
+        <h3>9. Profile Information & Skills</h3>
         <div id="profile-container" class="profile-grid"></div>
         
         <button class="btn btn-save" onclick="saveFile()">2. Push Changes Live</button>
@@ -78,7 +78,7 @@
     async function fetchFile() {
         const t = document.getElementById('token').value;
         if (!t) return alert("Please enter your token!");
-        notify("Fetching data...", "#3498db");
+        notify("Loading data...", "#3498db");
         try {
             const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
                 headers: { 'Authorization': `token ${t}` }
@@ -88,17 +88,21 @@
             const bin = atob(d.content.replace(/\s/g, ''));
             fullFileContent = new TextDecoder().decode(Uint8Array.from(bin, m => m.charCodeAt(0)));
             
-            // Fixed extraction logic for Profile-enabled index
+            // Extract the data using refined regex matching for standardized index files
             cvData.en = JSON.parse(fullFileContent.match(/const cvDataEn = ([\s\S]*?);/)[1]);
             cvData.jp = JSON.parse(fullFileContent.match(/const cvDataJp = ([\s\S]*?);/)[1]);
             
             renderAll();
             document.getElementById('editor-ui').style.display = 'block';
-            notify("Data Loaded!", "#27ae60");
-        } catch (e) { notify("Error: Sync failed. Check index.html markers.", "#e74c3c"); }
+            notify("Data Loaded Successfully!", "#27ae60");
+        } catch (e) { 
+            console.error(e);
+            notify("Error loading data. Ensure index.html markers are present.", "#e74c3c"); 
+        }
     }
 
     function renderAll() {
+        // Render Records Section
         const recordsContainer = document.getElementById('records-container');
         recordsContainer.innerHTML = '';
         
@@ -110,9 +114,9 @@
                 <div class="entry-row">
                     <input value="${item.date || ''}" placeholder="Date" onchange="updateEntry('${key}',${i},'date',this.value)">
                     <input value="${item.title || ''}" placeholder="Title" onchange="updateEntry('${key}',${i},'title',this.value)">
-                    <textarea placeholder="Details" onchange="updateEntry('${key}',${i},'desc',this.value)">${item.desc || ''}</textarea>
+                    <textarea placeholder="Details/Metadata" onchange="updateEntry('${key}',${i},'desc',this.value)">${item.desc || ''}</textarea>
                     <select onchange="updateEntry('${key}',${i},'lang',this.value)">
-                        <option value="">No Lang</option>
+                        <option value="">No Label</option>
                         ${langOptions.map(l => `<option value="${l}" ${item.lang===l?'selected':''}>${l}</option>`).join('')}
                     </select>
                     <div class="move-btns">
@@ -133,13 +137,14 @@
             recordsContainer.appendChild(sectionDiv);
         });
 
+        // Render Profile Section at the Bottom
         const p = cvData[currentLang].profile;
         document.getElementById('profile-container').innerHTML = `
             <div><label>Name</label><input value="${p.name}" onchange="updateProfile('name',this.value)"></div>
             <div><label>Job Title</label><input value="${p.title}" onchange="updateProfile('title',this.value)"></div>
             <div><label>Affiliation</label><input value="${p.uni}" onchange="updateProfile('uni',this.value)"></div>
-            <div><label>Email</label><input value="${p.email}" onchange="updateProfile('email',this.value)"></div>
-            <div style="grid-column: span 2;"><label>Languages (Levels)</label><input value="${p.languages}" onchange="updateProfile('languages',this.value)"></div>
+            <div><label>Email Contact</label><input value="${p.email}" onchange="updateProfile('email',this.value)"></div>
+            <div style="grid-column: span 2;"><label>Languages Proficiency</label><input value="${p.languages}" onchange="updateProfile('languages',this.value)"></div>
             <div style="grid-column: span 2;"><label>Technical Skills</label><textarea onchange="updateProfile('technical',this.value)">${p.technical}</textarea></div>
             <div style="grid-column: span 2;"><label>ResearchMap URL</label><input value="${p.web}" onchange="updateProfile('web',this.value)"></div>
         `;
@@ -149,12 +154,12 @@
     function updateEntry(k, i, f, v) { cvData[currentLang][k][i][f] = v; }
     
     function addItem(key) {
-        cvData[currentLang][key].unshift({ date: "2026.01", title: "New Entry", desc: "", lang: "" });
+        cvData[currentLang][key].unshift({ date: "2026", title: "New Title", desc: "Details", lang: "" });
         renderAll();
     }
 
     function deleteItem(key, index) {
-        if(confirm("Permanently delete this?")) {
+        if(confirm("Permanently delete this entry?")) {
             cvData[currentLang][key].splice(index, 1);
             renderAll();
         }
@@ -179,17 +184,28 @@
     async function saveFile() {
         const t = document.getElementById('token').value;
         notify("Saving...", "#f39c12");
-        let content = fullFileContent.replace(/const cvDataEn = [\s\S]*?;/, `const cvDataEn = ${JSON.stringify(cvData.en, null, 4)};`);
-        content = content.replace(/const cvDataJp = [\s\S]*?;/, `const cvDataJp = ${JSON.stringify(cvData.jp, null, 4)};`);
+        
+        // Re-inject the updated JSON back into the original file content
+        let content = fullFileContent.replace(/const cvDataEn = ([\s\S]*?);/, `const cvDataEn = ${JSON.stringify(cvData.en, null, 4)};`);
+        content = content.replace(/const cvDataJp = ([\s\S]*?);/, `const cvDataJp = ${JSON.stringify(cvData.jp, null, 4)};`);
+        
         try {
             const b = new TextEncoder().encode(content);
             const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "CV Pro Dashboard Sync", content: btoa(String.fromCharCode(...b)), sha: fileSha })
+                body: JSON.stringify({ 
+                    message: "Academic CV Update via Editor", 
+                    content: btoa(String.fromCharCode(...b)), 
+                    sha: fileSha 
+                })
             });
-            if (res.ok) notify("Success! Live in 60s.", "#27ae60");
-        } catch (e) { notify("Save Error!", "#e74c3c"); }
+            if (res.ok) notify("Success! Live in 60 seconds.", "#27ae60");
+            else {
+                const err = await res.json();
+                notify("Save failed: " + err.message, "#e74c3c");
+            }
+        } catch (e) { notify("Error Saving", "#e74c3c"); }
     }
 
     function notify(m, c) {
